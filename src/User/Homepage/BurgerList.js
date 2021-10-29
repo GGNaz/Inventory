@@ -16,6 +16,7 @@ import {
     Fade,
     Backdrop,
     Input,
+    Divider 
 } from '@mui/material';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { Link } from 'react-router-dom';
@@ -30,6 +31,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import Slider from "react-slick";
 const style = {
     position: 'absolute',
     top: '50%',
@@ -65,11 +67,19 @@ const QtyCounter = (check) => {
 
 }
    
+
+var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1
+  };
     return (
         <div>
-            <Grid container spacing={1} justifyContent="center">
-                <Grid item xs={3} >
-                    <Card sx={{ maxWidth: 345 }}>
+           <Slider {...settings}>
+      <div>
+      <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
                         <label style={{
                             backgroundColor: "#323435",
                             padding: "5px",
@@ -95,7 +105,7 @@ const QtyCounter = (check) => {
                                         <LocalOfferOutlinedIcon /><b>10.00</b>
                                     </Grid>
                                     <Grid xs={2}></Grid>
-                                    <Grid xs={4}>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
                                         <label onClick={handleOpen}
                                             style={{
                                                 backgroundColor: "#323435",
@@ -109,10 +119,9 @@ const QtyCounter = (check) => {
                             </Typography>
                         </CardContent>
                     </Card>
-                </Grid>
-                <Grid item xs={3}>
-
-                    <Card sx={{ maxWidth: 345 }}>
+      </div>
+      <div>
+      <Card sx={{ maxWidth: 345 }} style={{marginRight: "8px"}}>
                         <label style={{
                             backgroundColor: "#323435",
                             padding: "5px",
@@ -137,17 +146,16 @@ const QtyCounter = (check) => {
                                         <LocalOfferOutlinedIcon /><b>20.00</b>
                                     </Grid>
                                     <Grid xs={2}></Grid>
-                                    <Grid xs={4}>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
                                         <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
                                     </Grid>
                                 </Grid>
                             </Typography>
                         </CardContent>
                     </Card>
-                </Grid>
-                <Grid item xs={3}>
-
-                    <Card sx={{ maxWidth: 345 }}>
+      </div>
+      <div>
+      <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
                         <label style={{
                             backgroundColor: "#323435",
                             padding: "5px",
@@ -172,7 +180,96 @@ const QtyCounter = (check) => {
                                         <LocalOfferOutlinedIcon /><b>5.00</b>
                                     </Grid>
                                     <Grid xs={2}></Grid>
-                                    <Grid xs={4}>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
+                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
+                                    </Grid>
+                                </Grid>
+                            </Typography>
+                        </CardContent>
+                    </Card>
+      </div>
+      <div>
+        <h3>4</h3>
+      </div>
+      <div>
+        <h3>5</h3>
+      </div>
+      <div>
+        <h3>6</h3>
+      </div>
+    </Slider>
+
+            <Grid container spacing={1} justifyContent="center">
+                <Grid item xs={6} >
+                    <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
+                        <label style={{
+                            backgroundColor: "#323435",
+                            padding: "5px",
+                            position: "absolute",
+                            opacity: "70%",
+                            color: "white",
+                            borderRadius: '0px 0px 10px 0px'
+                        }}>Free Delivery</label>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=699&q=80"
+                            alt="green iguana"
+                        />
+
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Burger
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                <Grid container>
+                                    <Grid xs={6}>
+                                        <LocalOfferOutlinedIcon /><b>10.00</b>
+                                    </Grid>
+                                    <Grid xs={2}></Grid>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
+                                        <label onClick={handleOpen}
+                                            style={{
+                                                backgroundColor: "#323435",
+                                                padding: "3px",
+                                                borderRadius: "5px",
+                                                color: "white"
+                                            }}
+                                        > Details</label>
+                                    </Grid>
+                                </Grid>
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={6}>
+
+                    <Card sx={{ maxWidth: 345 }} style={{marginRight: "8px"}}>
+                        <label style={{
+                            backgroundColor: "#323435",
+                            padding: "5px",
+                            position: "absolute",
+                            opacity: "70%",
+                            color: "white",
+                            borderRadius: '0px 0px 10px 0px'
+                        }}>Free Delivery</label>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=774&q=80"
+                            alt="green iguana"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Pizza
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                <Grid container>
+                                    <Grid xs={6}>
+                                        <LocalOfferOutlinedIcon /><b>20.00</b>
+                                    </Grid>
+                                    <Grid xs={2}></Grid>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
                                         <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
                                     </Grid>
                                 </Grid>
@@ -180,9 +277,44 @@ const QtyCounter = (check) => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={3} >
+                <Grid item xs={6}>
 
-                    <Card sx={{ maxWidth: 345 }}>
+                    <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
+                        <label style={{
+                            backgroundColor: "#323435",
+                            padding: "5px",
+                            position: "absolute",
+                            opacity: "70%",
+                            color: "white",
+                            borderRadius: '0px 0px 10px 0px'
+                        }}>Free Delivery</label>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image="https://images.unsplash.com/photo-1596803244618-8dbee441d70b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80"
+                            alt="green iguana"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Cola
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                <Grid container>
+                                    <Grid xs={6}>
+                                        <LocalOfferOutlinedIcon /><b>5.00</b>
+                                    </Grid>
+                                    <Grid xs={2}></Grid>
+                                    <Grid xs={4} style={{textAlign: "right"}}>
+                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
+                                    </Grid>
+                                </Grid>
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} >
+
+                    <Card sx={{ maxWidth: 345 }} style={{marginRight: "8px"}}>
                         <label style={{
                             backgroundColor: "#323435",
                             padding: "5px",

@@ -43,6 +43,7 @@ import AddNewItem from './User/Homepage/AddNewItem';
 import Home from './User/Homepage/Home';
 import BurgerList from './User/Homepage/BurgerList';
 import Cart from './User/Homepage/Cart';
+import LoginForm from './User/LoginForm/LoginForm';
 
 function App() {
 
@@ -196,6 +197,9 @@ function App() {
           {/* <Route exact to="/Additem">
             <AddNewItem/>
           </Route> */}
+          <Route exact path="/">
+            <LoginForm />
+          </Route>
           <Route exact path="/home">
             <Home />
             <BurgerList/>
