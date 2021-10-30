@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./reducers/user-reducer";
+import getMenuReducer from "./reducers/getMenuReducer";
+import getuserReducer from "./reducers/getuserReducer";
+
 export default configureStore({
-    reducer:{
-        user: userReducer
-    }
+  reducer: {
+    getMenu: getMenuReducer,
+    getUser: getuserReducer,
+  }
 });

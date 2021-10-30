@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {useSelector} from "react-redux";
 import {
   Grid,
   Box,
@@ -24,7 +25,7 @@ import {
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import logo from "./AppLogo.png";
+import logo from "./TE.png";
 import burger from "./burger.png";
 import pizza from "./pizza.png";
 import soda from "./soda.png";
@@ -38,6 +39,16 @@ import { height } from "@mui/system";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ProductionQuantityLimitsOutlinedIcon from '@mui/icons-material/ProductionQuantityLimitsOutlined';
 import EqualizerOutlinedIcon from '@mui/icons-material/EqualizerOutlined';
+
+
+import Input from '@mui/material/Input';
+import FilledInput from '@mui/material/FilledInput';
+
+import InputLabel from '@mui/material/InputLabel';
+
+import FormHelperText from '@mui/material/FormHelperText';
+
+import Visibility from '@mui/icons-material/Visibility';
 
 const style = {
   position: "absolute",
@@ -56,8 +67,9 @@ const Home = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const menu = useSelector((state) => state.getMenu.getMenu)
   const [imgLinks, setLinkImg] = useState({ newImg: "" });
+  console.log("menu",menu);
 
   const inputNewImg = (event) => {
     setLinkImg({
@@ -68,7 +80,7 @@ const Home = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ backgroundColor: "#FFFFFF" }}>
+       
           <Toolbar>
             <IconButton
               edge="start"
@@ -83,15 +95,22 @@ const Home = () => {
               sx={{ flexGrow: 1 }}
             >
               <img src={logo} style={{ height: "40px", width: "40px" }} />{" "}
-              <b>GrabPanda</b>
+              
+         <FormControl>
+          <Input style={{backgroundColor: "white", borderRadius: "30px", textDecoration: "none"}}
+            id="outlined-adornment-amount"
+            startAdornment={<InputAdornment position="start">search</InputAdornment>}
+            label="Amount"
+          />
+       </FormControl>
             </Typography>
-
+          
             
               <ShoppingCartOutlinedIcon style={{ color: "#323435" }} />
               
            
           </Toolbar>
-        </AppBar>
+        
       </Box>
 
       <Grid container spacing={2} paddingTop={1}>
@@ -105,7 +124,7 @@ const Home = () => {
             >
               <Grid item xs={12}>
                 <h6>Select Category</h6>
-                <Divider style={{padding: "2"}} />
+                <Divider style={{padding: "2", marginBottom: "5px"}} />
               </Grid>
               <Grid item xs={3}>
                 <Link to="/home/burger">
@@ -144,17 +163,7 @@ const Home = () => {
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          onClick={handleOpen}
-          size="medium"
-          variant="extended"
-          style={{ color: "yellow", backgroundColor: "#323435" }}
-          aria-label="add"
-        >
-          <AddIcon /> New Products
-        </Fab>
-      </Box>
+      
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -16,7 +16,8 @@ import {
     Fade,
     Backdrop,
     Input,
-    Divider 
+    Divider,
+    Fab
 } from '@mui/material';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { Link } from 'react-router-dom';
@@ -34,7 +35,14 @@ import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import Slider from "react-slick";
 import BottomNavigation from 'reactjs-bottom-navigation'
 import 'reactjs-bottom-navigation/dist/index.css'
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import { useSelector } from 'react-redux';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { AddAlarm } from '@material-ui/icons';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -54,39 +62,45 @@ const BurgerList = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [counter, setCounter] = useState("");
+    const [Name, setFoodName] = useState("");
+    const [Price, setFoodPrice] = useState("");
+    const [Pcs, setFoodPcs] = useState("");
+    const [Image, setFoodImg] = useState("");
+    const [Desc, setFoodDesc] = useState("");
+    const menu = useSelector((state) => state.getMenu.getMenu)
     let total=0;
 
     const bottomNavItems = [
         {
           title: 'Home',
     
-          icon: <label style={{ fontSize: '18px' }} />,
+          icon: <HomeRoundedIcon style={{ fontSize: '18px' }} />,
     
-          activeIcon: <label style={{ fontSize: '18px', color: 'yellow' }} />
+          activeIcon: <HomeRoundedIcon style={{ fontSize: '18px', color: 'yellow' }} />
         },
     
         {
-          title: 'Search',
+          title: 'New Menu',
     
-          icon: <label style={{ fontSize: '18px' }} />,
+          icon: <AddBusinessIcon style={{ fontSize: '18px' }} />,
     
-          activeIcon: <label style={{ fontSize: '18px', color: 'yellow' }} />
+          activeIcon: <AddBusinessIcon style={{ fontSize: '18px', color: 'yellow' }} />
         },
     
         {
-          title: 'Notifications',
+          title: 'My Order',
     
-          icon: <label style={{ fontSize: '18px' }} />,
+          icon: <LocalShippingIcon style={{ fontSize: '18px' }} />,
     
-          activeIcon: <label style={{ fontSize: '18px', color: 'yellow', backgroundColor: "red" }} />
+          activeIcon: <LocalShippingIcon style={{ fontSize: '18px', color: 'yellow' }} />
         },
     
         {
-          title: 'Menu',
+          title: 'Account',
     
-          icon: <label style={{ fontSize: '18px' }} />,
+          icon: <ManageAccountsIcon style={{ fontSize: '18px' }} />,
     
-          activeIcon: <label style={{ fontSize: '18px', color: 'yellow' }} />,
+          activeIcon: <ManageAccountsIcon style={{ fontSize: '18px', color: 'yellow' }} />,
     
           onClick: () => alert('menu clicked')
         }
@@ -109,47 +123,106 @@ const QtyCounter = (check) => {
     // }
 
 }
-   
 
 var settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    // appendDots: dots => <ul>{dots}</ul>,
+    // customPaging: div => (
+    //     <div className="ft-slick__dots--custom">
+    //      <li></li>
+    //     </div>
+    //   ),
+    speed: 1000,
+    autoplay: true,
     slidesToShow: 2,
-    slidesToScroll: 1
+    slidesToScroll: 1,  
+    // prevArrow: "none",
+    // nextArrow: "none",
   };
     return (
         <div>
-           <Slider {...settings}>
-      <div>
-      <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
-                        <label style={{
-                            backgroundColor: "#323435",
-                            padding: "5px",
-                            position: "absolute",
-                            opacity: "70%",
-                            color: "white",
-                            borderRadius: '0px 0px 10px 0px'
-                        }}>Free Delivery</label>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=699&q=80"
-                            alt="green iguana"
-                        />
 
-                        <CardContent>
+
+<Box sx={{ "& > :not(style)": { m: 1 } }}>
+        <Fab
+          size="medium"
+          variant="extended"
+          style={{ color: "yellow", backgroundColor: "#323435" }}
+          aria-label="add"
+        >
+          <FavoriteIcon /> Best Seller
+        </Fab>
+      </Box>
+
+           <Slider {...settings}>
+      
+     
+                        {
+                            menu.length > 0?
+                                menu.map((food) =>(
+                                    <div>
+                                    <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px",marginRight: "8px"}}>
+                                    {food.foodPcs <= 9  ?
+                                    <div>
+                                    <label style={{
+                                        backgroundColor: "white",
+                                        padding: "5px",
+                                        position: "absolute",
+                                        opacity: "90%",
+                                        color: "red",
+                                        borderRadius: '0px 0px 10px 0px'
+                                    }}><FavoriteBorderIcon/>{food.foodPcs}</label>
+                                    
+                                    <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={food.foodImage}
+                                    alt={food.foodName}
+                                /></div>
+                                :
+                                <div>
+                                <label style={{
+                                        backgroundColor: "white",
+                                        padding: "5px",
+                                        position: "absolute",
+                                        opacity: "90%",
+                                        color: "green",
+                                        borderRadius: '0px 0px 10px 0px'
+                                    }}><FavoriteBorderIcon/>{food.foodPcs}</label>
+                                    
+                                    <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={food.foodImage}
+                                    alt={food.foodName}
+                                />
+                                </div>
+                                    }
+                                <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Burger
+                                {food.foodName}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 <Grid container>
                                     <Grid xs={6}>
-                                        <LocalOfferOutlinedIcon /><b>10.00</b>
+                                        <b>₱{food.foodPrice}</b>
                                     </Grid>
                                     <Grid xs={2}></Grid>
                                     <Grid xs={4} style={{textAlign: "right"}}>
-                                        <label onClick={handleOpen}
+                                        <label 
+                                            onClick={() =>{
+                                                setFoodName(food.foodName);
+                                                setFoodImg(food.foodImage);
+                                                setFoodPrice(food.foodPrice);
+                                                setFoodDesc(food.foodDesc);
+                                                setFoodPcs(food.foodPcs);
+                                                handleOpen();
+                                            }
+                                               
+
+                                                // handleOpen()
+                                            }
                                             style={{
                                                 backgroundColor: "#323435",
                                                 padding: "3px",
@@ -161,161 +234,74 @@ var settings = {
                                 </Grid>
                             </Typography>
                         </CardContent>
+                             
                     </Card>
-      </div>
-      <div>
-      <Card sx={{ maxWidth: 345 }} style={{marginRight: "8px"}}>
-                        <label style={{
-                            backgroundColor: "#323435",
-                            padding: "5px",
-                            position: "absolute",
-                            opacity: "70%",
-                            color: "white",
-                            borderRadius: '0px 0px 10px 0px'
-                        }}>Free Delivery</label>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=774&q=80"
-                            alt="green iguana"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                Pizza
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                <Grid container>
-                                    <Grid xs={6}>
-                                        <LocalOfferOutlinedIcon /><b>20.00</b>
-                                    </Grid>
-                                    <Grid xs={2}></Grid>
-                                    <Grid xs={4} style={{textAlign: "right"}}>
-                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
-                                    </Grid>
-                                </Grid>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-      </div>
-      <div>
-      <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
-                        <label style={{
-                            backgroundColor: "#323435",
-                            padding: "5px",
-                            position: "absolute",
-                            opacity: "70%",
-                            color: "white",
-                            borderRadius: '0px 0px 10px 0px'
-                        }}>Free Delivery</label>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://images.unsplash.com/photo-1596803244618-8dbee441d70b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80"
-                            alt="green iguana"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                Cola
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                <Grid container>
-                                    <Grid xs={6}>
-                                        <LocalOfferOutlinedIcon /><b>5.00</b>
-                                    </Grid>
-                                    <Grid xs={2}></Grid>
-                                    <Grid xs={4} style={{textAlign: "right"}}>
-                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
-                                    </Grid>
-                                </Grid>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-      </div>
-      <div>
-        <h3>4</h3>
-      </div>
-      <div>
-        <h3>5</h3>
-      </div>
-      <div>
-        <h3>6</h3>
-      </div>
+                    </div>
+                        )): <label>We working no it, just wait my friend!</label>
+                        
+                        }
+                    
     </Slider>
-<br/><br/><br/>
-            <Grid container spacing={1} justifyContent="center">
+    <Box sx={{ "& > :not(style)": { m: 1 } }}>
+        <Fab
+          size="medium"
+          variant="extended"
+          style={{ color: "yellow", backgroundColor: "#323435" }}
+          aria-label="add"
+        >
+          <FavoriteIcon /> Best Seller
+        </Fab>
+      </Box>
+
+    <Grid container spacing={1} justifyContent="center">
               
-                <Grid item xs={6}>
+              <Grid item xs={12}>
 
-                    <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
-                        <label style={{
-                            backgroundColor: "#323435",
-                            padding: "5px",
-                            position: "absolute",
-                            opacity: "70%",
-                            color: "white",
-                            borderRadius: '0px 0px 10px 0px'
-                        }}>Free Delivery</label>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://images.unsplash.com/photo-1596803244618-8dbee441d70b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80"
-                            alt="green iguana"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                Cola
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                <Grid container>
-                                    <Grid xs={6}>
-                                        <LocalOfferOutlinedIcon /><b>5.00</b>
-                                    </Grid>
-                                    <Grid xs={2}></Grid>
-                                    <Grid xs={4} style={{textAlign: "right"}}>
-                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
-                                    </Grid>
-                                </Grid>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={6} >
+                  <Card sx={{ maxWidth: 345 }} style={{marginLeft: "8px"}}>
+                      <label style={{
+                          backgroundColor: "#323435",
+                          padding: "5px",
+                          position: "absolute",
+                          opacity: "70%",
+                          color: "white",
+                          borderRadius: '0px 0px 10px 0px'
+                      }}>Free Delivery</label>
+                      <CardMedia
+                          component="img"
+                          height="140"
+                          image="https://images.unsplash.com/photo-1596803244618-8dbee441d70b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80"
+                          alt="green iguana"
+                      />
+                      <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                          <Grid container>
+                          <Grid xs={5}>
+                              Cola
+                          </Grid>
+                          <Grid xs={3}>
+                          </Grid>
+                          <Grid xs={4} style={{color: "green", fontSize: "15px"}}>
+                              <FavoriteBorderIcon/><label >12</label>
+                          </Grid>
+                          </Grid>
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                              <Grid container>
+                                  <Grid xs={6}>
+                                     <b>₱5.00</b>
+                                  </Grid>
+                                  <Grid xs={2}></Grid>
+                                  <Grid xs={4} style={{textAlign: "right"}}>
+                                      <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
+                                  </Grid>
+                              </Grid>
+                          </Typography>
+                      </CardContent>
+                  </Card>
+              </Grid>
+             
+          </Grid>
 
-                    <Card sx={{ maxWidth: 345 }} style={{marginRight: "8px"}}>
-                        <label style={{
-                            backgroundColor: "#323435",
-                            padding: "5px",
-                            position: "absolute",
-                            opacity: "70%",
-                            color: "white",
-                            borderRadius: '0px 0px 10px 0px'
-                        }}>Free Delivery</label>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80"
-                            alt="green iguana"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                Donut
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                <Grid container>
-                                    <Grid xs={6}>
-                                        <LocalOfferOutlinedIcon /><b>6.00</b>
-                                    </Grid>
-                                    <Grid xs={2}></Grid>
-                                    <Grid xs={4} style={{textAlign: "right"}}>
-                                        <label style={{ backgroundColor: "#323435", padding: "3px", borderRadius: "5px", color: "white" }}>Details</label>
-                                    </Grid>
-                                </Grid>
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-            </Grid>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -336,8 +322,8 @@ var settings = {
                             <CardMedia
                                 component="img"
                                 height="250"
-                                image="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=699&q=80"
-                                alt="green iguana"
+                                image={Image}
+                                alt={Name}
                                 border="2px solid white"
 
                             />
@@ -347,13 +333,13 @@ var settings = {
                         <Typography id="transition-modal-description" sx={{ mt: 2 }}>
                             <Grid container>
                                 <Grid xs={9}>
-                                <b>Burger Super XL</b>
+                                <b>{Name}</b>
                                 </Grid>
                                 <Grid xs={3} style={{textAlign: "right"}}>
-                                <b>₱6.00</b>
+                                <b>₱{Price}</b>
                                 </Grid>
                                 <Grid xs={12} style={{textAlign: "justify"}}>
-                                    <p  style={{color: "#323435"}}>A hamburger is a sandwich consisting of a cooked meat patty on a bun or roll. You can order a hamburger, fries, and a shake at most fast food restaurants.</p>
+                                    <p  style={{color: "#323435"}}>{Desc}</p>
                                 </Grid>
                                 <Grid xs={8}>
                                    
