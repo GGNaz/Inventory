@@ -113,7 +113,7 @@ const Home = () => {
         
       </Box>
 
-      <Grid container spacing={2} paddingTop={1}>
+      {/* <Grid container spacing={2} paddingTop={1}>
         <Grid item xs={1}></Grid>
         <Grid item xs={10} padding={5}>
           <Paper>
@@ -163,7 +163,7 @@ const Home = () => {
         </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
-      
+       */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
