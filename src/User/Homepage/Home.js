@@ -79,39 +79,7 @@ const Home = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-       
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-            ></IconButton>
-
-            <Typography
-              variant="h6"
-              style={{ color: "#323435" }}
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              <img src={logo} style={{ height: "40px", width: "40px" }} />{" "}
-              
-         <FormControl>
-          <Input style={{backgroundColor: "white", borderRadius: "30px", textDecoration: "none"}}
-            id="outlined-adornment-amount"
-            startAdornment={<InputAdornment position="start">search</InputAdornment>}
-            label="Amount"
-          />
-       </FormControl>
-            </Typography>
-          
-            
-              <ShoppingCartOutlinedIcon style={{ color: "#323435" }} />
-              
-           
-          </Toolbar>
-        
-      </Box>
+     
 
       {/* <Grid container spacing={2} paddingTop={1}>
         <Grid item xs={1}></Grid>

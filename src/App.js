@@ -12,6 +12,8 @@ import api from './api/menu';
 import LoginForm from './User/LoginForm/LoginForm';
 import { getMenuChange } from './redux/reducers/getMenuReducer';
 import { getUserChange } from './redux/reducers/getuserReducer';
+import AddItem from './User/Homepage/AddItem';
+import { getCartChange } from './redux/reducers/getCartReducer';
 function App() {
 
   const dispatch = useDispatch();
@@ -30,12 +32,20 @@ function App() {
       console.log("User",result);
   }
 
+  const cartList = async () => {
+    const response = await api.get("/Cart");
+    const result = response.data;
+      dispatch(getCartChange(result));
+      console.log("Cart",result);
+  }
+
 useEffect(()=> {
   // const getList = async () => {
   //   const allfoods = await menuList();
   // }
   menuList();
   userList();
+  cartList();
   // getList();
 },[]);
 
@@ -53,6 +63,9 @@ useEffect(()=> {
           <Route exact path="/home">
             <Home />
             <BurgerList/>
+          </Route>
+          <Route exact path="/addItem">
+           <AddItem/>
           </Route>
             <Route exact path="/cart">
             <Home />

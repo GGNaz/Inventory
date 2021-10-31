@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -18,12 +18,14 @@ import {
   Input,
   Divider,
   Fab,
+  FormControl,
+  InputAdornment,
 } from "@mui/material";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import logo from "./AppLogo.png";
+import logo from "./tara.png";
 import burger from "./burger.png";
 import pizza from "./pizza.png";
 import soda from "./soda.png";
@@ -34,22 +36,22 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import Slider from "react-slick";
-import BottomNavigation from "reactjs-bottom-navigation";
-import "reactjs-bottom-navigation/dist/index.css";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import BottomNav from "../../Components/BottomNav";
 import { useSelector } from "react-redux";
-import AddBusinessIcon from "@mui/icons-material/AddBusiness";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import api from "../../api/menu";
+import { v4 as uuidv4 } from 'uuid';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { AddAlarm } from "@material-ui/icons";
 import ads from "../Video/ads.mp4";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
-import MessageRoundedIcon from '@mui/icons-material/MessageRounded';
-import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-
+import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
+import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
+import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
+import withLoading from "../../HOC/withLoading";
+import { useHistory } from "react-router";
+import { getCartChange } from '../../redux/reducers/getCartReducer';
+import { useDispatch } from 'react-redux';
 const style = {
   position: "absolute",
   top: "50%",
@@ -73,52 +75,35 @@ const BurgerList = () => {
   const [Pcs, setFoodPcs] = useState("");
   const [Image, setFoodImg] = useState("");
   const [Desc, setFoodDesc] = useState("");
+  const [reloadData, setReload] = useState("");
   const menu = useSelector((state) => state.getMenu.getMenu);
+  const cartNum = useSelector((state) => state.getCart.getCart);
+
+  console.log("number of cart",cartNum);
+
   let total = 0;
+  let ctrTotal = 0;
+  const dispatch = useDispatch();
 
-  const bottomNavItems = [
-    {
-      title: "Home",
-
-      icon: <HomeRoundedIcon style={{ fontSize: "18px" }} />,
-
-      activeIcon: (
-        <HomeRoundedIcon style={{ fontSize: "18px", color: "yellow" }} />
-      ),
-    },
-
-    {
-      title: "New Menu",
-
-      icon: <AddBusinessIcon style={{ fontSize: "18px" }} />,
-
-      activeIcon: (
-        <AddBusinessIcon style={{ fontSize: "18px", color: "yellow" }} />
-      ),
-    },
-
-    {
-      title: "My Order",
-
-      icon: <LocalShippingIcon style={{ fontSize: "18px" }} />,
-
-      activeIcon: (
-        <LocalShippingIcon style={{ fontSize: "18px", color: "yellow" }} />
-      ),
-    },
-
-    {
-      title: "Account",
-
-      icon: <ManageAccountsIcon style={{ fontSize: "18px" }} />,
-
-      activeIcon: (
-        <ManageAccountsIcon style={{ fontSize: "18px", color: "yellow" }} />
-      ),
-
-      onClick: () => alert("menu clicked"),
-    },
-  ];
+  const addToCart = () => {
+     
+    
+      const params = {
+          id: uuidv4(),
+          cartName : Name,
+          cartPrice : Price,
+          cartImage : Image,
+          cartPcs : counter,
+      }
+      // const apiNewItem = await api.post("/menu", params);
+      // console.log("api",apiNewItem.data);
+     newCart(params);
+  }
+  const newCart = async (params) => {
+      const apiNewItem = await api.post("/Cart", params);
+      dispatch(getCartChange(apiNewItem));
+          console.log("cartchange :",apiNewItem.data);
+  }
 
   const QtyCounter = (check) => {
     if (check == "add") {
@@ -144,15 +129,59 @@ const BurgerList = () => {
     autoplay: true,
     slidesToShow: 2,
     slidesToScroll: 1,
-    
   };
   return (
     <div>
+      <Box sx={{ flexGrow: 1 }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <img src={logo} style={{ height: "70px", width: "70px" }} />{" "}
+          </IconButton>
+
+          <Typography
+            style={{ color: "#323435" }}
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            <FormControl>
+              <Input
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "30px",
+                  textDecoration: "none",
+                }}
+                id="outlined-adornment-amount"
+                startAdornment={
+                  <InputAdornment position="start">search</InputAdornment>
+                }
+                label="Amount"
+              />
+            </FormControl>
+          </Typography>
+
+          <div style={{ color: "#F9D342" }}>
+            <ShoppingCartOutlinedIcon />
+            
+                {
+                  cartNum.length > 0 ? (
+                    cartNum.map((cart) => {
+                      const ctr = 1;
+                      ctrTotal += ctr;
+                    })
+                  ):(<label>0</label>)
+                }
+                <label><b>{ctrTotal}</b></label>
+
+
+         
+          </div>
+        </Toolbar>
+      </Box>
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
           size="medium"
           variant="extended"
-          style={{ color: "yellow", backgroundColor: "#323435" }}
+          style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
         >
           <VideocamIcon style={{ marginRight: "5px" }} /> Whats New?
@@ -170,34 +199,34 @@ const BurgerList = () => {
             <video autoPlay loop muted style={{ height: "247px" }}>
               <source src={ads} type="video/mp4"></source>
             </video>
-            <div style={{cursor: "pointer"}}>
-            <Tooltip title="Like" placement="top">
-            <IconButton>
-             <ThumbUpAltRoundedIcon style={{marginRight: "8px"}} />
-           </IconButton>
-            </Tooltip>
+            <div style={{ cursor: "pointer" }}>
+              <Tooltip title="Like" placement="top">
+                <IconButton>
+                  <ThumbUpAltRoundedIcon style={{ marginRight: "8px" }} />
+                </IconButton>
+              </Tooltip>
 
-            <Tooltip title="Comment" placement="top">
-            <IconButton>
-             <MessageRoundedIcon style={{marginRight: "8px"}}/>
-            </IconButton>
-            </Tooltip>
+              <Tooltip title="Comment" placement="top">
+                <IconButton>
+                  <MessageRoundedIcon style={{ marginRight: "8px" }} />
+                </IconButton>
+              </Tooltip>
 
-            <Tooltip title="Share" placement="top">
-            <IconButton>
-               <ShareRoundedIcon/>
-           </IconButton>
-            </Tooltip>
+              <Tooltip title="Share" placement="top">
+                <IconButton>
+                  <ShareRoundedIcon />
+                </IconButton>
+              </Tooltip>
             </div>
           </Card>
         </Grid>
       </Grid>
-<br/>
+      <br />
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
           size="medium"
           variant="extended"
-          style={{ color: "yellow", backgroundColor: "#323435" }}
+          style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
         >
           <FavoriteIcon style={{ marginRight: "5px" }} /> Best Seller
@@ -304,7 +333,7 @@ const BurgerList = () => {
           <label>We working no it, just wait my friend!</label>
         )}
       </Slider>
-
+        <BottomNav/>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -336,6 +365,7 @@ const BurgerList = () => {
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               <Grid container>
+              <form onSubmit={addToCart}>
                 <Grid xs={9}>
                   <b>{Name}</b>
                 </Grid>
@@ -348,8 +378,9 @@ const BurgerList = () => {
                 <Grid xs={8}></Grid>
                 <Grid xs={6}>
                   <Button
+                    type="submit"
                     variant="outlined"
-                    style={{ color: "#323435", borderColor: "#323435" }}
+                    style={{ color: "#F9D342", backgroundColor: "#323435" }}
                   >
                     <ShoppingCartOutlinedIcon />
                     <strong>Add to Cart</strong>
@@ -360,30 +391,27 @@ const BurgerList = () => {
                     <AddBoxIcon onClick={() => QtyCounter("add")} />
                     <Input
                       type="text"
-                      placeholder="pcs"
                       value={counter}
                       defaultValue="1"
                       variant="outlined"
                       style={{ width: "50px" }}
+                      onChange={(e) => {
+                        setCounter(e.target.value);
+                      }}
                     />
                     <IndeterminateCheckBoxIcon
                       onClick={() => QtyCounter("sub")}
                     />
                   </center>
                 </Grid>
+                </form>
               </Grid>
             </Typography>
           </Box>
         </Fade>
       </Modal>
-
-      <BottomNavigation
-        items={bottomNavItems}
-        defaultSelected={0}
-        onItemClick={(item) => console.log(item)}
-      />
     </div>
   );
 };
 
-export default BurgerList;
+export default withLoading(BurgerList);
