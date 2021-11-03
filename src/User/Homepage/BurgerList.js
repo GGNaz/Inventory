@@ -20,12 +20,14 @@ import {
   Fab,
   FormControl,
   InputAdornment,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { Link } from "react-router-dom";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import logo from "./tara.png";
+import logo from "./TaraEat.png";
 import burger from "./burger.png";
 import pizza from "./pizza.png";
 import soda from "./soda.png";
@@ -39,7 +41,7 @@ import Slider from "react-slick";
 import BottomNav from "../../Components/BottomNav";
 import { useSelector } from "react-redux";
 import api from "../../api/menu";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { AddAlarm } from "@material-ui/icons";
@@ -50,8 +52,8 @@ import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import withLoading from "../../HOC/withLoading";
 import { useHistory } from "react-router";
-import { getCartChange } from '../../redux/reducers/getCartReducer';
-import { useDispatch } from 'react-redux';
+import { getCartChange } from "../../redux/reducers/getCartReducer";
+import { useDispatch } from "react-redux";
 const style = {
   position: "absolute",
   top: "50%",
@@ -69,6 +71,11 @@ const BurgerList = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [openCart, setOpenCart] = React.useState(false);
+  const handleOpenCart = () => setOpenCart(true);
+  const handleCloseCart = () => setOpenCart(false);
+
   const [counter, setCounter] = useState("");
   const [Name, setFoodName] = useState("");
   const [Price, setFoodPrice] = useState("");
@@ -76,34 +83,47 @@ const BurgerList = () => {
   const [Image, setFoodImg] = useState("");
   const [Desc, setFoodDesc] = useState("");
   const [reloadData, setReload] = useState("");
+  const [search, setSearch] = useState("");
+  const [filterFood, setFilterFood] = useState("");
   const menu = useSelector((state) => state.getMenu.getMenu);
   const cartNum = useSelector((state) => state.getCart.getCart);
 
-  console.log("number of cart",cartNum);
+  useEffect(() => {
+    const filterFood = menu.filter((food) =>
+      food.foodName?.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setFilterFood(filterFood);
+    // eslint-disable-next-line
+  }, [search]);
+
+  const searchField = () => {
+    console.log("search", search);
+    if (search !== "") {
+      return filterFood;
+    }
+    return menu;
+  };
 
   let total = 0;
   let ctrTotal = 0;
   const dispatch = useDispatch();
 
   const addToCart = () => {
-     
-    
-      const params = {
-          id: uuidv4(),
-          cartName : Name,
-          cartPrice : Price,
-          cartImage : Image,
-          cartPcs : counter,
-      }
-      // const apiNewItem = await api.post("/menu", params);
-      // console.log("api",apiNewItem.data);
-     newCart(params);
-  }
+    const params = {
+      id: uuidv4(),
+      cartName: Name,
+      cartPrice: Price,
+      cartImage: Image,
+      cartPcs: counter,
+    };
+    newCart(params);
+  };
   const newCart = async (params) => {
-      const apiNewItem = await api.post("/Cart", params);
-      dispatch(getCartChange(apiNewItem));
-          console.log("cartchange :",apiNewItem.data);
-  }
+    const apiNewItem = await api.post("/Cart", params);
+    dispatch(getCartChange(apiNewItem));
+    console.log("cartchange :", apiNewItem.data);
+  };
 
   const QtyCounter = (check) => {
     if (check == "add") {
@@ -118,7 +138,7 @@ const BurgerList = () => {
 
   var settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     // appendDots: dots => <ul>{dots}</ul>,
     // customPaging: div => (
     //     <div className="ft-slick__dots--custom">
@@ -144,36 +164,46 @@ const BurgerList = () => {
             sx={{ flexGrow: 1 }}
           >
             <FormControl>
-              <Input
+              <TextField
                 style={{
                   backgroundColor: "white",
                   borderRadius: "30px",
                   textDecoration: "none",
+                  minWidth: "70%",
+                }}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
                 }}
                 id="outlined-adornment-amount"
                 startAdornment={
                   <InputAdornment position="start">search</InputAdornment>
                 }
-                label="Amount"
-              />
+                label="Search..."
+              >
+                <MenuItem>
+                  <option>asdasd</option>
+                </MenuItem>
+              </TextField>
             </FormControl>
           </Typography>
 
           <div style={{ color: "#F9D342" }}>
-            <ShoppingCartOutlinedIcon />
-            
-                {
-                  cartNum.length > 0 ? (
-                    cartNum.map((cart) => {
-                      const ctr = 1;
-                      ctrTotal += ctr;
-                    })
-                  ):(<label>0</label>)
-                }
-                <label><b>{ctrTotal}</b></label>
+            <ShoppingCartOutlinedIcon
+              onClick={() => {
+                handleOpenCart();
+              }}
+            />
 
-
-         
+            {cartNum.length > 0 ? (
+              cartNum.map((cart) => {
+                const ctr = 1;
+                ctrTotal += ctr;
+              })
+            ) : null}
+            <label>
+              <b>{ctrTotal}</b>
+            </label>
           </div>
         </Toolbar>
       </Box>
@@ -235,8 +265,8 @@ const BurgerList = () => {
 
       <Slider {...settings}>
         {menu.length > 0 ? (
-          menu.map((food) => (
-            <div>
+          searchField().map((food) => (
+            <div key={food.id}>
               <Card
                 sx={{ maxWidth: 345 }}
                 style={{ marginLeft: "8px", marginRight: "8px" }}
@@ -333,7 +363,7 @@ const BurgerList = () => {
           <label>We working no it, just wait my friend!</label>
         )}
       </Slider>
-        <BottomNav/>
+      <BottomNav />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -365,48 +395,123 @@ const BurgerList = () => {
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               <Grid container>
-              <form onSubmit={addToCart}>
-                <Grid xs={9}>
-                  <b>{Name}</b>
-                </Grid>
-                <Grid xs={3} style={{ textAlign: "right" }}>
-                  <b>₱{Price}</b>
-                </Grid>
-                <Grid xs={12} style={{ textAlign: "justify" }}>
-                  <p style={{ color: "#323435" }}>{Desc}</p>
-                </Grid>
-                <Grid xs={8}></Grid>
-                <Grid xs={6}>
-                  <Button
-                    type="submit"
-                    variant="outlined"
-                    style={{ color: "#F9D342", backgroundColor: "#323435" }}
-                  >
-                    <ShoppingCartOutlinedIcon />
-                    <strong>Add to Cart</strong>
-                  </Button>
-                </Grid>
-                <Grid xs={6}>
-                  <center>
-                    <AddBoxIcon onClick={() => QtyCounter("add")} />
-                    <Input
-                      type="text"
-                      value={counter}
-                      defaultValue="1"
+                <form onSubmit={addToCart}>
+                  <Grid xs={9}>
+                    <b>{Name}</b>
+                  </Grid>
+                  <Grid xs={3} style={{ textAlign: "right" }}>
+                    <b>₱{Price}</b>
+                  </Grid>
+                  <Grid xs={12} style={{ textAlign: "justify" }}>
+                    <p style={{ color: "#323435" }}>{Desc}</p>
+                  </Grid>
+                  <Grid xs={8}></Grid>
+                  <Grid xs={6}>
+                    <Button
+                      type="submit"
                       variant="outlined"
-                      style={{ width: "50px" }}
-                      onChange={(e) => {
-                        setCounter(e.target.value);
-                      }}
-                    />
-                    <IndeterminateCheckBoxIcon
-                      onClick={() => QtyCounter("sub")}
-                    />
-                  </center>
-                </Grid>
+                      style={{ color: "#F9D342", backgroundColor: "#323435" }}
+                    >
+                      <ShoppingCartOutlinedIcon />
+                      <strong>Add to Cart</strong>
+                    </Button>
+                  </Grid>
+                  <Grid xs={6}>
+                    <center>
+                      <AddBoxIcon onClick={() => QtyCounter("add")} />
+                      <Input
+                        type="text"
+                        value={counter}
+                        defaultValue="1"
+                        variant="outlined"
+                        style={{ width: "50px" }}
+                        onChange={(e) => {
+                          setCounter(e.target.value);
+                        }}
+                      />
+                      <IndeterminateCheckBoxIcon
+                        onClick={() => QtyCounter("sub")}
+                      />
+                    </center>
+                  </Grid>
                 </form>
               </Grid>
             </Typography>
+          </Box>
+        </Fade>
+      </Modal>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openCart}
+        onClose={handleCloseCart}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openCart}>
+          <Box sx={style}>
+            <Button
+              onClick={handleCloseCart}
+              style={{ marginLeft: "-10px", color: "#323435" }}
+            >
+              <ArrowBackIosOutlinedIcon />
+              Back
+            </Button>
+            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+          
+            <Card style={{marginBottom: "2px"}}>
+                    <Grid container>
+                            <Grid xs={5}>
+                              <h6>Name</h6>
+                            </Grid>
+                            <Grid xs={2}>
+                            <h5>Pcs</h5>
+                            
+                            </Grid>
+                            <Grid xs={2}>
+                            <h5>Price</h5>
+                            </Grid>
+                            <Grid xs={3}>
+                            <h5>Total</h5>
+                            </Grid>
+                            
+                            </Grid>
+                            
+                        </Card>
+               
+              {cartNum.length > 0 ? (
+                cartNum.map((cart) => {
+                  return (
+                    <Card paddingBottom={2}>
+                    <Grid container>
+                            <Grid xs={5}>
+                              <label>{cart.cartName}</label>
+                            </Grid>
+                            <Grid xs={2}>
+                              <label>{cart.cartPcs}</label>
+                            </Grid>
+                            <Grid xs={2}>
+                              <label>{cart.cartPrice}</label>
+                            </Grid>
+                            <Grid xs={2}>
+                              <label>{cart.cartPrice*cart.cartPcs}</label>
+                            </Grid>
+                            
+                            
+                            </Grid>
+                            
+                        </Card>
+                  );
+                })
+              ) : (
+                <label>0</label>
+              )}
+              
+              </Typography>
           </Box>
         </Fade>
       </Modal>
@@ -414,4 +519,4 @@ const BurgerList = () => {
   );
 };
 
-export default withLoading(BurgerList);
+export default withLoading(BurgerList) ;

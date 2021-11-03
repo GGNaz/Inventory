@@ -1,24 +1,30 @@
-import { Card, Grid } from '@mui/material'
+import { Card, Grid, Button } from '@mui/material'
 import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
-import logo from '../Homepage/tae.png';
+import logo from '../Homepage/sample.png';
 import { useHistory } from 'react-router';
 function LoginForm() {
     const history = useHistory();
-    const [userDetails, setAccoountDetails] = useState("");
-    const user = useSelector((state) => state.getUser.getUser)
+    const [userDetails, setAccoountDetails] = useState(
+        {email: '',
+         password: ''
+    }
+    );
+    
+    const user = useSelector((state) => state.getUser.getUser);
+    console.log("email",user);
     console.log("userrr",user);
     const checkCredentials = (e) => {
-		switch (e.target.userEmail) {
+		switch (e.target.name) {
 			case 'email':
 				setAccoountDetails({
-					...user,
+					...userDetails,
 					email: e.target.value,
 				});
 				break;
 			case 'password':
 				setAccoountDetails({
-					...user,
+					...userDetails,
 					password: e.target.value,
 				});
 				break;
@@ -30,7 +36,7 @@ function LoginForm() {
     const btnLogin = (e) => {
 		e.preventDefault();
 		const checkAccount = user.find(
-			(user) => user[1].email === setAccoountDetails.email
+			(user) => user.email === setAccoountDetails.email
 		);
 		console.log(checkAccount);
 		if (!checkAccount) {
@@ -39,7 +45,7 @@ function LoginForm() {
 		if (checkAccount.password !== setAccoountDetails.password) {
 			return alert('mali ka');
 		}
-		history.push('/home');
+		alert("success");
 	};
     return (
         <div>
@@ -59,7 +65,7 @@ function LoginForm() {
                   <input 
                     type="email"
                     name="email"
-                    value={setAccoountDetails.email}
+                    value={userDetails.email}
                     onChange={checkCredentials}
                      />
                 </Grid>
@@ -67,13 +73,13 @@ function LoginForm() {
                 <input 
                     type="password"  
                     name="password" 
-                    value={setAccoountDetails.password}
+                    value={userDetails.password}
                     onChange={checkCredentials}
                />
                     
                 </Grid>
                 <Grid xs={12}>
-                <submit type="submit" onClick={btnLogin}>Login</submit>
+                <Button type="submit" onClick={btnLogin}>Login</Button>
                     
                 </Grid>
                 </form>

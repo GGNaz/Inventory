@@ -1,8 +1,21 @@
-.Load {
-   width: 300px;
+.Backdrop {
+   width: 100%;
+   height: 100%;
+   position: fixed;
+   z-index: 200;
+   left: 0;
+   top: 0;
+   background-color: #ECD14C;
+   color: #323435;
+   text-align: center;
+ }
+ .logo {
+   margin-top: 30%;
    height: 300px;
-   display: flex;
-   justify-content: center;
-   background-color: red;
-  }
-  
+   width: 300px;
+ }
+ .tara{
+   height: 100px;
+   width: 100px;
+   text-align: center;
+ }
