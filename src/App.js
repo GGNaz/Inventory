@@ -14,6 +14,7 @@ import { getMenuChange } from './redux/reducers/getMenuReducer';
 import { getUserChange } from './redux/reducers/getuserReducer';
 import AddItem from './User/Homepage/AddItem';
 import { getCartChange } from './redux/reducers/getCartReducer';
+import CreateAccount from './User/LoginForm/CreateAccount';
 function App() {
 
   const dispatch = useDispatch();
@@ -59,6 +60,10 @@ useEffect(()=> {
         <Route exact path="/login">
            
             <LoginForm/>
+          </Route>
+          <Route exact path="/createAccount">
+           
+            <CreateAccount/>
           </Route>
           <Route exact path="/home">
             <Home />

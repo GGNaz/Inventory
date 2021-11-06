@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
 import logo from '../Homepage/sample.png';
 import { useHistory } from 'react-router';
+import BottomNavigation from "reactjs-bottom-navigation";
 function LoginForm() {
     const history = useHistory();
     const [userDetails, setAccoountDetails] = useState(
@@ -36,28 +37,31 @@ function LoginForm() {
     const btnLogin = (e) => {
 		e.preventDefault();
 		const checkAccount = user.find(
-			(user) => user.email === setAccoountDetails.email
+			(user) => user.email === userDetails.email
 		);
-		console.log(checkAccount);
+		console.log("check:",checkAccount);
 		if (!checkAccount) {
-			return alert('wala');
+			return alert('account not exist');
 		}
-		if (checkAccount.password !== setAccoountDetails.password) {
-			return alert('mali ka');
+		if (checkAccount.password !== userDetails.password) {
+			return alert('wrong password');
 		}
 		alert("success");
 	};
     return (
         <div>
+            
             <center>
             <Grid container spacing={2} direction="column" style={{textAlign: "center", padding: "10px"}}>
             <Grid item xs={12}>
+            <img src={logo} style={{maxWidth: "300px"}} />
+            <h3>Tara Eat</h3>
               <Card style={{padding: "50px"}}>
                 
 
              <Grid container>
                 <Grid xs={12}>
-                    <img src={logo} style={{maxWidth: "300px"}} />
+                    
                     
                 </Grid>
                 <form >
@@ -89,6 +93,7 @@ function LoginForm() {
              </Grid>
             </Grid>
             </center>
+            
         </div>
     )
 }

@@ -226,7 +226,7 @@ const BurgerList = () => {
         <Grid item xs={11}>
           <Card style={{ padding: "10px" }}>
             <h4>Bacon Burger</h4>
-            <video autoPlay loop muted style={{ height: "247px" }}>
+            <video autoPlay loop muted style={{ height: "247px", borderRadius: "20px" }}>
               <source src={ads} type="video/mp4"></source>
             </video>
             <div style={{ cursor: "pointer" }}>
