@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
-
+import TaraLabel from './labeltara.png';
 function CreateAccount() {
     
     const dispatch = useDispatch();
@@ -75,7 +75,19 @@ function CreateAccount() {
       const createAccount = async (params) => {
         const apiNewItem = await api.post("/Account", params);
         dispatch(getMenuChange(apiNewItem));
-        console.log("Account :", apiNewItem.data);
+        store.addNotification({
+          title: "New Account created!",
+          message: "You can now login.",
+          type: "success",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 3000,
+            onScreen: true
+          }
+        });
       };
 
 
@@ -101,18 +113,32 @@ function CreateAccount() {
               });
 		}
 		if (userDetails.password !== userDetails.confirmPassword) {
-			return alert('Password did not match');
+			return store.addNotification({
+        title: "Password did not match!",
+        message: "Check your password",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true
+        }
+      });
 		}
-		// NewAccount();
+
+		NewAccount();
 	};
     return (
         <div>
-       <ReactNotification />
+       <ReactNotification  />
             <center>
             <Grid container spacing={2} direction="column" style={{textAlign: "center", padding: "10px"}}>
             <Grid item xs={12}>
             <img src={logo} style={{maxWidth: "300px"}} />
-            <h3>Tara Eat</h3>
+            <br/>
+            <img src={TaraLabel} />
               <Card style={{padding: "50px"}}>
                 
 
@@ -157,6 +183,7 @@ function CreateAccount() {
                     placeholder="Confirm password"
                     value={userDetails.confirmPassword}
                     onChange={checkCredentials}
+
                />
                     
                 </Grid>

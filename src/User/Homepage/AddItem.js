@@ -14,6 +14,7 @@ import BottomNav_AddItem from "../../Components/BottomNav_AddItem";
 import api from "../../api/menu";
 import { getMenuChange } from "../../redux/reducers/getMenuReducer";
 import { useDispatch } from "react-redux";
+import userRestriction from "../../HOC/userRestriction";
 function AddItem() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -126,4 +127,4 @@ function AddItem() {
   );
 }
 
-export default AddItem;
+export default userRestriction(AddItem);

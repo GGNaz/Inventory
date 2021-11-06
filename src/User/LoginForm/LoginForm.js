@@ -3,8 +3,14 @@ import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
 import logo from '../Homepage/sample.png';
 import { useHistory } from 'react-router';
-import BottomNavigation from "reactjs-bottom-navigation";
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
+import { getUserChange } from '../../redux/reducers/getuserReducer';
+import api from "../../api/menu";
+import { useDispatch } from "react-redux";
 function LoginForm() {
+  const dispatch = useDispatch();
     const history = useHistory();
     const [userDetails, setAccoountDetails] = useState(
         {email: '',
@@ -13,8 +19,7 @@ function LoginForm() {
     );
     
     const user = useSelector((state) => state.getUser.getUser);
-    console.log("email",user);
-    console.log("userrr",user);
+    
     const checkCredentials = (e) => {
 		switch (e.target.name) {
 			case 'email':
@@ -34,23 +39,68 @@ function LoginForm() {
 		}
 	};
 
+  const setAccountLogin = () => {
+    const params = {
+      isLogin: true,
+    };
+  
+  // alert("asdasdasdasd");
+    updateUserLog(params);
+  };
+
+  const updateUserLog = async (params) => {
+    const editformData = [...user];
+    const index = editformData.findIndex(
+        (item) => item.email === userDetails.email
+    );
+   console.log("asdasd",params)
+    const apiUpdate = await api.put("/Account/"+editformData[index], params);
+    dispatch(getUserChange(apiUpdate));
+    history.push("/home");
+
+  };
     const btnLogin = (e) => {
 		e.preventDefault();
 		const checkAccount = user.find(
 			(user) => user.email === userDetails.email
 		);
-		console.log("check:",checkAccount);
+
 		if (!checkAccount) {
-			return alert('account not exist');
+			return store.addNotification({
+        title: "Email not exist!",
+        message: "Please check your email.",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true
+        }
+      });
 		}
+
 		if (checkAccount.password !== userDetails.password) {
-			return alert('wrong password');
+			return store.addNotification({
+        title: "Wrong password!",
+        message: "Please check your password.",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true
+        }
+      });
 		}
-		alert("success");
+    setAccountLogin();
 	};
     return (
         <div>
-            
+            <ReactNotification  />
             <center>
             <Grid container spacing={2} direction="column" style={{textAlign: "center", padding: "10px"}}>
             <Grid item xs={12}>
@@ -93,7 +143,7 @@ function LoginForm() {
              </Grid>
             </Grid>
             </center>
-            
+          
         </div>
     )
 }
