@@ -67,6 +67,7 @@ function CreateAccount() {
           Name: userDetails.name,
           email: userDetails.email,
           password: userDetails.password,
+          isLogin: false,
         };
       
         createAccount(params);

@@ -23,6 +23,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+
 import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { Link } from "react-router-dom";
@@ -52,8 +53,16 @@ import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import withLoading from "../../HOC/withLoading";
 import { useHistory } from "react-router";
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import { getCartChange } from "../../redux/reducers/getCartReducer";
 import { useDispatch } from "react-redux";
+import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import SearchIcon from "@material-ui/icons/Search";
+import {
+  OutlinedInput
+} from '@material-ui/core';
 const style = {
   position: "absolute",
   top: "50%",
@@ -158,13 +167,13 @@ const BurgerList = () => {
             <img src={logo} style={{ height: "70px", width: "70px" }} />{" "}
           </IconButton>
 
-          <Typography
+          {/* <Typography
             style={{ color: "#323435" }}
             component="div"
             sx={{ flexGrow: 1 }}
-          >
-            <FormControl>
-              <TextField
+          > */}
+         
+              {/* <TextField
                 style={{
                   backgroundColor: "white",
                   borderRadius: "30px",
@@ -184,11 +193,17 @@ const BurgerList = () => {
                 <MenuItem>
                   <option>asdasd</option>
                 </MenuItem>
-              </TextField>
-            </FormControl>
-          </Typography>
+              </TextField> */}
+               <Box component="form" sx={{ mt: 1 }}>
+              <TextField
+              label="asdasd"
+               className="MuiOutlinedInput-input MuiInputBase-input css-1x5jdmq"
+              />
+            </Box>
+            {/* </FormControl>
+          </Typography> */}
 
-          <div style={{ color: "#F9D342" }}>
+          <div style={{ color: "#323435" }}>
             <ShoppingCartOutlinedIcon
               onClick={() => {
                 handleOpenCart();
@@ -207,6 +222,7 @@ const BurgerList = () => {
           </div>
         </Toolbar>
       </Box>
+      <h3>Welcome. Nazer</h3>
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
           size="medium"
@@ -214,42 +230,45 @@ const BurgerList = () => {
           style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
         >
-          <VideocamIcon style={{ marginRight: "5px" }} /> Whats New?
+          <LocalFireDepartmentOutlinedIcon style={{ marginRight: "5px" }} /> Whats New?
         </Fab>
       </Box>
 
       <Grid
         container
         justifyContent="center"
-        style={{ marginLeft: "1px", marginRight: "8px" }}
+        style={{ marginLeft: "1px"}}
       >
+         <Card style={{padding: "10px", marginRight: "5px"}}>
         <Grid item xs={11}>
-          <Card style={{ padding: "10px" }}>
-            <h4>Bacon Burger</h4>
-            <video autoPlay loop muted style={{ height: "247px", borderRadius: "20px" }}>
-              <source src={ads} type="video/mp4"></source>
-            </video>
-            <div style={{ cursor: "pointer" }}>
+      
+          
+            <div style={{ cursor: "pointer", position: "absolute", textAlign: "right", marginTop: "45%",  }}>
               <Tooltip title="Like" placement="top">
                 <IconButton>
-                  <ThumbUpAltRoundedIcon style={{ marginRight: "8px" }} />
+                  <ThumbUpAltOutlinedIcon style={{ marginRight: "5px",color: "white"  }} />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title="Comment" placement="top">
                 <IconButton>
-                  <MessageRoundedIcon style={{ marginRight: "8px" }} />
+                  <ChatBubbleOutlineOutlinedIcon style={{ marginRight: "5px",color: "white"  }} />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title="Share" placement="top">
                 <IconButton>
-                  <ShareRoundedIcon />
+                  <ShareOutlinedIcon style={{color: "white"}} />
                 </IconButton>
               </Tooltip>
             </div>
-          </Card>
+
+            <video autoPlay loop muted style={{ height: "260px"}}>
+              <source src={ads} type="video/mp4"></source>
+            </video>
+         
         </Grid>
+        </Card>
       </Grid>
       <br />
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
@@ -269,7 +288,7 @@ const BurgerList = () => {
             <div key={food.id}>
               <Card
                 sx={{ maxWidth: 345 }}
-                style={{ marginLeft: "8px", marginRight: "8px" }}
+                style={{ marginLeft: "8px", marginRight: "8px", borderRadius: "20px" }}
               >
                 {food.foodPcs <= 9 ? (
                   <div>
@@ -292,6 +311,7 @@ const BurgerList = () => {
                       height="140"
                       image={food.foodImage}
                       alt={food.foodName}
+                      
                     />
                   </div>
                 ) : (
@@ -391,6 +411,7 @@ const BurgerList = () => {
                 image={Image}
                 alt={Name}
                 border="2px solid white"
+                hover
               />
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>

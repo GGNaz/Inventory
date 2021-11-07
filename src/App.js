@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+
 import { useDispatch ,useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
@@ -15,6 +15,7 @@ import { getUserChange } from './redux/reducers/getuserReducer';
 import AddItem from './User/Homepage/AddItem';
 import { getCartChange } from './redux/reducers/getCartReducer';
 import CreateAccount from './User/LoginForm/CreateAccount';
+import Accounts from './User/Homepage/Accounts';
 function App() {
 
   const dispatch = useDispatch();
@@ -75,7 +76,10 @@ useEffect(()=> {
             <Route exact path="/cart">
             <Home />
             <Cart />
-           
+            
+          </Route>
+          <Route exact path="/accounts">
+          <Accounts />
           </Route>
       </Switch>
 

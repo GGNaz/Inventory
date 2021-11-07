@@ -15,6 +15,9 @@ import api from "../../api/menu";
 import { getMenuChange } from "../../redux/reducers/getMenuReducer";
 import { useDispatch } from "react-redux";
 import userRestriction from "../../HOC/userRestriction";
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import { store } from 'react-notifications-component';
 function AddItem() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -24,27 +27,69 @@ function AddItem() {
   const [ftype, setType] = useState("");
   const dispatch = useDispatch();
 
-  const NewItem = () => {
-    const params = {
-      id: uuidv4(),
-      foodName: name,
-      foodPrice: price,
-      foodImage: picture,
-      foodPcs: pcs,
-      foodDesc: desc,
-      foodType: ftype,
-    };
+
+  const NewItem = (e) => {
+    e.preventDefault();
+    if(
+      !name || 
+      !price ||
+      !picture ||
+      !pcs ||
+      !desc
+      )
+      {
+        store.addNotification({
+        title: "Fill all fields!",
+        message: "Other fields are empty.",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 3000,
+          onScreen: true
+        }
+      });
+      }
+      else{
+        const params = {
+          id: uuidv4(),
+          foodName: name,
+          foodPrice: price,
+          foodImage: picture,
+          foodPcs: pcs,
+          foodDesc: desc,
+          foodType: ftype,
+        };
+        NewMenu(params);
+      }
+    
+   
     // const apiNewItem = await api.post("/menu", params);
     // console.log("api",apiNewItem.data);
-    NewMenu(params);
+    
   };
   const NewMenu = async (params) => {
     const apiNewItem = await api.post("/menu", params);
     dispatch(getMenuChange(apiNewItem));
-    console.log("api :", apiNewItem.data);
+    store.addNotification({
+      title: "Adding Success!",
+      message: "You may check now on the menu",
+      type: "success",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__fadeIn"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: {
+        duration: 3000,
+        onScreen: true
+      }
+    });
   };
   return (
     <div>
+      <ReactNotification  />
       <h1>adding item</h1>
       <Card>
         <Grid container justifyContent="center">
@@ -52,6 +97,7 @@ function AddItem() {
             <Grid item xs={12}>
               <Input
                 type="text"
+                onInvalid={!name}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
@@ -127,4 +173,4 @@ function AddItem() {
   );
 }
 
-export default userRestriction(AddItem);
+export default AddItem;

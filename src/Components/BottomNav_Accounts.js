@@ -6,7 +6,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BottomNavigation from "reactjs-bottom-navigation";
 import "reactjs-bottom-navigation/dist/index.css";
-function BottomNav() {
+function BottomNav_Accounts() {
   const history = useHistory();
   const bottomNavItems = [
     {
@@ -39,7 +39,6 @@ function BottomNav() {
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
-      onClick: () => history.push("/delivery"),
     },
 
     {
@@ -58,12 +57,11 @@ function BottomNav() {
     <div>
       <BottomNavigation
         items={bottomNavItems}
-        defaultSelected={0}
+        defaultSelected={3}
         onItemClick={(item) => console.log(item)}
-        to="/addmenu"
       />
     </div>
   );
 }
 
-export default BottomNav;
+export default BottomNav_Accounts;

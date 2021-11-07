@@ -39,26 +39,26 @@ function LoginForm() {
 		}
 	};
 
-  const setAccountLogin = () => {
-    const params = {
-      isLogin: true,
-    };
+  // const setAccountLogin = () => {
+  //   const params = {
+  //     isLogin: true,
+  //   };
   
-  // alert("asdasdasdasd");
-    updateUserLog(params);
-  };
+  // // alert("asdasdasdasd");
+  //   updateUserLog(params);
+  // };
 
-  const updateUserLog = async (params) => {
-    const editformData = [...user];
-    const index = editformData.findIndex(
-        (item) => item.email === userDetails.email
-    );
-   console.log("asdasd",params)
-    const apiUpdate = await api.put("/Account/"+editformData[index], params);
-    dispatch(getUserChange(apiUpdate));
-    history.push("/home");
+  // const updateUserLog = async (params) => {
+  //   const editformData = [...user];
+  //   const index = editformData.findIndex(
+  //       (item) => item.email === userDetails.email
+  //   );
+  //  console.log("asdasd",params)
+  //   const apiUpdate = await api.put("/Account/"+editformData[index], params);
+  //   dispatch(getUserChange(apiUpdate));
+  //   history.push("/home");
 
-  };
+  // };
     const btnLogin = (e) => {
 		e.preventDefault();
 		const checkAccount = user.find(
@@ -96,7 +96,8 @@ function LoginForm() {
         }
       });
 		}
-    setAccountLogin();
+    history.push("/home");
+    // setAccountLogin();
 	};
     return (
         <div>
