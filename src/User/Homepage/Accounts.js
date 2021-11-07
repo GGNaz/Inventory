@@ -273,7 +273,7 @@ function Accounts() {
             <Card style={{ padding: "40px", borderRadius: "20px" }}>
             <Grid xs={12}>
             
-            <h3>User Form</h3>
+            <label style={{fontFamily: "DejaVu Sans Mono, monospace", fontSize: "30px", fontWeight: "600" }}>User Form</label>
             </Grid>
            
             
