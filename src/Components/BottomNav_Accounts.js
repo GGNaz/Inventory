@@ -6,16 +6,17 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BottomNavigation from "reactjs-bottom-navigation";
 import "reactjs-bottom-navigation/dist/index.css";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 function BottomNav_Accounts() {
   const history = useHistory();
   const bottomNavItems = [
     {
       // title: "Home",
 
-      icon: <HomeRoundedIcon style={{ fontSize: "35px" }} />,
+      icon: <FastfoodIcon style={{ fontSize: "35px" }} />,
 
       activeIcon: (
-        <HomeRoundedIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <FastfoodIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
       onClick: () => history.push("/home"),
     },

@@ -5,6 +5,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BottomNavigation from "reactjs-bottom-navigation";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 import "reactjs-bottom-navigation/dist/index.css";
 function BottomNav_AddItem() {
   const history = useHistory();
@@ -12,10 +13,10 @@ function BottomNav_AddItem() {
     {
       // title: "Home",
 
-      icon: <HomeRoundedIcon style={{ fontSize: "35px" }} />,
+      icon: <FastfoodIcon style={{ fontSize: "35px" }} />,
 
       activeIcon: (
-        <HomeRoundedIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <FastfoodIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
       onClick: () => history.push("/home"),
     },

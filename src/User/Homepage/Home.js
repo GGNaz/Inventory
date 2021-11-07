@@ -49,6 +49,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Visibility from '@mui/icons-material/Visibility';
+import MobileNav from "../../Components/MobileNav";
 
 const style = {
   position: "absolute",
@@ -79,7 +80,7 @@ const Home = () => {
 
   return (
     <>
-     
+     <MobileNav/>
 
       {/* <Grid container spacing={2} paddingTop={1}>
         <Grid item xs={1}></Grid>

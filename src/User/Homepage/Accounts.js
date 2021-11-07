@@ -1,5 +1,5 @@
-import { Card, Grid, Button, Avatar, Box, Fab, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Card, Grid, Button, Avatar, Box, Fab, TextField, Paper, AppBar, Divider } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import logo from "../Homepage/sample.png";
 import { useHistory } from "react-router";
@@ -14,8 +14,25 @@ import Slider from "react-slick";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import BottomNav_Accounts from "../../Components/BottomNav_Accounts";
 import { alpha, styled } from "@mui/material/styles";
+import withLoading from "../../HOC/withLoading";
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import SignalWifi2BarIcon from '@mui/icons-material/SignalWifi2Bar';
+import BatteryCharging90OutlinedIcon from '@mui/icons-material/BatteryCharging90Outlined';
+import { getUserChange } from '../../redux/reducers/getuserReducer';
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import MobileNav from "../../Components/MobileNav";
 function Accounts() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.getUser.getUser);
+    const [userlist, setUserList] = useState("");
+  useEffect(() => {
+    showUsers();
+  }, [userlist])
+
+  const showUsers = () => {
+    return setUserList(user);
+  }
 
   const [userDetails, setAccoountDetails] = useState({
     email: "",
@@ -25,7 +42,7 @@ function Accounts() {
     picture: "",
   });
 
-  const user = useSelector((state) => state.getUser.getUser);
+ 
 
   const checkCredentials = (e) => {
     switch (e.target.name) {
@@ -65,15 +82,34 @@ function Accounts() {
   };
 
   const NewAccount = () => {
-    const params = {
-      id: uuidv4(),
-      Name: userDetails.name,
-      email: userDetails.email,
-      password: userDetails.password,
-      picture: userDetails.picture,
-    };
 
-    createAccount(params);
+    if(!userDetails.name || !userDetails.email || !userDetails.password || !userDetails.picture){
+        store.addNotification({
+            title: "Fill all fields!",
+            message: "Other fields are empty.",
+            type: "danger",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+              duration: 3000,
+              onScreen: true,
+            },
+          });
+    }
+    else{
+        const params = {
+            id: uuidv4(),
+            Name: userDetails.name,
+            email: userDetails.email,
+            password: userDetails.password,
+            picture: userDetails.picture,
+          };
+      
+          createAccount(params);
+    }
+   
   };
 
   const createAccount = async (params) => {
@@ -122,13 +158,8 @@ function Accounts() {
 
   var settings = {
     dots: true,
-    infinite: false,
-    // appendDots: dots => <ul>{dots}</ul>,
-    // customPaging: div => (
-    //     <div className="ft-slick__dots--custom">
-    //      <li></li>
-    //     </div>
-    //   ),
+    infinite: true,
+   
     speed: 1000,
     autoplay: true,
     slidesToShow: 2,
@@ -164,7 +195,7 @@ function Accounts() {
         animationIn: ["animate__animated", "animate__fadeIn"],
         animationOut: ["animate__animated", "animate__fadeOut"],
         dismiss: {
-          duration: 3000,
+          duration: 5000,
           onScreen: true,
         },
       });
@@ -174,6 +205,9 @@ function Accounts() {
   };
   return (
     <div>
+        <ReactNotification />
+        <MobileNav/>
+     
       <Box sx={{ "& > :not(style)": { m: 1 } }} style={{ textAlign: "center" }}>
         <Fab
           size="medium"
@@ -181,7 +215,7 @@ function Accounts() {
           style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
         >
-          <AccountCircleRoundedIcon style={{ marginRight: "5px" }} /> Accounts
+          <AccountCircleRoundedIcon style={{ marginRight: "5px" }} /> Account
           List
         </Fab>
       </Box>
@@ -216,26 +250,33 @@ function Accounts() {
             ))
           : null}
       </Slider>
-      <ReactNotification />
-      <Box sx={{ "& > :not(style)": { m: 1 } }} style={{ textAlign: "center" }}>
+    
+      {/* <Box sx={{ "& > :not(style)": { m: 1 } }} style={{ textAlign: "center" }}>
         <Fab
           size="medium"
           variant="extended"
           style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
         >
-          <AccountCircleRoundedIcon style={{ marginRight: "5px" }} /> User Form
+          <GroupAddOutlinedIcon style={{ marginRight: "5px" }} /> User Form
         </Fab>
-      </Box>
+      </Box> */}
       <center>
         <Grid
           container
           spacing={2}
           direction="column"
-          style={{ textAlign: "center", padding: "10px" }}
+          style={{ textAlign: "center", padding: "10px", marginTop: "10px" }}
         >
           <Grid item xs={12}>
-            <Card style={{ padding: "50px", borderRadius: "20px" }}>
+              
+            <Card style={{ padding: "40px", borderRadius: "20px" }}>
+            <Grid xs={12}>
+            
+            <h3>User Form</h3>
+            </Grid>
+           
+            
               <Grid container>
                 <Grid xs={12}></Grid>
                 <form>
@@ -267,44 +308,50 @@ function Accounts() {
                     />
                     </Grid>
                     <Grid container>
-                    <Grid xs={6}>
-                    <RedditTextField
+                    <Grid xs={6} paddingRight="5px">
+                    <TextField
+                    type="password"
                       color="warning"
                       label="Password"
                       id="reddit-input"
                       variant="filled"
-                      style={{ marginTop: 11, minWidth: "140px" }}
+                      style={{ marginTop: 11, border: "2px solid #e2e2e1", borderRadius: "5px"  }}
                       name="password"
                       value={userDetails.password}
                       onChange={checkCredentials}
                     />
                     </Grid>
                     <Grid xs={6}>
-                    <RedditTextField
+                    <TextField
+                    type="password"
                       color="warning"
                       label="Confirm Password"
                       id="reddit-input"
                       variant="filled"
-                      style={{ marginTop: 11, minWidth: "140px" }}
+                      style={{ marginTop: 11, border: "2px solid #e2e2e1", borderRadius: "5px"   }}
                       name="confirmPassword"
                       value={userDetails.confirmPassword}
                       onChange={checkCredentials}
                     />
                     </Grid>
                     </Grid>
-                    <RedditTextField
+                    <Grid xs={12}>
+                    <TextField
                       color="warning"
                       label="Picture Link"
                       id="reddit-input"
                       variant="filled"
-                      style={{ marginTop: 11, minWidth: "300px" }}
+                      style={{ marginTop: 11, border: "2px solid #e2e2e1", borderRadius: "5px"   }}
                       value={userDetails.picture}
                       onChange={checkCredentials}
+                      name="picture"
+                      fullWidth
                     />
+                    </Grid>
                   </Grid>
-                  <Grid xs={12}>
-                    <Button type="submit" onClick={btnLogin}>
-                      Login
+                  <Grid xs={12} style={{textAlign: "right"}}>
+                    <Button type="submit" onClick={btnLogin} style={{backgroundColor: "#323435", color: "white", marginTop: "10px", borderRadius: "10px"}}>
+                      Create account
                     </Button>
                   </Grid>
                 </form>
@@ -318,4 +365,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default withLoading(Accounts);

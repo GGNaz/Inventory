@@ -197,7 +197,6 @@ const BurgerList = () => {
                <Box component="form" sx={{ mt: 1 }}>
               <TextField
               label="asdasd"
-               className="MuiOutlinedInput-input MuiInputBase-input css-1x5jdmq"
               />
             </Box>
             {/* </FormControl>
