@@ -12,6 +12,8 @@ import { alpha, styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import MobileNav from "../../Components/MobileNav";
 import { Link } from "react-router-dom";
+import LoginIcon from '@mui/icons-material/Login';
+
 function LoginForm() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -142,12 +144,12 @@ function LoginForm() {
               <Grid xs={12}>
                 <label
                   style={{
-                    fontFamily: "Comic Sans MS, Comic Sans, cursive",
+                    fontFamily: "Apple Chancery, cursive",
                     fontSize: "30px",
-                   
+                    color: "#323435"
                   }}
                 >
-                  Sign in
+                  <b>Tara Eat</b>
                 </label>
               </Grid>
 
@@ -169,10 +171,11 @@ function LoginForm() {
                         value={userDetails.email}
                         onChange={checkCredentials}
                         fullWidth
+                       
                       />
                     </Grid>
 
-                    <Grid xs={12} paddingRight="5px">
+                    <Grid xs={12}>
                       <TextField
                         type="password"
                         color="warning"
@@ -200,7 +203,7 @@ function LoginForm() {
                         aria-label="add"
                         onClick={btnLogin}
                       >
-                        <label style={{ marginRight: "5px" }}> Login</label>
+                        <label style={{ marginRight: "5px" }}> Login</label><LoginIcon/>
                       </Fab>
                     </Box>
                   </Grid>
@@ -211,7 +214,7 @@ function LoginForm() {
                 New user? Click here
               </Link>
 
-              <Grid container style={{ marginTop: "30px" }}>
+              <Grid container style={{ marginTop: "23.5%" }}>
                 <Grid xs={12}>
                   <span>&#169;</span>{" "}
                   <label>Tara Eat App by Nazer Somera</label>

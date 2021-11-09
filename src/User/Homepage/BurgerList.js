@@ -60,6 +60,9 @@ import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepart
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import SearchIcon from "@material-ui/icons/Search";
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import {
   OutlinedInput
 } from '@material-ui/core';
@@ -159,6 +162,8 @@ const BurgerList = () => {
     slidesToShow: 2,
     slidesToScroll: 1,
   };
+
+
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -194,19 +199,32 @@ const BurgerList = () => {
                   <option>asdasd</option>
                 </MenuItem>
               </TextField> */}
+              <input type="text" 
+              placeholder="Search..." 
+              style={{padding: "10px", borderRadius: "20px", borderColor: "#323435", width: "70%"}} 
+              value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+
+{/* 
                <Box component="form" sx={{ mt: 1 }}>
               <TextField
               label="asdasd"
               />
-            </Box>
+            </Box> */}
             {/* </FormControl>
           </Typography> */}
 
-          <div style={{ color: "#323435" }}>
-            <ShoppingCartOutlinedIcon
-              onClick={() => {
+          <div style={{  marginLeft: "10px" }}>
+            <Fab onClick={() => {
                 handleOpenCart();
               }}
+            style={{backgroundColor: "#F9D342"}}  
+            >
+            <ShoppingCartOutlinedIcon
+              
             />
 
             {cartNum.length > 0 ? (
@@ -218,19 +236,20 @@ const BurgerList = () => {
             <label>
               <b>{ctrTotal}</b>
             </label>
+            </Fab>
           </div>
         </Toolbar>
       </Box>
-      <h3>Welcome. Nazer</h3>
+     
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          size="medium"
-          variant="extended"
-          style={{ color: "#F9D342", backgroundColor: "#323435" }}
-          aria-label="add"
+        <label
+          // size="medium"
+          // variant="extended"
+          // style={{ color: "#F9D342", backgroundColor: "#323435" }}
+          // aria-label="add"
         >
-          <LocalFireDepartmentOutlinedIcon style={{ marginRight: "5px" }} /> Whats New?
-        </Fab>
+          <b style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Whats New?</b>
+        </label>
       </Box>
 
       <Grid
@@ -271,14 +290,14 @@ const BurgerList = () => {
       </Grid>
       <br />
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          size="medium"
-          variant="extended"
-          style={{ color: "#F9D342", backgroundColor: "#323435" }}
-          aria-label="add"
+        <label
+          // size="medium"
+          // variant="extended"
+          // style={{ color: "#F9D342", backgroundColor: "#323435" }}
+          // aria-label="add"
         >
-          <FavoriteIcon style={{ marginRight: "5px" }} /> Best Seller
-        </Fab>
+          <b style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}><FavoriteIcon/> Recommended </b>
+        </label>
       </Box>
 
       <Slider {...settings}>
@@ -287,7 +306,7 @@ const BurgerList = () => {
             <div key={food.id}>
               <Card
                 sx={{ maxWidth: 345 }}
-                style={{ marginLeft: "8px", marginRight: "8px", borderRadius: "20px" }}
+                style={{ marginLeft: "8px", marginRight: "8px", borderRadius: "20px"}}
               >
                 {food.foodPcs <= 9 ? (
                   <div>
@@ -338,17 +357,22 @@ const BurgerList = () => {
                   </div>
                 )}
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography gutterBottom variant="h5" component="div"
+                  style={{fontSize: "20px"}}
+                  >
                     {food.foodName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <Grid container>
-                      <Grid xs={6}>
+                      <Grid xs={6} style={{fontSize: "20px"}}>
                         <b>₱{food.foodPrice}</b>
                       </Grid>
                       <Grid xs={2}></Grid>
                       <Grid xs={4} style={{ textAlign: "right" }}>
-                        <label
+                      <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                        <Fab
+                        size="medium"
+                      //  variant="extended"
                           onClick={
                             () => {
                               setFoodName(food.foodName);
@@ -363,14 +387,14 @@ const BurgerList = () => {
                           }
                           style={{
                             backgroundColor: "#323435",
-                            padding: "3px",
-                            borderRadius: "5px",
-                            color: "white",
+                           
+                            color: "#ECD14C",
                           }}
                         >
                           {" "}
-                          Details
-                        </label>
+                          <AddOutlinedIcon/>
+                        </Fab>
+                        </Box>
                       </Grid>
                     </Grid>
                   </Typography>

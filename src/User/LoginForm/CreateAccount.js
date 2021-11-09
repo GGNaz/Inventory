@@ -24,6 +24,8 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import MobileNav from "../../Components/MobileNav";
 import { Link } from 'react-router-dom';
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 function CreateAccount() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.getUser.getUser);
@@ -226,7 +228,7 @@ function CreateAccount() {
             <Card style={{ padding: "40px", borderRadius: "20px" }}>
             <Grid xs={12}>
             
-            <label style={{fontFamily: "Comic Sans MS, Comic Sans, cursive", fontSize: "30px" }}>Sign up</label>
+            <label style={{fontFamily: "Apple Chancery, cursive", fontSize: "30px" }}><b>Tara Eat</b></label>
             </Grid>
            
             
@@ -312,7 +314,7 @@ function CreateAccount() {
           aria-label="add"
           onClick={btnLogin}
         >
-          <label style={{ marginRight: "5px"}}> Create account</label>
+          <label style={{ marginRight: "5px"}}> Create account</label><CheckCircleOutlineOutlinedIcon/>
         </Fab>
       </Box>
 

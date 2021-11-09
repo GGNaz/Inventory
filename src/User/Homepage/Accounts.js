@@ -22,8 +22,12 @@ import { getUserChange } from '../../redux/reducers/getuserReducer';
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import MobileNav from "../../Components/MobileNav";
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 function Accounts() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((state) => state.getUser.getUser);
     const [userlist, setUserList] = useState("");
   useEffect(() => {
@@ -166,6 +170,10 @@ function Accounts() {
     slidesToScroll: 1,
   };
 
+  const btnLogout = () => {
+    history.push("/login");
+  }
+
   const btnLogin = (e) => {
     e.preventDefault();
     const checkAccount = user.find((user) => user.email === userDetails.email);
@@ -207,18 +215,34 @@ function Accounts() {
     <div>
         <ReactNotification />
         <MobileNav/>
-     
-      <Box sx={{ "& > :not(style)": { m: 1 } }} style={{ textAlign: "center" }}>
+     <Grid container>
+       <Grid xs={5}>
+      <Box sx={{ "& > :not(style)": { m: 1 } }} >
+        <label
+          // size="medium"
+          // variant="extended"
+          // style={{ fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}
+          // aria-label="add"
+        >
+          <b  style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}><AccountCircleRoundedIcon style={{height: "60px"}}/> Members</b>
+          
+        </label>
+      </Box>
+      </Grid>
+      <Grid xs={7} style={{textAlign: "right"}}>
+      <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
           size="medium"
           variant="extended"
           style={{ color: "#F9D342", backgroundColor: "#323435" }}
           aria-label="add"
+          onClick={btnLogout}
         >
-          <AccountCircleRoundedIcon style={{ marginRight: "5px" }} /> Account
-          List
+          <label style={{ marginRight: "5px"}}>Logout</label><LogoutIcon/>
         </Fab>
       </Box>
+      </Grid>
+      </Grid>
       <Slider {...settings}>
         {user.length > 0
           ? user.map((users) => (
@@ -273,7 +297,7 @@ function Accounts() {
             <Card style={{ padding: "40px", borderRadius: "20px" }}>
             <Grid xs={12}>
             
-            <label style={{fontFamily: "DejaVu Sans Mono, monospace", fontSize: "30px", fontWeight: "600" }}>User Form</label>
+            <label style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px", fontWeight: "600" }}>Tara Eat</label>
             </Grid>
            
             
@@ -350,9 +374,17 @@ function Accounts() {
                     </Grid>
                   </Grid>
                   <Grid xs={12} style={{textAlign: "right"}}>
-                    <Button type="submit" onClick={btnLogin} style={{backgroundColor: "#323435", color: "white", marginTop: "10px", borderRadius: "10px"}}>
-                      Create account
-                    </Button>
+                  <Box sx={{ "& > :not(style)": { m: 1 } }}>
+        <Fab
+          size="medium"
+          variant="extended"
+          style={{ color: "#F9D342", backgroundColor: "#323435" }}
+          aria-label="add"
+          onClick={btnLogin}
+        >
+          <label style={{ marginRight: "5px"}}> Create account</label><CheckCircleOutlineOutlinedIcon/>
+        </Fab>
+      </Box>
                   </Grid>
                 </form>
               </Grid>
