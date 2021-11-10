@@ -67,6 +67,9 @@ import {
   OutlinedInput
 } from '@material-ui/core';
 import { withRouter } from "react-router";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
 const style = {
   position: "absolute",
   top: "50%",
@@ -103,7 +106,9 @@ const BurgerList = () => {
 
   useEffect(() => {
     const filterFood = menu.filter((food) =>
-      food.foodName?.toLowerCase().includes(search.toLowerCase())
+      food.foodName?.toLowerCase().includes(search.toLowerCase()) || 
+      food.foodPrice?.toLowerCase().includes(search.toLowerCase()) ||
+      food.foodType?.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilterFood(filterFood);
@@ -170,64 +175,29 @@ const BurgerList = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu">
-            <img src={logo} style={{ height: "70px", width: "70px" }} />{" "}
+            <img src={logo} style={{ height: "70px", width: "70px" }} />
           </IconButton>
 
-          {/* <Typography
-            style={{ color: "#323435" }}
-            component="div"
-            sx={{ flexGrow: 1 }}
-          > */}
-         
-              {/* <TextField
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: "30px",
-                  textDecoration: "none",
-                  minWidth: "70%",
-                }}
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-                id="outlined-adornment-amount"
-                startAdornment={
-                  <InputAdornment position="start">search</InputAdornment>
-                }
-                label="Search..."
-              >
-                <MenuItem>
-                  <option>asdasd</option>
-                </MenuItem>
-              </TextField> */}
+              <Card style={{borderRadius: "20px", width: "70%", color: "#323435"}} sx={{ boxShadow: 5 }}>
               <input type="text" 
               placeholder="Search..." 
-              style={{padding: "10px", borderRadius: "20px", borderColor: "#323435", width: "70%"}} 
+              style={{padding: "10px", borderRadius: "20px", backgroundColor: "#F9D342", border: "none", color: "#323435",  width: "87%"}} 
               value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
               />
-
-{/* 
-               <Box component="form" sx={{ mt: 1 }}>
-              <TextField
-              label="asdasd"
-              />
-            </Box> */}
-            {/* </FormControl>
-          </Typography> */}
+              <span style={{marginTop: "4px", position: "absolute"}}><ManageSearchOutlinedIcon fontSize="large"/></span>
+             
+            </Card>
 
           <div style={{  marginLeft: "10px" }}>
-            <Fab onClick={() => {
-                handleOpenCart();
-              }}
+            <Fab
             style={{backgroundColor: "#F9D342"}}  
             >
-            <ShoppingCartOutlinedIcon
-              
-            />
-
+            <Link to="/mycart" style={{color: "#323435"}}>
+            <ShoppingCartOutlinedIcon/>
+            </Link>
             {cartNum.length > 0 ? (
               cartNum.map((cart) => {
                 const ctr = 1;
@@ -358,10 +328,13 @@ const BurgerList = () => {
                   </div>
                 )}
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div"
-                  style={{fontSize: "20px"}}
+                  <Typography gutterBottom component="div"
                   >
-                    {food.foodName}
+                    <Grid container>
+                      <Grid xs={9} style={{fontSize: "15px"}}><strong>{food.foodName}</strong></Grid>
+                      <Grid xs={3}><div style={{textAlign: "center",padding: "1px", backgroundColor: "#ECD14C", borderRadius: "10px", fontSize: "12px"}}><b>{food.foodType}</b></div></Grid>
+                    </Grid>
+                    
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <Grid container>

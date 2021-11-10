@@ -17,6 +17,7 @@ import { getCartChange } from "./redux/reducers/getCartReducer";
 import CreateAccount from "./User/LoginForm/CreateAccount";
 import Accounts from "./User/Homepage/Accounts";
 import UserRestriction from "./HOC/userRestriction";
+import MyCart from "./User/Homepage/MyCart";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
@@ -73,6 +74,9 @@ function App() {
         </Route>
         <Route exact path="/accounts">
           <Accounts />
+        </Route>
+        <Route exact path="/mycart">
+          <MyCart/>
         </Route>
       </Switch>
       {/* <UserRestriction path="/home" component={Home} component={BurgerList} isLogin={isLogin} />
