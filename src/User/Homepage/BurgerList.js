@@ -23,7 +23,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { Link } from "react-router-dom";
@@ -143,16 +143,16 @@ const BurgerList = () => {
     console.log("cartchange :", apiNewItem.data);
   };
 
-  const QtyCounter = (check) => {
-    if (check == "add") {
-      total = total + 1;
-      setCounter(total);
-    }
-    // else if(check=="sub"){
-    //     total = total-1;
-    //     setCounter(total);
-    // }
-  };
+  // const QtyCounter = (check) => {
+  //   if (check == "add") {
+  //     total = total + 1;
+  //     setCounter(total);
+  //   }
+  //   // else if(check=="sub"){
+  //   //     total = total-1;
+  //   //     setCounter(total);
+  //   // }
+  // };
 
   var settings = {
     dots: true,
@@ -192,12 +192,13 @@ const BurgerList = () => {
             </Card>
 
           <div style={{  marginLeft: "10px" }}>
+          <Link to="/mycart" style={{color: "#323435", textDecoration: "none"}}>
             <Fab
             style={{backgroundColor: "#F9D342"}}  
             >
-            <Link to="/mycart" style={{color: "#323435"}}>
+            
             <ShoppingCartOutlinedIcon/>
-            </Link>
+            
             {cartNum.length > 0 ? (
               cartNum.map((cart) => {
                 const ctr = 1;
@@ -208,6 +209,7 @@ const BurgerList = () => {
               <b>{ctrTotal}</b>
             </label>
             </Fab>
+            </Link>
           </div>
         </Toolbar>
       </Box>
@@ -394,72 +396,88 @@ const BurgerList = () => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Button
-              onClick={handleClose}
-              style={{ marginLeft: "-10px", color: "#323435" }}
-            >
-              <ArrowBackIosOutlinedIcon />
-              Back
-            </Button>
+          <Box style={{marginBottom: "10px"}}>
+          <Fab size="medium" onClick={handleClose} >
+            
+              <ArrowBackIosNewOutlinedIcon />
+         
+          </Fab>
+        </Box>
+        <form onSubmit={addToCart}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <CardMedia
                 component="img"
                 height="250"
                 image={Image}
                 alt={Name}
-                border="2px solid white"
+                // border="2px solid white"
                 hover
+                style={{borderRadius: "20px"}}
               />
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               <Grid container>
-                <form onSubmit={addToCart}>
-                  <Grid xs={9}>
-                    <b>{Name}</b>
+               
+                  <Grid xs={8}>
+                    <h4>{Name}</h4>
                   </Grid>
-                  <Grid xs={3} style={{ textAlign: "right" }}>
+                  <Grid xs={4} style={{ textAlign: "right" }}>
                     <b>₱{Price}</b>
                   </Grid>
-                  <Grid xs={12} style={{ textAlign: "justify" }}>
-                    <p style={{ color: "#323435" }}>{Desc}</p>
+                  <Grid xs={12} style={{ textAlign: "justify", marginTop: "5px" }}>
+                    <p style={{ color: "#323435" }}><b>Ingredients:</b> {Desc}</p>
                   </Grid>
-                  <Grid xs={8}></Grid>
+                  {/* <Grid xs={6}></Grid> */}
                   <Grid xs={6}>
-                    <Button
+                  <Box>
+              <Fab
+                size="medium"
+                variant="extended"
+                style={{ color: "#F9D342", backgroundColor: "#323435" }}
+                type="submit"
+              >
+                Add to cart <ShoppingCartOutlinedIcon />
+              </Fab>
+            </Box>
+                    {/* <Button
                       type="submit"
+                      onClick={addToCart}
                       variant="outlined"
                       style={{ color: "#F9D342", backgroundColor: "#323435" }}
                     >
                       <ShoppingCartOutlinedIcon />
                       <strong>Add to Cart</strong>
-                    </Button>
+                    </Button> */}
                   </Grid>
                   <Grid xs={6}>
                     <center>
-                      <AddBoxIcon onClick={() => QtyCounter("add")} />
-                      <Input
-                        type="text"
+                      <AddBoxIcon  />
+                      <input
+                        type="number"
                         value={counter}
                         defaultValue="1"
+                        min="1"
                         variant="outlined"
                         style={{ width: "50px" }}
                         onChange={(e) => {
                           setCounter(e.target.value);
                         }}
+                        required
                       />
                       <IndeterminateCheckBoxIcon
-                        onClick={() => QtyCounter("sub")}
+                        
                       />
                     </center>
                   </Grid>
-                </form>
+                  
               </Grid>
             </Typography>
+            </form>
           </Box>
         </Fade>
       </Modal>
 
-      <Modal
+      {/* <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openCart}
@@ -532,7 +550,7 @@ const BurgerList = () => {
               </Typography>
           </Box>
         </Fade>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

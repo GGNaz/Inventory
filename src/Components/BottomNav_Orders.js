@@ -5,9 +5,9 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BottomNavigation from "reactjs-bottom-navigation";
-import FastfoodIcon from '@mui/icons-material/Fastfood';
 import "reactjs-bottom-navigation/dist/index.css";
-function BottomNav_AddItem() {
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+function BottomNav_Orders() {
   const history = useHistory();
   const bottomNavItems = [
     {
@@ -40,7 +40,6 @@ function BottomNav_AddItem() {
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
-      onClick: () => history.push("/delivery"),
     },
 
     {
@@ -59,11 +58,11 @@ function BottomNav_AddItem() {
     <div>
       <BottomNavigation
         items={bottomNavItems}
-        defaultSelected={1}
+        defaultSelected={2}
         onItemClick={(item) => console.log(item)}
       />
     </div>
   );
 }
 
-export default BottomNav_AddItem;
+export default BottomNav_Orders;

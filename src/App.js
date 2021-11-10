@@ -18,6 +18,8 @@ import CreateAccount from "./User/LoginForm/CreateAccount";
 import Accounts from "./User/Homepage/Accounts";
 import UserRestriction from "./HOC/userRestriction";
 import MyCart from "./User/Homepage/MyCart";
+import { getLogsChange } from "./redux/reducers/getLogsReducer";
+import Orders from "./User/Homepage/Orders";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
@@ -42,6 +44,13 @@ function App() {
     console.log("Cart", result);
   };
 
+  const logsList = async () => {
+    const response = await api.get("/Logs");
+    const result = response.data;
+    dispatch(getLogsChange(result));
+    console.log("Logs", result);
+  };
+
   useEffect(() => {
     // const getList = async () => {
     //   const allfoods = await menuList();
@@ -49,6 +58,7 @@ function App() {
     menuList();
     userList();
     cartList();
+    logsList();
     // getList();
   }, []);
 
@@ -77,6 +87,9 @@ function App() {
         </Route>
         <Route exact path="/mycart">
           <MyCart/>
+        </Route>
+        <Route exact path="/delivery">
+          <Orders/>
         </Route>
       </Switch>
       {/* <UserRestriction path="/home" component={Home} component={BurgerList} isLogin={isLogin} />

@@ -40,6 +40,7 @@ function BottomNav_Accounts() {
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
+      onClick: () => history.push("/delivery"),
     },
 
     {

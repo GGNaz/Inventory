@@ -14,19 +14,23 @@ import notfound from "./notfound.png";
 function MyCart() {
     const dispatch = useDispatch();
   const cartNum = useSelector((state) => state.getCart.getCart);
+
   useEffect(() => {
     deleteFromApi();
   }, [])
+
+ 
+
   let fee = 20;
   let grandTotal = 0;
-  const [orderId, setOrderId] = useState("");
+
 
   const removeAction = (params) => {
     deleteFromApi(params);
   }
   const deleteFromApi = async (params) => {
       const result = await api.delete(`/cart/${params}`);
-      dispatch(getCartChange(result));
+      dispatch(getCartChange(result.data));
     //   const newCartList = cartNum.filter((cart) => {
     //     return cart.id !== id;
     //   });
@@ -103,16 +107,17 @@ function MyCart() {
                     <label>₱{cart.cartPrice * cart.cartPcs}</label>
                   </Grid>
                   <Grid xs={2} style={{ textAlign: "center"}}>
-                    <ClearOutlinedIcon onClick={() => {removeAction(cart.id)}} style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}} />
+                    <ClearOutlinedIcon onClick={() => {removeAction(cart.id)}} style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}}  /> 
                   </Grid>
                 </>
               );
             })
-          ) : (
+          ) : 
               <center>
             <img src={notfound} style={{height: "350px"}} />
             </center>
-          )}
+            // <label>0</label>
+          }
         </Grid>
       </Card>
       <Card
@@ -123,15 +128,16 @@ function MyCart() {
           borderRadius: "20px",
         }}
       >
+          {/* style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}} */}
         <Grid container>
           <Grid xs={6}>
             <h6>Delivery Fee :</h6>
           </Grid>
           <Grid xs={6} style={{ textAlign: "right" }}>
-          {cartNum.length !== 0 ? (
+          {/* {cartNum.length !== 0 ? ( */}
             <h6>₱20</h6>
-                  ):(<h6>0</h6>)
-          }
+                  {/* ):(<h6>0</h6>)
+          } */}
             
           </Grid>
           <Grid xs={6}>
@@ -139,11 +145,11 @@ function MyCart() {
             <h6>Grand Total :</h6>
           </Grid>
           <Grid xs={6} style={{ textAlign: "right" }}>
-          {cartNum.length !== 0 ? (
+          {/* {cartNum.length !== 0 ? ( */}
             <h6>₱{grandTotal + fee}</h6>
-                  ):(<h6>0</h6>)
+                  {/* ):(<h6>0</h6>)
           }
-           
+            */}
           </Grid>
 
           <Grid xs={12} style={{ textAlign: "right" }}>
