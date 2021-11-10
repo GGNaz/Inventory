@@ -1,16 +1,27 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { Route,Redirect } from "react-router-dom";
 
 
 
-const userRestriction = WrappedComponent => props => {
+function UserRestriction({isLogin: isLogin, component: Component, ...rest}) {
 
-  const user = useSelector(state => state.getUser.getUser);
+  return <Route
+          {...rest}
+          render={(props) => {
+            if(isLogin){
+              return <Component />
+            }
+            else{
+              return <Redirect to={{pathname: '/login', state: {from :props.location} }} />
+            }
+           
+          }}
 
-  return (user.isLogin === false)? 
-    (<WrappedComponent {...props} />): <Redirect to="/login" />
+
+          />
+    
 
 }
 
-export default userRestriction;
+export default UserRestriction;

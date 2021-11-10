@@ -66,6 +66,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import {
   OutlinedInput
 } from '@material-ui/core';
+import { withRouter } from "react-router";
 const style = {
   position: "absolute",
   top: "50%",
@@ -563,4 +564,4 @@ const BurgerList = () => {
   );
 };
 
-export default withLoading(BurgerList) ;
+export default BurgerList ;

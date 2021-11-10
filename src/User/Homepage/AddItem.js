@@ -18,6 +18,7 @@ import userRestriction from "../../HOC/userRestriction";
 import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 import { store } from 'react-notifications-component';
+import { withRouter } from "react-router";
 function AddItem() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
