@@ -224,7 +224,7 @@ function Accounts() {
           // style={{ fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}
           // aria-label="add"
         >
-          <b  style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}><AccountCircleRoundedIcon style={{height: "60px"}}/> Members</b>
+          <h4  style={{fontSize: "20px"}}><AccountCircleRoundedIcon style={{height: "60px"}}/> Members</h4>
           
         </label>
       </Box>

@@ -70,6 +70,8 @@ import { withRouter } from "react-router";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
+import { getMenuChange } from "../../redux/reducers/getMenuReducer";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -105,12 +107,16 @@ const BurgerList = () => {
   const cartNum = useSelector((state) => state.getCart.getCart);
 
   useEffect(() => {
+    getMenuChange();
+  }, [])
+
+  useEffect(() => {
     const filterFood = menu.filter((food) =>
       food.foodName?.toLowerCase().includes(search.toLowerCase()) || 
       food.foodPrice?.toLowerCase().includes(search.toLowerCase()) ||
       food.foodType?.toLowerCase().includes(search.toLowerCase())
     );
-
+    
     setFilterFood(filterFood);
     // eslint-disable-next-line
   }, [search]);
@@ -221,7 +227,7 @@ const BurgerList = () => {
           // style={{ color: "#F9D342", backgroundColor: "#323435" }}
           // aria-label="add"
         >
-          <b style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Whats New?</b>
+          <h4 style={{fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Whats New?</h4>
         </label>
       </Box>
 
@@ -269,7 +275,7 @@ const BurgerList = () => {
           // style={{ color: "#F9D342", backgroundColor: "#323435" }}
           // aria-label="add"
         >
-          <b style={{fontFamily: "Apple Chancery, cursive", fontSize: "20px"}}><FavoriteIcon/> Recommended </b>
+          <h4 style={{ fontSize: "20px"}}><FavoriteIcon/> Recommended </h4>
         </label>
       </Box>
 
