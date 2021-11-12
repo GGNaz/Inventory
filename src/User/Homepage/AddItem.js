@@ -13,7 +13,7 @@ import {
   Fab,
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomNav_AddItem from "../../Components/BottomNav_AddItem";
 import api from "../../api/menu";
 import { getMenuChange } from "../../redux/reducers/getMenuReducer";
@@ -27,6 +27,7 @@ import MobileNav from "../../Components/MobileNav";
 import addicon from "./addicon.png";
 import { alpha, styled } from "@mui/material/styles";
 import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlined';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 function AddItem() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -83,7 +84,7 @@ function AddItem() {
       const params = {
         id: uuidv4(),
         foodName: name,
-        foodPrice: price,
+        foodPrice: price+".00",
         foodImage: picture,
         foodPcs: pcs,
         foodDesc: desc,
@@ -113,6 +114,17 @@ function AddItem() {
       },
     });
   };
+
+  const menuList = async () => {
+    const response = await api.get("/menu");
+    const result = response.data;
+    dispatch(getMenuChange(result));
+    console.log("result", result);
+  };
+  useEffect(() => {
+    menuList();
+  }, []);
+
   return (
     <div>
       <MobileNav />
@@ -295,7 +307,7 @@ function AddItem() {
                     aria-label="add"
                     type="submit"
                   >
-                   Add to Menu <RestaurantMenuOutlinedIcon/>
+                   Add to Menu <CheckCircleOutlineOutlinedIcon/>
                   </Fab>
                 </Box>
               </Grid>

@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card, Fab } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import BottomNav_Orders from "../../Components/BottomNav_Orders";
@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import withLoading from "../../HOC/withLoading";
 function Orders() {
     const getOrders = useSelector((state) => state.getLogs.getLogs)
   return (
@@ -32,6 +34,7 @@ function Orders() {
             <TableCell style={{color: "#ECD14C"}}>Order ID</TableCell>
            
             <TableCell align="center" style={{color: "#ECD14C"}}>Date</TableCell>
+            <TableCell align="center" style={{color: "#ECD14C"}}>Received</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,8 +47,11 @@ function Orders() {
                 {row.id}
               </TableCell>
              
-              <TableCell align="right">{row.date}</TableCell>
-              
+              <TableCell align="center">{row.date}</TableCell>
+              <TableCell align="right" >
+                <CheckCircleOutlineOutlinedIcon color="success" />
+               
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -57,4 +63,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default withLoading(Orders);

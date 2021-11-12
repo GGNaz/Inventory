@@ -12,7 +12,6 @@ const Loader = (props) => {
     <div className={styles.Backdrop}>
       <img className={styles.logo} src={logo} />
       <br/>
-      <label>Tara Eat</label>
     </div> 
   ) : null
 }

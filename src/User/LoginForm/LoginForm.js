@@ -1,5 +1,5 @@
 import { Card, Grid, Button, TextField, Box, Fab } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import logo from "../Homepage/sample.png";
 import { useHistory } from "react-router";
@@ -23,6 +23,9 @@ function LoginForm() {
   });
 
   const user = useSelector((state) => state.getUser.getUser);
+  
+
+
 
   const checkCredentials = (e) => {
     switch (e.target.name) {
@@ -90,7 +93,7 @@ function LoginForm() {
 
   // };
   const btnLogin = (e) => {
-    e.preventDefault();
+  
     const checkAccount = user.find((user) => user.email === userDetails.email);
 
     if (!checkAccount) {
@@ -128,6 +131,22 @@ function LoginForm() {
     history.push("/home");
     // setAccountLogin();
   };
+
+
+  const userList = async () => {
+    const response = await api.get("/account");
+    const result = response.data;
+    dispatch(getUserChange(result));
+    console.log("User", result);
+  };
+ 
+
+  useEffect(() => {
+   
+    userList();
+   
+  }, []);
+
   return (
     <div>
       <MobileNav />

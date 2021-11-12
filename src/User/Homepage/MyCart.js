@@ -13,6 +13,7 @@ import { getCartChange } from "../../redux/reducers/getCartReducer";
 import notfound from "./notfound.png";
 import { v4 as uuidv4 } from "uuid";
 import { getLogsChange } from "../../redux/reducers/getLogsReducer";
+import withLoading from "../../HOC/withLoading";
 function MyCart() {
     const dispatch = useDispatch();
   const cartNum = useSelector((state) => state.getCart.getCart);
@@ -23,10 +24,6 @@ function MyCart() {
 
   let fee = 20;
   let grandTotal = 0;
-  useEffect(() => {
-    addToApiLogs();
-    deleteFromApi();
-  }, [])
  
   const addToApiLogs = async () => {
    
@@ -37,6 +34,7 @@ function MyCart() {
     }
     const result = await api.post("/Logs",params);
       dispatch(getLogsChange(result));
+      logsList();
   }
 
   const removeAction = (params) => {
@@ -45,13 +43,28 @@ function MyCart() {
   const deleteFromApi = async (params) => {
       const result = await api.delete(`/cart/${params}`);
       dispatch(getCartChange(result.data));
-    //   const newCartList = cartNum.filter((cart) => {
-    //     return cart.id !== id;
-    //   });
-
+      cartList();
+      
   }
 
- 
+  const logsList = async () => {
+    const response = await api.get("/Logs");
+    const result = response.data;
+    dispatch(getLogsChange(result));
+    console.log("Logs", result);
+  };
+
+  const cartList = async () => {
+    const response = await api.get("/Cart");
+    const result = response.data;
+    dispatch(getCartChange(result));
+    console.log("Cart", result);
+  };
+
+ useEffect(() => {
+  cartList();
+  logsList();
+  }, []);
 
   return (
     <div>
@@ -188,4 +201,4 @@ function MyCart() {
   );
 }
 
-export default MyCart;
+export default withLoading(MyCart);
