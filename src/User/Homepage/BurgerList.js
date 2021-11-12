@@ -72,6 +72,10 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
 import { getMenuChange } from "../../redux/reducers/getMenuReducer";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import ReactNotification from "react-notifications-component";
+import { store } from "react-notifications-component";
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import cardpic from "./card.jpg";
 const style = {
   position: "absolute",
   top: "50%",
@@ -86,6 +90,7 @@ const style = {
 };
 
 const BurgerList = () => {
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -112,23 +117,27 @@ const BurgerList = () => {
     dispatch(getMenuChange(result));
     console.log("result", result);
   };
-
+ const cartList = async () => {
+    const response = await api.get("/Cart");
+    const result = response.data;
+    dispatch(getCartChange(result));
+    console.log("Cart", result);
+  };
   useEffect(() => {
     menuList();
-    
+    cartList();
   }, []);
 
   useEffect( () => {
-    const filterFood = menu.filter((food) =>
-    food.foodName?.toLowerCase().includes(search.toLowerCase()) || 
-    food.foodPrice?.toLowerCase().includes(search.toLowerCase()) ||
-    food.foodType?.toLowerCase().includes(search.toLowerCase())
-  );
+      const filterFood = menu.filter((food) =>
+      food.foodName?.toLowerCase().includes(search.toLowerCase()) || 
+      food.foodPrice?.toLowerCase().includes(search.toLowerCase()) ||
+      food.foodType?.toLowerCase().includes(search.toLowerCase())
+    );
 
-  setFilterFood(filterFood);
+    setFilterFood(filterFood);
   }, [search]);
-
-
+  
   const searchField = () => {
    
     if (search !== "") {
@@ -144,8 +153,7 @@ const BurgerList = () => {
   const dispatch = useDispatch();
 
   const addToCart = () => {
-  
-
+ 
     const params = {
       id: uuidv4(),
       cartName: Name,
@@ -221,20 +229,53 @@ const BurgerList = () => {
           // style={{ color: "#F9D342", backgroundColor: "#323435" }}
           // aria-label="add"
         >
-          <h4 style={{fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Whats New?</h4>
+          <h4 style={{fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Looking for food? </h4>
         </label>
       </Box>
 
       <Grid
         container
         justifyContent="center"
-        style={{ marginLeft: "1px"}}
+        style={{ marginLeft: "1px",height: "20%" }}
       >
-         <Card style={{padding: "10px", marginRight: "5px"}}>
+         <Card sx={{boxShadow: 15}} style={{padding: "10px", marginRight: "5px", borderRadius: "20px", backgroundImage: `url(${cardpic})`}}>
         <Grid item xs={11}>
-      
-          
-            <div style={{ cursor: "pointer", position: "absolute", textAlign: "right", marginTop: "45%",  }}>
+              <div style={{minHeight: "250px", width: "450px"}}>
+              <Grid container >
+                <Grid xs={1}>
+
+                </Grid>
+                <Grid xs={7} style={{marginTop: "50px"}}>
+                  <label style={{fontSize: "40px", fontFamily: 'Bradley Hand, cursive'}}><strong><span style={{color: "#FFC200",fontSize: "50px"}}>M</span>apapa Utot</strong></label> 
+                </Grid>
+                <Grid xs={4}>
+                  
+                </Grid>
+                <Grid xs={3}>
+                  
+                </Grid>
+                <Grid xs={6}>
+                <h1><strong style={{fontFamily: 'Bradley Hand, cursive'}}>ka sa <span style={{color: "#FFC200"}}>S</span>arap!</strong></h1>
+                </Grid>
+                <Grid xs={7}>
+              
+                </Grid>
+                <Grid xs={5} style={{marginTop: "20px"}}>
+                  <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                    <Fab size="medium"
+                        variant="extended"
+                        style={{backgroundColor: "#ECD14C"}}>
+                      Learn more <ArrowForwardOutlinedIcon/>
+                    </Fab>
+                  </Box>
+              
+                </Grid>
+              
+              </Grid>
+              
+              
+              </div>
+            {/* <div style={{ cursor: "pointer", position: "absolute", textAlign: "right", marginTop: "45%",  }}>
               <Tooltip title="Like" placement="top">
                 <IconButton>
                   <ThumbUpAltOutlinedIcon style={{ marginRight: "5px",color: "white"  }} />
@@ -256,7 +297,7 @@ const BurgerList = () => {
 
             <video autoPlay loop muted style={{ height: "260px"}}>
               <source src={ads} type="video/mp4"></source>
-            </video>
+            </video> */}
          
         </Grid>
         </Card>
@@ -439,12 +480,13 @@ const BurgerList = () => {
                 Add to cart <ShoppingCartOutlinedIcon />
               </Fab>
             </Box>
-                   
+         
                   </Grid>
                   <Grid xs={6} style={{textAlign: "right"}}>
                     <Card style={{padding: "7px", borderRadius: "20px", width: "70%"}} >
                     <center >
                       <AddBoxIcon/>
+                      
                       <input
                         type="number"
                         value={counter}

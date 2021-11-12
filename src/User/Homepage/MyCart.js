@@ -25,6 +25,7 @@ function MyCart() {
   let fee = 20;
   let grandTotal = 0;
  
+
   const addToApiLogs = async () => {
    
     const params ={
@@ -35,6 +36,7 @@ function MyCart() {
     const result = await api.post("/Logs",params);
       dispatch(getLogsChange(result));
       logsList();
+     
   }
 
   const removeAction = (params) => {

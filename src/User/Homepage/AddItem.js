@@ -63,6 +63,18 @@ function AddItem() {
     },
   }));
 
+  const clearForm = () => {
+    return (
+      setName(""),
+      setPrice(""),
+      setPicture(""),
+      setPcs(""),
+      setDesc(""),
+      setType("")
+    ); 
+     
+  };
+
   const NewItem = (e) => {
     console.log("addbtn");
     e.preventDefault();
@@ -100,6 +112,8 @@ function AddItem() {
    
     const apiNewItem = await api.post("/menu", params);
     dispatch(getMenuChange(apiNewItem));
+    clearForm();
+    menuList();
     store.addNotification({
       title: "Adding Success!",
       message: "You may check now on the menu",
@@ -120,6 +134,7 @@ function AddItem() {
     const result = response.data;
     dispatch(getMenuChange(result));
     console.log("result", result);
+    
   };
   useEffect(() => {
     menuList();

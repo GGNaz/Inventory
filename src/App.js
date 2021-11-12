@@ -23,44 +23,42 @@ import Orders from "./User/Homepage/Orders";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
-  const menuList = async () => {
-    const response = await api.get("/menu");
-    const result = response.data;
-    dispatch(getMenuChange(result));
-    console.log("result", result);
-  };
+  // const menuList = async () => {
+  //   const response = await api.get("/menu");
+  //   const result = response.data;
+  //   dispatch(getMenuChange(result));
+  //   console.log("result", result);
+  // };
 
-  const userList = async () => {
-    const response = await api.get("/account");
-    const result = response.data;
-    dispatch(getUserChange(result));
-    console.log("User", result);
-  };
+  // const userList = async () => {
+  //   const response = await api.get("/account");
+  //   const result = response.data;
+  //   dispatch(getUserChange(result));
+  //   console.log("User", result);
+  // };
 
-  const cartList = async () => {
-    const response = await api.get("/Cart");
-    const result = response.data;
-    dispatch(getCartChange(result));
-    console.log("Cart", result);
-  };
+  // const cartList = async () => {
+  //   const response = await api.get("/Cart");
+  //   const result = response.data;
+  //   dispatch(getCartChange(result));
+  //   console.log("Cart", result);
+  // };
 
-  const logsList = async () => {
-    const response = await api.get("/Logs");
-    const result = response.data;
-    dispatch(getLogsChange(result));
-    console.log("Logs", result);
-  };
+  // const logsList = async () => {
+  //   const response = await api.get("/Logs");
+  //   const result = response.data;
+  //   dispatch(getLogsChange(result));
+  //   console.log("Logs", result);
+  // };
 
-  useEffect(() => {
-    // const getList = async () => {
-    //   const allfoods = await menuList();
-    // }
-    menuList();
-    userList();
-    cartList();
-    logsList();
-    // getList();
-  }, []);
+  // useEffect(() => {
+  
+  //   menuList();
+  //   userList();
+  //   cartList();
+  //   logsList();
+  
+  // }, []);
 
   return (
     <div className="App">
