@@ -93,7 +93,10 @@ const BurgerList = () => {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setCounter("");
+    setOpen(false);
+  } 
 
   const [openCart, setOpenCart] = React.useState(false);
   const handleOpenCart = () => setOpenCart(true);

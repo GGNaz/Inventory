@@ -135,7 +135,7 @@ function MyCart() {
                     <label>{cart.cartPcs}</label>
                   </Grid>
                   <Grid xs={2} style={{ textAlign: "center" }}>
-                    <label>₱{cart.cartPrice * cart.cartPcs}</label>
+                    <label>₱{cart.cartPrice * cart.cartPcs}.00</label>
                   </Grid>
                   <Grid xs={2} style={{ textAlign: "center"}}>
                     <ClearOutlinedIcon onClick={() => removeAction(cart.id)} style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}}  /> 
@@ -165,10 +165,10 @@ function MyCart() {
             <h6>Delivery Fee :</h6>
           </Grid>
           <Grid xs={6} style={{ textAlign: "right" }}>
-          {/* {cartNum.length !== 0 ? ( */}
-            <h6>₱20</h6>
-                  {/* ):(<h6>0</h6>)
-          } */}
+          {cartNum.length !== 0 ? (
+            <h6>₱20.00</h6>
+             ):(<h6>0</h6>)
+          } 
             
           </Grid>
           <Grid xs={6}>
@@ -176,11 +176,11 @@ function MyCart() {
             <h6>Grand Total :</h6>
           </Grid>
           <Grid xs={6} style={{ textAlign: "right" }}>
-          {/* {cartNum.length !== 0 ? ( */}
-            <h6>₱{grandTotal + fee}</h6>
-                  {/* ):(<h6>0</h6>)
+          {cartNum.length !== 0 ? (
+            <h6>₱{grandTotal + fee}.00</h6>
+                   ):(<h6>0</h6>)
           }
-            */}
+           
           </Grid>
             
           <Grid xs={12} style={{ textAlign: "right" }}>

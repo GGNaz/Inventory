@@ -1,6 +1,6 @@
 import { Card, Fab } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect} from "react";
+import { useSelector,useDispatch, } from "react-redux";
 import BottomNav_Orders from "../../Components/BottomNav_Orders";
 import MobileNav from "../../Components/MobileNav";
 import Table from '@mui/material/Table';
@@ -12,8 +12,25 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import withLoading from "../../HOC/withLoading";
+import api from "../../api/menu";
+import { getLogsChange } from "../../redux/reducers/getLogsReducer";
 function Orders() {
-    const getOrders = useSelector((state) => state.getLogs.getLogs)
+    const getOrders = useSelector((state) => state.getLogs.getLogs);
+    const dispatch = useDispatch();
+     const logsList = async () => {
+    const response = await api.get("/Logs");
+    const result = response.data;
+    dispatch(getLogsChange(result));
+    console.log("Logs", result);
+  };
+
+  useEffect(() => {
+  
+     
+      logsList();
+    
+    }, []);
+
   return (
     <div>
       <MobileNav />
