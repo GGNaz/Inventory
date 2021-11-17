@@ -112,31 +112,41 @@ const BurgerList = () => {
   const [search, setSearch] = useState("");
   const [filterFood, setFilterFood] = useState("");
   const menu = useSelector((state) => state.getMenu.getMenu);
+  console.log("hhahahahaha",menu);
   const cartNum = useSelector((state) => state.getCart.getCart);
   const [table, setTable] = useState([]);
-  const menuList = async () => {
-    const response = await api.get("/menu");
-    const result = response.data;
-    dispatch(getMenuChange(result));
-    console.log("result", result);
-  };
- const cartList = async () => {
-    const response = await api.get("/Cart");
-    const result = response.data;
-    dispatch(getCartChange(result));
-    console.log("Cart", result);
-  };
+
   useEffect(() => {
     menuList();
-    cartList();
+    // cartList();
   }, []);
 
+  const menuList = async () => {
+    const response = await api.get("/products");
+    const result = response.data;
+    setTable(result);
+    console.log("result", result);
+  };
+//  const cartList = async () => {
+//     const response = await api.get("/Cart");
+//     const result = response.data;
+//     dispatch(getCartChange(result));
+//     console.log("Cart", result);
+//   };
+ 
+
   useEffect( () => {
-      const filterFood = menu.filter((food) =>
-      food.foodName?.toLowerCase().includes(search.toLowerCase()) || 
-      food.foodPrice?.toLowerCase().includes(search.toLowerCase()) ||
-      food.foodType?.toLowerCase().includes(search.toLowerCase())
-    );
+      const filterFood = menu.filter(function(food) {
+   
+        return food.foodName.toLowerCase().includes(search.toLowerCase())
+      
+    
+       
+         
+      // food.foodType.toLowerCase().includes(search.toLowerCase())
+      //  food.foodPrice.toLowerCase().includes(search.toLowerCase()) ||
+      //     food.foodType.toLowerCase().includes(search.toLowerCase())
+      });
 
     setFilterFood(filterFood);
   }, [search]);
@@ -167,7 +177,7 @@ const BurgerList = () => {
     newCart(params);
   };
   const newCart = async (params) => {
-    const apiNewItem = await api.post("/Cart", params);
+    const apiNewItem = await api.post("/products", params);
     dispatch(getCartChange(apiNewItem));
     console.log("cartchange :", apiNewItem.data);
   };
@@ -209,7 +219,7 @@ const BurgerList = () => {
             >
             
             <ShoppingCartOutlinedIcon/>
-            
+{/*             
             {cartNum.length > 0 ? (
               cartNum.map((cart) => {
                 const ctr = 1;
@@ -218,7 +228,7 @@ const BurgerList = () => {
             ) : null}
             <label>
               <b>{ctrTotal}</b>
-            </label>
+            </label> */}
             </Fab>
             </Link>
           </div>
@@ -248,17 +258,17 @@ const BurgerList = () => {
                 <Grid xs={1}>
 
                 </Grid>
-                <Grid xs={7} style={{marginTop: "50px"}}>
-                  <label style={{fontSize: "40px", fontFamily: 'Bradley Hand, cursive'}}><strong><span style={{color: "#FFC200",fontSize: "50px"}}>M</span>apapa Utot</strong></label> 
+                <Grid xs={9} style={{marginTop: "50px"}}>
+                  <label style={{fontSize: "40px", fontFamily: 'Bradley Hand, cursive'}}><strong><span style={{color: "#FFC200",fontSize: "50px"}}>Your </span>Favourite </strong></label> 
                 </Grid>
-                <Grid xs={4}>
+                <Grid xs={2}>
                   
                 </Grid>
                 <Grid xs={3}>
                   
                 </Grid>
-                <Grid xs={6}>
-                <h1><strong style={{fontFamily: 'Bradley Hand, cursive'}}>ka sa <span style={{color: "#FFC200"}}>S</span>arap!</strong></h1>
+                <Grid xs={7}>
+                <h1><strong style={{fontFamily: 'Bradley Hand, cursive'}}>delivery Partner.</strong></h1>
                 </Grid>
                 <Grid xs={7}>
               
@@ -319,8 +329,8 @@ const BurgerList = () => {
 
       <Slider {...settings}>
         {menu.length > 0 ? (
-          searchField().map((food) => (
-            <div key={food.id}>
+         searchField().map((food) => (
+            <div key={food._id}>
               <Card
                 sx={{ maxWidth: 345 }}
                 style={{ marginLeft: "8px", marginRight: "8px", borderRadius: "20px"}}
@@ -451,7 +461,7 @@ const BurgerList = () => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <CardMedia
                 component="img"
-                height="250"
+                height="350"
                 image={Image}
                 alt={Name}
                 // border="2px solid white"

@@ -20,22 +20,31 @@ import UserRestriction from "./HOC/userRestriction";
 import MyCart from "./User/Homepage/MyCart";
 import { getLogsChange } from "./redux/reducers/getLogsReducer";
 import Orders from "./User/Homepage/Orders";
+import DefaultPage from "./User/LoginForm/DefaultPage";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
-  // const menuList = async () => {
-  //   const response = await api.get("/menu");
-  //   const result = response.data;
-  //   dispatch(getMenuChange(result));
-  //   console.log("result", result);
-  // };
+  useEffect(() => {
+  
+    menuList();
+    userList();
+  
+  
+  }, []);
 
-  // const userList = async () => {
-  //   const response = await api.get("/account");
-  //   const result = response.data;
-  //   dispatch(getUserChange(result));
-  //   console.log("User", result);
-  // };
+  const menuList = async () => {
+    const response = await api.get("/products");
+    const result = response.data;
+    dispatch(getMenuChange(result));
+    console.log("result", result);
+  };
+
+  const userList = async () => {
+    const response = await api.get("/users");
+    const result = response.data;
+    dispatch(getUserChange(result));
+    console.log("User", result);
+  };
 
   // const cartList = async () => {
   //   const response = await api.get("/Cart");
@@ -51,18 +60,14 @@ function App() {
   //   console.log("Logs", result);
   // };
 
-  // useEffect(() => {
   
-  //   menuList();
-  //   userList();
-  //   cartList();
-  //   logsList();
-  
-  // }, []);
 
   return (
     <div className="App">
       <Switch>
+      <Route exact path="/">
+          <DefaultPage/>
+        </Route>
         <Route exact path="/login">
           <LoginForm />
         </Route>

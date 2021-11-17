@@ -1,4 +1,10 @@
-import { Card, Grid, Button, TextField, Box, Fab } from "@mui/material";
+import { Card, Grid, Button, TextField, Box, Fab,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormControl
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import logo from "../Homepage/sample.png";
@@ -13,13 +19,16 @@ import { useDispatch } from "react-redux";
 import MobileNav from "../../Components/MobileNav";
 import { Link } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login';
-
+import { purple } from '@mui/material/colors';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 function LoginForm() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [userDetails, setAccoountDetails] = useState({
     email: "",
     password: "",
+    showPassword: false,
   });
 
   const user = useSelector((state) => state.getUser.getUser);
@@ -27,7 +36,8 @@ function LoginForm() {
 
 
 
-  const checkCredentials = (e) => {
+  const checkCredentials = (prop) => (e) => {
+    setAccoountDetails({ ...userDetails, [prop]: e.target.value });
     switch (e.target.name) {
       case "email":
         setAccoountDetails({
@@ -107,15 +117,15 @@ function LoginForm() {
         },
       });
     }
-  
+    alert("you are logged in");
     
-    history.push("/home");
+    // history.push("/home");
   
   };
 
 
   const userList = async () => {
-    const response = await api.get("/account");
+    const response = await api.get("/users");
     const result = response.data;
     dispatch(getUserChange(result));
     console.log("User", result);
@@ -127,6 +137,18 @@ function LoginForm() {
     userList();
    
   }, []);
+
+
+  const handleClickShowPassword = () => {
+    setAccoountDetails({
+      ...userDetails,
+      showPassword: !userDetails.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <div>
@@ -158,31 +180,46 @@ function LoginForm() {
                 <form style={{ marginTop: "30px"}}>
                   <Grid xs={12}>
                     <Grid xs={12}>
-                      <TextField
-                        color="warning"
+                    <TextField
                         label="Email"
                         id="reddit-input"
-                        variant="filled"
-                        style={{
-                          marginTop: 11,
-                          border: "2px solid #e2e2e1",
-                          borderRadius: "5px",
-                        }}
+                        variant="outlined"
                         name="email"
                         value={userDetails.email}
-                        onChange={checkCredentials}
+                        onChange={checkCredentials('email')}
                         fullWidth
-                       
                       />
                     </Grid>
-
+                    
                     <Grid xs={12}>
-                      <TextField
+                    <FormControl variant="outlined" sx={{ mt:2}} fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={userDetails.showPassword ? 'text' : 'password'}
+            value={userDetails.password}
+            onChange={checkCredentials('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {userDetails.showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+                      {/* <TextField
                         type="password"
                         color="warning"
                         label="Password"
                         id="reddit-input"
-                        variant="filled"
+                        variant="outlined"
                         style={{
                           marginTop: 11,
                           border: "2px solid #e2e2e1",
@@ -193,7 +230,8 @@ function LoginForm() {
                         onChange={checkCredentials}
                         fullWidth
                       />
-                    </Grid>
+                    </Grid> */}
+                      </Grid> 
                   </Grid>
                   <Grid xs={12} style={{ textAlign: "right" }}>
                     <Box sx={{ "& > :not(style)": { m: 1 } }}>
