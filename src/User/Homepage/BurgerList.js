@@ -115,10 +115,10 @@ const BurgerList = () => {
   console.log("hhahahahaha",menu);
   const cartNum = useSelector((state) => state.getCart.getCart);
   const [table, setTable] = useState([]);
-
+  const [cartNumbers, setCartNumbers] = useState([]);
   useEffect(() => {
     menuList();
-    // cartList();
+    cartList();
   }, []);
 
   const menuList = async () => {
@@ -127,22 +127,18 @@ const BurgerList = () => {
     setTable(result);
     console.log("result", result);
   };
-//  const cartList = async () => {
-//     const response = await api.get("/Cart");
-//     const result = response.data;
-//     dispatch(getCartChange(result));
-//     console.log("Cart", result);
-//   };
  
-
+ const cartList = async () => {
+    const response = await api.get("/cart");
+    const result = response.data;
+    setCartNumbers(result);
+  };
+ 
   useEffect( () => {
       const filterFood = menu.filter(function(food) {
    
         return food.foodName.toLowerCase().includes(search.toLowerCase())
-      
-    
-       
-         
+
       // food.foodType.toLowerCase().includes(search.toLowerCase())
       //  food.foodPrice.toLowerCase().includes(search.toLowerCase()) ||
       //     food.foodType.toLowerCase().includes(search.toLowerCase())
@@ -168,7 +164,6 @@ const BurgerList = () => {
   const addToCart = () => {
  
     const params = {
-      id: uuidv4(),
       cartName: Name,
       cartPrice: Price,
       cartImage: Image,
@@ -177,7 +172,7 @@ const BurgerList = () => {
     newCart(params);
   };
   const newCart = async (params) => {
-    const apiNewItem = await api.post("/products", params);
+    const apiNewItem = await api.post("/carts", params);
     dispatch(getCartChange(apiNewItem));
     console.log("cartchange :", apiNewItem.data);
   };
@@ -219,16 +214,16 @@ const BurgerList = () => {
             >
             
             <ShoppingCartOutlinedIcon/>
-{/*             
-            {cartNum.length > 0 ? (
-              cartNum.map((cart) => {
+            
+            {cartNumbers.length > 0 ? (
+              cartNumbers.map( (cart) => {
                 const ctr = 1;
                 ctrTotal += ctr;
               })
             ) : null}
             <label>
               <b>{ctrTotal}</b>
-            </label> */}
+            </label>
             </Fab>
             </Link>
           </div>

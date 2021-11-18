@@ -25,11 +25,9 @@ function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-  
     menuList();
     userList();
-  
-  
+    cartList();
   }, []);
 
   const menuList = async () => {
@@ -46,12 +44,12 @@ function App() {
     console.log("User", result);
   };
 
-  // const cartList = async () => {
-  //   const response = await api.get("/Cart");
-  //   const result = response.data;
-  //   dispatch(getCartChange(result));
-  //   console.log("Cart", result);
-  // };
+  const cartList = async () => {
+    const response = await api.get("/cart");
+    const result = response.data;
+    dispatch(getCartChange(result));
+    console.log("Cart", result);
+  };
 
   // const logsList = async () => {
   //   const response = await api.get("/Logs");

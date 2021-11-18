@@ -28,14 +28,14 @@ function MyCart() {
 
   const addToApiLogs = async () => {
    
-    const params ={
-      id: uuidv4(),
-      date: timeOrdered,
-      amount: grandTotal+fee+".00",
-    }
-    const result = await api.post("/Logs",params);
-      dispatch(getLogsChange(result));
-      logsList();
+    // const params ={
+    //   id: uuidv4(),
+    //   date: timeOrdered,
+    //   amount: grandTotal+fee+".00",
+    // }
+    // const result = await api.post("/Logs",params);
+    //   dispatch(getLogsChange(result));
+    //   logsList();
      
   }
 
@@ -49,15 +49,15 @@ function MyCart() {
       
   }
 
-  const logsList = async () => {
-    const response = await api.get("/Logs");
-    const result = response.data;
-    dispatch(getLogsChange(result));
-    console.log("Logs", result);
-  };
+  // const logsList = async () => {
+  //   const response = await api.get("/Logs");
+  //   const result = response.data;
+  //   dispatch(getLogsChange(result));
+  //   console.log("Logs", result);
+  // };
 
   const cartList = async () => {
-    const response = await api.get("/Cart");
+    const response = await api.get("/cart");
     const result = response.data;
     dispatch(getCartChange(result));
     console.log("Cart", result);
@@ -65,7 +65,7 @@ function MyCart() {
 
  useEffect(() => {
   cartList();
-  logsList();
+  // logsList();
   }, []);
 
   return (
@@ -138,7 +138,7 @@ function MyCart() {
                     <label>₱{cart.cartPrice * cart.cartPcs}.00</label>
                   </Grid>
                   <Grid xs={2} style={{ textAlign: "center"}}>
-                    <ClearOutlinedIcon onClick={() => removeAction(cart.id)} style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}}  /> 
+                    <ClearOutlinedIcon onClick={() => removeAction(cart._id)} style={{backgroundColor: "#323435", borderRadius: "20px", color: "white"}}  /> 
                   </Grid>
                 </>
               );

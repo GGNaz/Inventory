@@ -56,31 +56,6 @@ function LoginForm() {
     }
   };
 
-  const RedditTextField = styled((props) => (
-    <TextField InputProps={{ disableUnderline: false }} {...props} />
-  ))(({ theme }) => ({
-    "& .MuiFilledInput-root": {
-      border: "2px solid #e2e2e1",
-      overflow: "hidden",
-      borderRadius: 4,
-      backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-      transition: theme.transitions.create([
-        "border-color",
-        "background-color",
-        "box-shadow",
-      ]),
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-      "&.Mui-focused": {
-        backgroundColor: "transparent",
-
-        // boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-        borderColor:
-          theme.palette.primary.main === "light" ? "#ffc107" : "#ffc107",
-      },
-    },
-  }));
 
   const btnLogin = (e) => {
   
@@ -117,9 +92,9 @@ function LoginForm() {
         },
       });
     }
-    alert("you are logged in");
     
-    // history.push("/home");
+    
+    history.push("/home");
   
   };
 
@@ -137,7 +112,6 @@ function LoginForm() {
     userList();
    
   }, []);
-
 
   const handleClickShowPassword = () => {
     setAccoountDetails({
