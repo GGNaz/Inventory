@@ -93,7 +93,7 @@ function LoginForm() {
       });
     }
     
-    
+    UpdateUserIsTrue(userDetails.email);
     history.push("/home");
   
   };
@@ -101,6 +101,13 @@ function LoginForm() {
 
   const userList = async () => {
     const response = await api.get("/users");
+    const result = response.data;
+    dispatch(getUserChange(result));
+    console.log("User", result);
+  };
+
+  const UpdateUserIsTrue = async (userEmail) => {
+    const response = await api.put("/users/"+userEmail, {isUserLog : true} );
     const result = response.data;
     dispatch(getUserChange(result));
     console.log("User", result);

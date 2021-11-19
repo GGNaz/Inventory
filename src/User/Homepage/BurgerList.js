@@ -112,26 +112,36 @@ const BurgerList = () => {
   const [search, setSearch] = useState("");
   const [filterFood, setFilterFood] = useState("");
   const menu = useSelector((state) => state.getMenu.getMenu);
-  console.log("hhahahahaha",menu);
+  const user = useSelector((state) => state.getUser.getUser);
+
   const cartNum = useSelector((state) => state.getCart.getCart);
   const [table, setTable] = useState([]);
   const [cartNumbers, setCartNumbers] = useState([]);
+  const [username, setUsername] = useState([]);
   useEffect(() => {
     menuList();
     cartList();
+    userList()
   }, []);
 
   const menuList = async () => {
     const response = await api.get("/products");
     const result = response.data;
     setTable(result);
-    console.log("result", result);
+
   };
  
  const cartList = async () => {
     const response = await api.get("/cart");
     const result = response.data;
     setCartNumbers(result);
+  };
+
+  const userList = async () => {
+    const response = await api.get("/users");
+    const result = response.data;
+    setUsername(result);
+ 
   };
  
   useEffect( () => {
@@ -161,20 +171,21 @@ const BurgerList = () => {
   let ctrTotal = 0;
   const dispatch = useDispatch();
 
-  const addToCart = () => {
- 
+  const addToCart = (e) => {
+    e.preventDefault();
     const params = {
       cartName: Name,
       cartPrice: Price,
       cartImage: Image,
-      cartPcs: counter,
+      cartPcs: 1,
     };
-    newCart(params);
+    // newCart(params);
+   console.log("paramssss",params);
   };
   const newCart = async (params) => {
     const apiNewItem = await api.post("/carts", params);
     dispatch(getCartChange(apiNewItem));
-    console.log("cartchange :", apiNewItem.data);
+    cartList();
   };
 
   var settings = {
@@ -231,14 +242,15 @@ const BurgerList = () => {
       </Box>
      
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <label
-          // size="medium"
-          // variant="extended"
-          // style={{ color: "#F9D342", backgroundColor: "#323435" }}
-          // aria-label="add"
-        >
-          <h4 style={{fontSize: "20px"}}> <LocalFireDepartmentOutlinedIcon  />Looking for food? </h4>
-        </label>
+       
+         <Card>
+         {user.length > 0 ? (
+              user.map( (name) => {
+                <h1>{name.name}</h1>
+              })
+            ) : null}
+         </Card>
+   
       </Box>
 
       <Grid
@@ -263,6 +275,7 @@ const BurgerList = () => {
                   
                 </Grid>
                 <Grid xs={7}>
+                  
                 <h1><strong style={{fontFamily: 'Bradley Hand, cursive'}}>delivery Partner.</strong></h1>
                 </Grid>
                 <Grid xs={7}>
@@ -311,16 +324,23 @@ const BurgerList = () => {
         </Card>
       </Grid>
       <br />
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <label
-          // size="medium"
-          // variant="extended"
-          // style={{ color: "#F9D342", backgroundColor: "#323435" }}
-          // aria-label="add"
-        >
-          <h4 style={{ fontSize: "20px"}}><FavoriteIcon/> Recommended </h4>
-        </label>
-      </Box>
+      <Grid container>
+        <Grid xs={6}>
+          <Box sx={{ "& > :not(style)": { m: 1 } }}>
+          
+            <h4 style={{ fontSize: "20px"}}> Recommended </h4>
+         
+        </Box>
+        </Grid>
+        <Grid xs={6}>
+          <Box sx={{ "& > :not(style)": { m: 1 } }} style={{textAlign: "right"}}>
+        
+            <label> See all </label>
+         
+        </Box>
+        </Grid>
+      </Grid>
+      
 
       <Slider {...settings}>
         {menu.length > 0 ? (
@@ -334,12 +354,12 @@ const BurgerList = () => {
                   <div>
                     <label
                       style={{
-                        backgroundColor: "white",
+                        backgroundColor: "#C82333",
                         padding: "5px",
                         position: "absolute",
                         opacity: "90%",
-                        color: "red",
-                        borderRadius: "0px 0px 10px 0px",
+                        color: "white",
+                        borderRadius: "20px 0px 10px 0px",
                       }}
                     >
                       <FavoriteBorderIcon />
@@ -348,7 +368,7 @@ const BurgerList = () => {
 
                     <CardMedia
                       component="img"
-                      height="140"
+                      height="220"
                       image={food.foodImage}
                       alt={food.foodName}
                       
@@ -358,12 +378,12 @@ const BurgerList = () => {
                   <div>
                     <label
                       style={{
-                        backgroundColor: "white",
+                        backgroundColor: "#23C833",
                         padding: "5px",
                         position: "absolute",
                         opacity: "90%",
-                        color: "green",
-                        borderRadius: "0px 0px 10px 0px",
+                        color: "white",
+                        borderRadius: "20px 0px 10px 0px",
                       }}
                     >
                       <FavoriteBorderIcon />
@@ -372,7 +392,7 @@ const BurgerList = () => {
 
                     <CardMedia
                       component="img"
-                      height="140"
+                      height="220"
                       image={food.foodImage}
                       alt={food.foodName}
                     />
@@ -452,16 +472,18 @@ const BurgerList = () => {
          
           </Fab>
         </Box>
-        <form onSubmit={addToCart}>
+       
+        <form>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <CardMedia
                 component="img"
                 height="350"
+               
                 image={Image}
                 alt={Name}
                 // border="2px solid white"
                 hover
-                style={{borderRadius: "20px"}}
+               
               />
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
@@ -484,13 +506,19 @@ const BurgerList = () => {
                 variant="extended"
                 style={{ color: "#F9D342", backgroundColor: "#323435" }}
                 type="submit"
+                onClick={() => {
+                  setFoodName(Name);
+                  setFoodImg(Image);
+                  setFoodPrice(Price);
+                  addToCart();
+                }}
               >
                 Add to cart <ShoppingCartOutlinedIcon />
               </Fab>
             </Box>
          
                   </Grid>
-                  <Grid xs={6} style={{textAlign: "right"}}>
+                  {/* <Grid xs={6} style={{textAlign: "right"}}>
                     <Card style={{padding: "7px", borderRadius: "20px", width: "70%"}} >
                     <center >
                       <AddBoxIcon/>
@@ -512,7 +540,7 @@ const BurgerList = () => {
                       />
                     </center>
                     </Card>
-                  </Grid>
+                  </Grid> */}
                   
               </Grid>
             </Typography>
