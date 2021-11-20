@@ -21,8 +21,9 @@ import {
   FormControl,
   InputAdornment,
   TextField,
-  MenuItem,
+  MenuItem
 } from "@mui/material";
+
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
@@ -76,6 +77,9 @@ import ReactNotification from "react-notifications-component";
 import { store } from "react-notifications-component";
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import cardpic from "./card.jpg";
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import SortRoundedIcon from '@mui/icons-material/SortRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 const style = {
   position: "absolute",
   top: "50%",
@@ -116,13 +120,13 @@ const BurgerList = () => {
   const [username, setUsername] = useState([]);
   const [NameOfUser, setnameOfUser] = useState([]);
   useEffect(() => {
-    const filterIsUser = user.filter((users) => users.isUserLog === true);
-    console.log("nafilter na user", filterIsUser[0].name);
-    setnameOfUser(filterIsUser[0].name);
+   
     menuList();
     cartList();
     userList()
   }, []);
+
+
 
   const menuList = async () => {
     const response = await api.get("/products");
@@ -141,6 +145,16 @@ const BurgerList = () => {
     const response = await api.get("/users");
     const result = response.data;
     setUsername(result);
+
+    const filterIsUser = await result.filter(function (users) {return users.isUserLog === true});
+    console.log(filterIsUser[0]._id);
+    const findresponse = await api.get("/users/"+filterIsUser[0]._id);
+    console.log(findresponse.data[0].name)
+    setnameOfUser(findresponse.data[0].name);
+    // if(findresponse){
+    //   setnameOfUser(findresponse[0].name);
+    // }
+   
  
   };
  
@@ -199,14 +213,13 @@ const BurgerList = () => {
   };
   const newCart = async (params) => {
     await api.post("/cart", params);
-    // dispatch(getCartChange(apiNewItem));
     
     cartList();
     
   };
 
   var settings = {
-    dots: true,
+    // dots: true,
     infinite: false,
     speed: 1000,
     autoplay: true,
@@ -216,9 +229,9 @@ const BurgerList = () => {
  
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
+     
+      
+          {/* <IconButton edge="start" color="inherit" aria-label="menu">
             <img src={logo} style={{ height: "70px", width: "70px" }} />
           </IconButton>
 
@@ -233,16 +246,20 @@ const BurgerList = () => {
               />
               <span style={{marginTop: "4px", position: "absolute"}}><ManageSearchOutlinedIcon fontSize="large"/></span>
              
-            </Card>
+            </Card> */}
 
-          <div style={{  marginLeft: "10px" }}>
-          <Link to="/mycart" style={{color: "#323435", textDecoration: "none"}}>
+       
+          <Grid container >
+            <Grid xs={10} style={{padding: "10px 10px 10px 20px"}}>
+            <h5>Hi, {NameOfUser}</h5>
+            <p>Welcome to Tara Eat app.</p>
+            </Grid>
+            <Grid xs={2} style={{padding: "10px 10px 10px 10px"}}>
+            <Link to="/mycart" style={{color: "#323435", textDecoration: "none"}}>
             <Fab
             style={{backgroundColor: "#F9D342"}}  
             >
-            
             <ShoppingCartOutlinedIcon/>
-            
             {cartNumbers.length > 0 ? (
               cartNumbers.map( (cart) => {
                 const ctr = 1;
@@ -254,20 +271,68 @@ const BurgerList = () => {
             </label>
             </Fab>
             </Link>
-          </div>
-        </Toolbar>
-      </Box>
+            </Grid>
+          </Grid>
+    
+    <Grid container>
+      <Grid xs={12}>
+      {/* <FormControl variant="outlined" sx={{ mt:1, mb:1}} fullWidth>
+          {/* <InputLabel htmlFor="outlined-adornment-password">se</InputLabel> 
+          <OutlinedInput
+            id="outlined-adornment-password"
+            size="small"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  edge="end"
+                >
+                <SearchRoundedIcon/>
+                </IconButton>
+              </InputAdornment>
+            }
+            placeholder="Search"
+          />
+        </FormControl> */}
+        <center>
+        <Paper
+      component="form"
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 465, mb:1, borderRadius: "10px" }}
+    >
+      
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Search"
+        inputProps={{ 'aria-label': 'search google maps' }}
+        fullWidth
+        value={search}
+        onChange={(e) => {
+            setSearch(e.target.value);
+      }}
+      />
+      <IconButton sx={{ p: '10px' }} aria-label="search">
+        {search==="" ? (
+          <SearchIcon />
+        ):(
+          <CloseRoundedIcon onClick={()=> {setSearch(""); return menu}} />
+        )}
+        
+      </IconButton>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <Button color="primary" sx={{ p: '5px' }} aria-label="directions" style={{backgroundColor: "#323435", borderRadius: "7px", color: "#ECD14C"}}>
+       <SortRoundedIcon/>
+      </Button>
+    </Paper>
+    </center>
+      </Grid>
      
-    <label>Welcome {NameOfUser}
-     
-    </label>
-
+    </Grid>
+    
       <Grid
         container
         justifyContent="center"
         style={{ marginLeft: "1px",height: "20%" }}
       >
-         <Card sx={{boxShadow: 15}} style={{padding: "10px", marginRight: "5px", borderRadius: "20px", backgroundImage: `url(${cardpic})`}}>
+         <Card sx={{boxShadow: 10}} style={{padding: "10px", marginRight: "5px", borderRadius: "20px", backgroundImage: `url(${cardpic})`}}>
         <Grid item xs={11}>
               <div style={{minHeight: "250px", width: "450px"}}>
               <Grid container >
@@ -275,7 +340,7 @@ const BurgerList = () => {
 
                 </Grid>
                 <Grid xs={9} style={{marginTop: "50px"}}>
-                  <label style={{fontSize: "40px", fontFamily: 'Bradley Hand, cursive'}}><strong><span style={{color: "#FFC200",fontSize: "50px"}}>Your </span>Favourite </strong></label> 
+                  <label style={{fontSize: "40px", fontFamily: 'Bradley Hand, cursive', color: "#323435", textShadow: "2px 2px white"}}><strong>Your<span style={{color: "#ECD14C", textShadow: "2px 2px black"}}> Favourite </span> </strong></label> 
                 </Grid>
                 <Grid xs={2}>
                   
@@ -285,7 +350,7 @@ const BurgerList = () => {
                 </Grid>
                 <Grid xs={7}>
                   
-                <h1><strong style={{fontFamily: 'Bradley Hand, cursive'}}>delivery Partner.</strong></h1>
+                <h1><strong style={{fontFamily: 'Bradley Hand, cursive',color: "#323435",textShadow: "2px 2px white"}}>delivery Partner.</strong></h1>
                 </Grid>
                 <Grid xs={7}>
               
@@ -332,13 +397,11 @@ const BurgerList = () => {
         </Grid>
         </Card>
       </Grid>
-      <br />
+     
       <Grid container>
         <Grid xs={6}>
           <Box sx={{ "& > :not(style)": { m: 1 } }}>
-          
-            <h4 style={{ fontSize: "20px"}}> Recommended </h4>
-         
+            <h4 style={{ fontSize: "20px"}}> Recommended </h4>  
         </Box>
         </Grid>
         <Grid xs={6}>
@@ -505,7 +568,7 @@ const BurgerList = () => {
                     <b>₱{Price}</b>
                   </Grid>
                   <Grid xs={12} style={{ textAlign: "justify", marginTop: "5px" }}>
-                    <p style={{ color: "#323435" }}><b>Ingredients:</b> {Desc}</p>
+                    <p style={{ color: "#323435" }}><b>Nutrition Facts:</b> {Desc}</p>
                   </Grid>
                   {/* <Grid xs={6}></Grid> */}
                   <Grid xs={6}>

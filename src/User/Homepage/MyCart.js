@@ -7,7 +7,11 @@ import {
   Box,
   ButtonGroup,
   Button,
-  OutlinedInput
+  OutlinedInput,
+  Modal,
+  Backdrop,
+  Fade,
+  Typography,
 } from "@mui/material";
 import React , {useState,useEffect} from "react";
 import MobileNav from "../../Components/MobileNav";
@@ -22,6 +26,7 @@ import api from '../../api/menu';
 import { getCartChange } from "../../redux/reducers/getCartReducer";
 import notfound from "./notfound.png";
 import { v4 as uuidv4 } from "uuid";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { getLogsChange } from "../../redux/reducers/getLogsReducer";
 import withLoading from "../../HOC/withLoading";
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
@@ -32,6 +37,7 @@ function MyCart() {
   console.log("asa cart", cartNum)
   const [orderDate, setOrderDate] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
+  const [open, setOpen] = useState(false);
   const timestamp = Date.now();
   let timeOrdered = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(timestamp);
   const [counter, setCounter] = useState(1);
@@ -83,14 +89,14 @@ function MyCart() {
 
   const addToApiLogs = async () => {
    
-    // const params ={
-    //   id: uuidv4(),
-    //   date: timeOrdered,
-    //   amount: grandTotal+fee+".00",
-    // }
-    // const result = await api.post("/Logs",params);
-    //   dispatch(getLogsChange(result));
-    //   logsList();
+    const params ={
+      adress: timeOrdered,
+      typeOfDelivery: "COD",
+      toPay: grandTotal + fee
+    }
+    const result = await api.post("/logs",params);
+      dispatch(getLogsChange(result));
+      logsList();
      
   }
 
@@ -104,12 +110,11 @@ function MyCart() {
       
   }
 
-  // const logsList = async () => {
-  //   const response = await api.get("/Logs");
-  //   const result = response.data;
-  //   dispatch(getLogsChange(result));
-  //   console.log("Logs", result);
-  // };
+  const logsList = async () => {
+    const response = await api.get("/logs");
+    const result = response.data;
+    dispatch(getLogsChange(result));
+  };
 
   const cartList = async () => {
     const response = await api.get("/cart");
@@ -120,15 +125,28 @@ function MyCart() {
 
  useEffect(() => {
   cartList();
-  // logsList();
+  logsList();
   }, []);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    borderRadius: "20px",
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <div>
       <MobileNav />
       <Card
         style={{
-          height: "100%",
+          height: "700px",
           padding: "20px",
           margin: "20px",
           borderRadius: "20px",
@@ -267,22 +285,104 @@ function MyCart() {
             
           <Grid xs={12} style={{ textAlign: "right" }}>
             <Box>
-              <form onSubmit={addToApiLogs}>
+             
               <Fab
                 size="medium"
                 variant="extended"
                 style={{ color: "#F9D342", backgroundColor: "#323435" }}
-                type="submit"
+                onClick={() => {setOpen(true)}}
               >
-                Order Now <FmdGoodOutlinedIcon />
+                Place Order <FmdGoodOutlinedIcon />
               </Fab>
-              </form>
+             
             </Box>
           </Grid>
         </Grid>
       </Card>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={() => setOpen(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+          <Box style={{marginBottom: "10px", textAlign: "right"}}>
+          <Fab size="small" onClick={() => setOpen(false)} >
+            
+              <CloseOutlinedIcon />
+         
+          </Fab>
+        </Box>
+       
+        <form>
+           
+            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+              <Grid container>
+               
+                  <Grid xs={12}>
+                    <h4>asdasd</h4>
+                  </Grid>
+                 
+                  <Grid xs={6}>
+                  <Box>
+              <Fab
+                size="medium"
+                variant="extended"
+                style={{ color: "#F9D342", backgroundColor: "#323435" }}
+               
+                onClick={() => {
+                 
+                  setOpen(false);
+                }}
+              >
+                Checkout 
+              </Fab>
+            </Box>
+         
+                  </Grid>
+                  {/* <Grid xs={6} style={{textAlign: "right"}}>
+                    <Card style={{padding: "7px", borderRadius: "20px", width: "70%"}} >
+                    <center >
+                      <AddBoxIcon/>
+                      
+                      <input
+                        type="number"
+                        value={counter}
+                        defaultValue="1"
+                        min="1"
+                        variant="outlined"
+                        style={{ width: "50px", border: "none" }}
+                        onChange={(e) => {
+                          setCounter(e.target.value);
+                        }}
+                        required
+                      />
+                      <IndeterminateCheckBoxIcon
+                        
+                      />
+                    </center>
+                    </Card>
+                  </Grid> */}
+                  
+              </Grid>
+            </Typography>
+            </form>
+          </Box>
+        </Fade>
+      </Modal>
+
+
+
+
     </div>
   );
 }
 
-export default withLoading(MyCart);
+export default MyCart;
