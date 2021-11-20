@@ -91,16 +91,12 @@ const style = {
 
 const BurgerList = () => {
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setCounter("");
-    setOpen(false);
-  } 
+  const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => {
+  //   setOpen(false);
+  // } 
 
-  const [openCart, setOpenCart] = React.useState(false);
-  const handleOpenCart = () => setOpenCart(true);
-  const handleCloseCart = () => setOpenCart(false);
 
   const [counter, setCounter] = useState("");
   const [Name, setFoodName] = useState("");
@@ -118,7 +114,11 @@ const BurgerList = () => {
   const [table, setTable] = useState([]);
   const [cartNumbers, setCartNumbers] = useState([]);
   const [username, setUsername] = useState([]);
+  const [NameOfUser, setnameOfUser] = useState([]);
   useEffect(() => {
+    const filterIsUser = user.filter((users) => users.isUserLog === true);
+    console.log("nafilter na user", filterIsUser[0].name);
+    setnameOfUser(filterIsUser[0].name);
     menuList();
     cartList();
     userList()
@@ -171,21 +171,38 @@ const BurgerList = () => {
   let ctrTotal = 0;
   const dispatch = useDispatch();
 
-  const addToCart = (e) => {
-    e.preventDefault();
-    const params = {
-      cartName: Name,
-      cartPrice: Price,
-      cartImage: Image,
-      cartPcs: 1,
-    };
-    // newCart(params);
-   console.log("paramssss",params);
+  const addToCart = async () => {
+    const filtercartId = cartNum.filter(function(carts) {
+   
+      return carts.cartName.toLowerCase().includes(Name.toLowerCase())
+    });
+    console.log("na filter na name",filtercartId);
+    if(Object.keys(filtercartId).length === 0){
+      const params = {
+        cartName: Name,
+        cartPrice: Price,
+        cartImage: Image,
+        cartPcs: 1,
+      };
+      newCart(params);
+    }
+    else{
+      const params = {
+        cartName: Name,
+        cartPrice: Price,
+        cartImage: Image,
+        cartPcs: filtercartId[0].cartPcs+1
+      }
+      await api.put("/cart/"+filtercartId[0]._id, params);
+    }
+  
   };
   const newCart = async (params) => {
-    const apiNewItem = await api.post("/carts", params);
-    dispatch(getCartChange(apiNewItem));
+    await api.post("/cart", params);
+    // dispatch(getCartChange(apiNewItem));
+    
     cartList();
+    
   };
 
   var settings = {
@@ -241,17 +258,9 @@ const BurgerList = () => {
         </Toolbar>
       </Box>
      
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-       
-         <Card>
-         {user.length > 0 ? (
-              user.map( (name) => {
-                <h1>{name.name}</h1>
-              })
-            ) : null}
-         </Card>
-   
-      </Box>
+    <label>Welcome {NameOfUser}
+     
+    </label>
 
       <Grid
         container
@@ -425,7 +434,7 @@ const BurgerList = () => {
                               setFoodPrice(food.foodPrice);
                               setFoodDesc(food.foodDesc);
                               setFoodPcs(food.foodPcs);
-                              handleOpen();
+                              setOpen(true);
                             }
 
                             // handleOpen()
@@ -456,7 +465,7 @@ const BurgerList = () => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -466,7 +475,7 @@ const BurgerList = () => {
         <Fade in={open}>
           <Box sx={style}>
           <Box style={{marginBottom: "10px", textAlign: "right"}}>
-          <Fab size="small" onClick={handleClose} >
+          <Fab size="small" onClick={() => setOpen(false)} >
             
               <CloseOutlinedIcon />
          
@@ -505,12 +514,13 @@ const BurgerList = () => {
                 size="medium"
                 variant="extended"
                 style={{ color: "#F9D342", backgroundColor: "#323435" }}
-                type="submit"
+               
                 onClick={() => {
                   setFoodName(Name);
                   setFoodImg(Image);
                   setFoodPrice(Price);
                   addToCart();
+                  setOpen(false);
                 }}
               >
                 Add to cart <ShoppingCartOutlinedIcon />
