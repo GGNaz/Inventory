@@ -21,6 +21,7 @@ import MyCart from "./User/Homepage/MyCart";
 import { getLogsChange } from "./redux/reducers/getLogsReducer";
 import Orders from "./User/Homepage/Orders";
 import DefaultPage from "./User/LoginForm/DefaultPage";
+import Chat from "./User/Chat/Chat";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
@@ -91,6 +92,9 @@ function App() {
         </Route>
         <Route exact path="/delivery">
           <Orders/>
+        </Route>
+        <Route exact path="/chat">
+          <Chat/>
         </Route>
       </Switch>
       {/* <UserRestriction path="/home" component={Home} component={BurgerList} isLogin={isLogin} />
