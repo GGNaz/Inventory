@@ -56,45 +56,67 @@ function LoginForm() {
     }
   };
 
+  const checkUserAccount = async () => {
+
+    const params = {
+      email: userDetails.email,
+      password: userDetails.password
+    }
+
+
+    const response = await api.post("/users/login", params);
+    const result = response.data;
+    console.log("User check", result);
+
+    if(result==="wrong"){
+      alert("wrong")
+    }
+    if(result==="OK"){
+      alert("yes")
+    }
+  
+
+  };
+
 
   const btnLogin = (e) => {
-  
-    const checkAccount = user.find((user) => user.email === userDetails.email);
+  checkUserAccount();
+    // const checkAccount = user.find((user) => user.email === userDetails.email);
 
-    if (!checkAccount) {
-      return store.addNotification({
-        title: "Email not exist!",
-        message: "Please check your email.",
-        type: "danger",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true,
-        },
-      });
-    }
+    // if (!checkAccount) {
+    //   return store.addNotification({
+    //     title: "Email not exist!",
+    //     message: "Please check your email.",
+    //     type: "danger",
+    //     insert: "top",
+    //     container: "top-right",
+    //     animationIn: ["animate__animated", "animate__fadeIn"],
+    //     animationOut: ["animate__animated", "animate__fadeOut"],
+    //     dismiss: {
+    //       duration: 3000,
+    //       onScreen: true,
+    //     },
+    //   });
+    // }
 
-    if (checkAccount.password !== userDetails.password) {
-      return store.addNotification({
-        title: "Wrong password!",
-        message: "Please check your password.",
-        type: "danger",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true,
-        },
-      });
-    }
+    // if (checkAccount.password !== userDetails.password) {
+    //   return store.addNotification({
+    //     title: "Wrong password!",
+    //     message: "Please check your password.",
+    //     type: "danger",
+    //     insert: "top",
+    //     container: "top-right",
+    //     animationIn: ["animate__animated", "animate__fadeIn"],
+    //     animationOut: ["animate__animated", "animate__fadeOut"],
+    //     dismiss: {
+    //       duration: 3000,
+    //       onScreen: true,
+    //     },
+    //   });
+    // }
     
-    UpdateUserIsTrue(userDetails.email);
-    history.push("/home");
+    // UpdateUserIsTrue(userDetails.email);
+    // history.push("/home");
   
   };
 
@@ -169,6 +191,7 @@ function LoginForm() {
                         value={userDetails.email}
                         onChange={checkCredentials('email')}
                         fullWidth
+                        
                       />
                     </Grid>
                     
@@ -180,6 +203,7 @@ function LoginForm() {
             type={userDetails.showPassword ? 'text' : 'password'}
             value={userDetails.password}
             onChange={checkCredentials('password')}
+            
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
