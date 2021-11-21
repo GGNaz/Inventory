@@ -188,7 +188,10 @@ const BurgerList = () => {
   const dispatch = useDispatch();
 
   const addToCart = async () => {
-    const filtercartId = cartNum.filter(function (carts) {
+    const response = await api.get("/cart");
+    const result = response.data;
+
+    const filtercartId = result.filter(function (carts) {
       return carts.cartName.toLowerCase().includes(Name.toLowerCase());
     });
     console.log("na filter na name", filtercartId);
@@ -593,7 +596,7 @@ const BurgerList = () => {
         <Fade in={open}>
           <Box sx={style}>
             <Box style={{ marginBottom: "10px", textAlign: "right" }}>
-              <Fab size="small" onClick={() => setOpen(false)}>
+              <Fab size="small" onClick={() => setOpen(false)} style={{backgroundColor: "#e57373", color: "white"}}>
                 <CloseOutlinedIcon />
               </Fab>
             </Box>
@@ -619,14 +622,14 @@ const BurgerList = () => {
                     <h4>{Name}</h4>
                   </Grid>
                   <Grid xs={4} style={{ textAlign: "right" }}>
-                    <b>₱{Price}</b>
+                    <b>₱{Price}.00</b>
                   </Grid>
                   <Grid
                     xs={12}
                     style={{ textAlign: "justify", marginTop: "5px" }}
                   >
                     <p style={{ color: "#323435" }}>
-                      <b>Nutrition Facts:</b> {Desc}
+                      <h6 style={{fontWeight: "600"}}>Ingredients</h6> {Desc}
                     </p>
                   </Grid>
                   {/* <Grid xs={6}></Grid> */}
@@ -692,13 +695,14 @@ const BurgerList = () => {
            <SuccessLottie/>
            <div style={{textAlign: "center"}}>
            <h4>Success!</h4>
-           <p>You may check your cart at the top right corner of your screen.</p>
+           <p>You may check your cart.</p>
            </div>
           </Typography>
           
           <Box style={{textAlign: "right"}}>
            <Fab variant="extended" size="medium" style={{backgroundColor: "#e57373", color: "white"}} onClick={() => {
              setModalAlert(false);
+           
            }}>Close</Fab>
           </Box>
           

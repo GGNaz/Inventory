@@ -153,11 +153,11 @@ function MyCart() {
         }}
       >
         <Box>
+        <Link to="/home" style={{color: "#323435"}}>
           <Fab size="medium" >
-            <Link to="/home" style={{color: "#323435"}}>
               <ArrowBackIosNewOutlinedIcon />
-            </Link>
           </Fab>
+        </Link>
         </Box>
         <Grid container>
           <Grid xs={12} style={{ textAlign: "center" }}>
