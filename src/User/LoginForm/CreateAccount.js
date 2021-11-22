@@ -1,4 +1,17 @@
-import { Card, Grid, Button, TextField, Fab, Box, Modal, Typography } from "@mui/material";
+import { Card, 
+  Grid, 
+  Button, 
+  TextField, 
+  Fab, 
+  Box, 
+  Modal, 
+  Typography,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  FormControl
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import logo from "../Homepage/sample.png";
@@ -27,6 +40,9 @@ import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import CreateLottie from "../../Components/CreateLottie";
+import PhotoCameraRoundedIcon from '@mui/icons-material/PhotoCameraRounded';
+import CropOriginalRoundedIcon from '@mui/icons-material/CropOriginalRounded';
+import ImageRoundedIcon from '@mui/icons-material/ImageRounded';
 function CreateAccount() {
 
   const successStyle = {
@@ -44,6 +60,7 @@ function CreateAccount() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.getUser.getUser);
   const [modalAlert, setModalAlert] = useState(false);
+  const [viewImage, setViewImage] = useState(false);
   const [userlist, setUserList] = useState("");
   const [pchecker, setPchecker] = useState("");
   const [cchecker, setCchecker] = useState("");
@@ -209,6 +226,7 @@ function CreateAccount() {
                   <Grid xs={12}>
                     <Grid xs={12}>
                       <TextField
+                      
                         color={
                           name!=="" ? (
                             "success"
@@ -221,7 +239,7 @@ function CreateAccount() {
                         variant="outlined"
                         style={{
                           marginTop: 11,
-                         
+                          backgroundColor: "#F5FAFE"
                         }}
                         name="name"
                         value={name}
@@ -244,7 +262,7 @@ function CreateAccount() {
                         variant="outlined"
                         style={{
                           marginTop: 11,
-                         
+                          backgroundColor: "#F5FAFE"
                         }}
                         name="email"
                         value={email}
@@ -279,7 +297,7 @@ function CreateAccount() {
                           variant="outlined"
                           style={{
                             marginTop: 11,
-                           
+                            backgroundColor: "#F5FAFE"
                           }}
                           name="password"
                           value={password}
@@ -316,7 +334,7 @@ function CreateAccount() {
                           variant="outlined"
                           style={{
                             marginTop: 11,
-                          
+                            backgroundColor: "#F5FAFE"
                           }}
                           name="confirmPassword"
                           value={confirmPassword}
@@ -326,26 +344,43 @@ function CreateAccount() {
                       </Grid>
                     </Grid>
                     <Grid xs={12}>
-                      <TextField
-                        color={
-                        picture!=="" ? (
-                            "success"
-                          ):(
-                            "error"
-                          )
-                        }
-                        label="Picture Link"
-                        id="reddit-input"
-                        variant="outlined"
-                        style={{
-                          marginTop: 11
-                        }}
-                        value={picture}
-                        onChange={(e) => {setPicture(e.target.value)}}
-                        name="picture"
-                        fullWidth
-                        required
-                      />
+                    <FormControl variant="outlined" sx={{ mt:2}} fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password"
+           color={
+            picture!=="" ? (
+                "success"
+              ):(
+                "error"
+              )
+            }
+          >Picture Link *</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            color={
+              picture!=="" ? (
+                  "success"
+                ):(
+                  "error"
+                )
+              }
+              value={picture}
+              onChange={(e) => {setPicture(e.target.value)}}
+            style={{backgroundColor: "#F5FAFE"}}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                
+                  edge="end"
+                >
+                <ImageRoundedIcon onClick={() => {setViewImage(true)}} />
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Picture link"
+          />
+        </FormControl>
+
                     </Grid>
                   </Grid>
                   <Grid xs={12} style={{ marginTop: "25px" }}>
@@ -363,7 +398,7 @@ function CreateAccount() {
                   </Grid>
                 </form>
               </Grid>
-              <Grid xs={12} style={{ marginTop: "35px" }}>
+              <Grid xs={12} style={{ marginTop: "30px" }}>
                 <Link to="/login" style={{ color: "#323435", textDecoration: "none"}}>
                   Already have an account? <span style={{color: "#767779"}}>Login</span>
                 </Link>
@@ -394,13 +429,47 @@ function CreateAccount() {
           
           <Box style={{textAlign: "center", marginTop: "50px"}}>
            <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
-             setModalAlert(false);
-           
+             setModalAlert(false);   
            }}>OK</Fab>
           </Box>
           
         </Box>
       </Modal>
+
+      <Modal
+        open={viewImage}
+        onClose={!viewImage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+        {!picture ? (
+          <center>
+             <h4>No image found</h4>
+          </center>
+           
+          ):(
+            <div style={{textAlign: "center"}}>
+            <img src={picture} style={{height: "300px"}} />
+            <Typography id="modal-modal-description" sx={{ mt: 2 }} >
+            <center>
+             <h4>Image Preview</h4>
+            </center>
+          </Typography>
+            </div>
+          )}
+          
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+             setViewImage(false);   
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
+
     </div>
   );
 }

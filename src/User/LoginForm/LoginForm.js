@@ -222,7 +222,7 @@ function LoginForm() {
                         value={userDetails.email}
                         onChange={checkCredentials('email')}
                         fullWidth
-                        
+                        style={{backgroundColor: "#F5FAFE"}}
                       />
                     </Grid>
                     
@@ -234,7 +234,7 @@ function LoginForm() {
             type={userDetails.showPassword ? 'text' : 'password'}
             value={userDetails.password}
             onChange={checkCredentials('password')}
-            
+            style={{backgroundColor: "#F5FAFE"}}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
