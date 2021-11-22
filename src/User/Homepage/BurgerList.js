@@ -111,7 +111,7 @@ const BurgerList = () => {
   // const handleClose = () => {
   //   setOpen(false);
   // }
-
+  const history = useHistory();
   const [counter, setCounter] = useState("");
   const [Name, setFoodName] = useState("");
   const [Price, setFoodPrice] = useState("");
@@ -129,6 +129,7 @@ const BurgerList = () => {
   const [cartNumbers, setCartNumbers] = useState([]);
   const [username, setUsername] = useState([]);
   const [NameOfUser, setnameOfUser] = useState([]);
+
   useEffect(() => {
     menuList();
     cartList();
@@ -155,10 +156,16 @@ const BurgerList = () => {
     const filterIsUser = await result.filter(function (users) {
       return users.isUserLog === true;
     });
-    console.log(filterIsUser[0]._id);
-    const findresponse = await api.get("/users/" + filterIsUser[0]._id);
-    console.log(findresponse.data[0].name);
-    setnameOfUser(findresponse.data[0].name);
+    console.log("status",filterIsUser);
+    if(filterIsUser===false){
+      history.push("/login");
+    }
+    else{
+      const findresponse = await api.get("/users/" + filterIsUser[0]._id);
+      console.log(findresponse.data[0].name);
+      setnameOfUser(findresponse.data[0].name);
+    }
+    
     // if(findresponse){
     //   setnameOfUser(findresponse[0].name);
     // }

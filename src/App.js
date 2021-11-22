@@ -22,6 +22,7 @@ import { getLogsChange } from "./redux/reducers/getLogsReducer";
 import Orders from "./User/Homepage/Orders";
 import DefaultPage from "./User/LoginForm/DefaultPage";
 import Chat from "./User/Chat/Chat";
+import Profile from "./User/Homepage/Profile";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
@@ -86,6 +87,9 @@ function App() {
         </Route>
         <Route exact path="/accounts">
           <Accounts />
+        </Route>
+        <Route exact path="/profile">
+          <Profile/>
         </Route>
         <Route exact path="/mycart">
           <MyCart/>

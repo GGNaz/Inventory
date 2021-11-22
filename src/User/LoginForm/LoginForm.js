@@ -63,16 +63,46 @@ function LoginForm() {
       password: userDetails.password
     }
 
-
+    const checkAccount = user.find((user) => user.email === userDetails.email);
+    if (!checkAccount) {
+        return store.addNotification({
+          title: "Email not exist!",
+          message: "Please check your email.",
+          type: "danger",
+          insert: "top",
+          container: "top-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 3000,
+            onScreen: true,
+          },
+        });
+      }
     const response = await api.post("/users/login", params);
     const result = response.data;
     console.log("User check", result);
 
     if(result==="wrong"){
-      alert("wrong")
+      return store.addNotification({
+            title: "Wrong password!",
+            message: "Please check your password.",
+            type: "danger",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+              duration: 3000,
+              onScreen: true,
+            },
+          });
     }
+
+   
     if(result==="OK"){
-      alert("yes")
+      UpdateUserIsTrue(userDetails.email);
+      history.push("/home");
     }
   
 
@@ -81,7 +111,7 @@ function LoginForm() {
 
   const btnLogin = (e) => {
   checkUserAccount();
-    // const checkAccount = user.find((user) => user.email === userDetails.email);
+   
 
     // if (!checkAccount) {
     //   return store.addNotification({
@@ -129,7 +159,7 @@ function LoginForm() {
   };
 
   const UpdateUserIsTrue = async (userEmail) => {
-    const response = await api.put("/users/"+userEmail, {isUserLog : true} );
+    const response = await api.put("/users/email/"+userEmail, {isUserLog : true} );
     const result = response.data;
     dispatch(getUserChange(result));
     console.log("User", result);
@@ -158,28 +188,29 @@ function LoginForm() {
       <MobileNav />
       <ReactNotification />
       <center>
-        <img src={logo} style={{ height: "200px" }} />
+        
         <Grid
           container
           spacing={2}
           direction="column"
-          style={{ textAlign: "center", padding: "10px", marginTop: "10px" }}
+          style={{ textAlign: "center", padding: "20px" }}
         >
           <Grid item xs={12}>
             <Card style={{ padding: "40px", borderRadius: "20px" }}>
+            <img src="https://st2.depositphotos.com/1323913/11824/v/600/depositphotos_118248912-stock-illustration-vector-realistic-retro-pizza-delivery.jpg" style={{ height: "300px" }} />
               <Grid xs={12}>
-                <label
+                <h4
                   style={{
-                    fontFamily: "Apple Chancery, cursive",
+                    
                     fontSize: "30px",
                     color: "#323435"
                   }}
                 >
-                  <b>Tara Eat</b>
-                </label>
+                  <b>Login Now</b>
+                </h4>
+                <p style={{color: "#767779"}}>Please enter the details below to continue.</p>
               </Grid>
 
-             
                 <form style={{ marginTop: "30px"}}>
                   <Grid xs={12}>
                     <Grid xs={12}>
@@ -238,24 +269,29 @@ function LoginForm() {
                     </Grid> */}
                       </Grid> 
                   </Grid>
-                  <Grid xs={12} style={{ textAlign: "right" }}>
-                    <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                  <Grid xs={12} 
+                  style={{textAlign: "right", marginBottom: "20px", marginTop: "5px"}}>
+                    <label style={{color: "#767779", fontSize: "15px"}}>Forgot Password</label>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Box>
                       <Fab
-                        size="medium"
+                        size="large"
                         variant="extended"
-                        style={{ color: "#F9D342", backgroundColor: "#323435" }}
+                        style={{ color: "#F9D342", backgroundColor: "#323435", width: "100%"}}
                         aria-label="add"
                         onClick={btnLogin}
+                       
                       >
-                        <label style={{ marginRight: "5px" }}> Login</label><LoginIcon/>
+                        Login
                       </Fab>
                     </Box>
                   </Grid>
                 </form>
               
-              <br /><br /><br />
-              <Link to="/createAccount" style={{ color: "#323435" }}>
-                New user? Click here
+              <br />
+              <Link to="/createAccount" style={{ color: "#323435", textDecoration: "none" }}>
+                Don't have an account? <span style={{color: "#767779"}}>Register</span>
               </Link>
 
               <Grid container style={{ marginTop: "23.5%" }}>
@@ -263,29 +299,6 @@ function LoginForm() {
                   <span>&#169;</span>{" "}
                   <label>Tara Eat App by Nazer Somera</label>
                 </Grid>
-                <Grid xs={12} style={{ marginTop: "10px" }}>
-                  <h6>Follow us</h6>
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={2}>
-                  <img
-                    src="https://i.pinimg.com/564x/5b/8b/9c/5b8b9c0d8b8dbc20c53eed722860f42e.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={2} style={{ textAlign: "center" }}>
-                  <img
-                    src="https://i.pinimg.com/564x/17/cd/d1/17cdd19cfbb3545713b5dfe930dd580b.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={2} style={{ textAlign: "center" }}>
-                  <img
-                    src="https://i.pinimg.com/564x/b4/1d/09/b41d094c54d3949b32a8592924933ff3.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={3}></Grid>
               </Grid>
             </Card>
           </Grid>

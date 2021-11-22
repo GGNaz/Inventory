@@ -51,7 +51,7 @@ function Accounts() {
   });
 
   const userList = async () => {
-    const response = await api.get("/account");
+    const response = await api.get("/users");
     const result = response.data;
     dispatch(getUserChange(result));
     console.log("User", result);
@@ -120,8 +120,8 @@ function Accounts() {
       });
     } else {
       const params = {
-        id: uuidv4(),
-        Name: userDetails.name,
+        
+        name: userDetails.name,
         email: userDetails.email,
         password: userDetails.password,
         picture: userDetails.picture,

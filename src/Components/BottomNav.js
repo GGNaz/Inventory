@@ -63,7 +63,7 @@ function BottomNav() {
         <PersonIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
 
-      onClick: () => history.push("/accounts"),
+      onClick: () => history.push("/profile"),
     },
   ];
   return (

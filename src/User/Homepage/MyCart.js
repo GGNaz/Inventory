@@ -154,7 +154,7 @@ function MyCart() {
       >
         <Box>
         <Link to="/home" style={{color: "#323435"}}>
-          <Fab size="medium" >
+          <Fab size="medium" style={{backgroundColor: "#323435", color: "#ECD14C"}}>
               <ArrowBackIosNewOutlinedIcon />
           </Fab>
         </Link>
