@@ -1,4 +1,4 @@
-import { Card, Grid, Button, TextField, Fab, Box } from "@mui/material";
+import { Card, Grid, Button, TextField, Fab, Box, Modal, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import logo from "../Homepage/sample.png";
@@ -26,75 +26,50 @@ import { Link } from "react-router-dom";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import CreateLottie from "../../Components/CreateLottie";
 function CreateAccount() {
+
+  const successStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    
+    p: 4,
+  };
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.getUser.getUser);
+  const [modalAlert, setModalAlert] = useState(false);
   const [userlist, setUserList] = useState("");
   const [pchecker, setPchecker] = useState("");
   const [cchecker, setCchecker] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setCPassword] = useState("");
+  const [picture, setPicture] = useState("");
   useEffect(() => {
     userList();
    
   }, []);
 
   const userList = async () => {
-    const response = await api.get("/account");
+    const response = await api.get("/users");
     const result = response.data;
     dispatch(getUserChange(result));
     console.log("User", result);
   };
 
-  const [userDetails, setAccoountDetails] = useState({
-    email: "",
-    password: "",
-    name: "",
-    confirmPassword: "",
-    picture: "",
-  });
-
-  const checkCredentials = (e) => {
-    switch (e.target.name) {
-      case "name":
-        setAccoountDetails({
-          ...userDetails,
-          name: e.target.value,
-        });
-        break;
-      case "email":
-        setAccoountDetails({
-          ...userDetails,
-          email: e.target.value,
-        });
-        break;
-      case "password":
-        setAccoountDetails({
-          ...userDetails,
-          password: e.target.value,
-        });
-        break;
-      case "confirmPassword":
-        setAccoountDetails({
-          ...userDetails,
-          confirmPassword: e.target.value,
-        });
-        break;
-      case "picture":
-        setAccoountDetails({
-          ...userDetails,
-          picture: e.target.value,
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
   const NewAccount = () => {
     if (
-      !userDetails.name ||
-      !userDetails.email ||
-      !userDetails.password ||
-      !userDetails.picture
+      !name ||
+      !email ||
+      !password ||
+      !picture
     ) {
       store.addNotification({
         title: "Fill all fields!",
@@ -111,91 +86,63 @@ function CreateAccount() {
       });
     } else {
       const params = {
-        id: uuidv4(),
-        Name: userDetails.name,
-        email: userDetails.email,
-        password: userDetails.password,
-        picture: userDetails.picture,
+       
+        name: name,
+        email: email,
+        password: password,
+        picture: picture,
+        userType: "Buyer",
+        address: "",
+        order: 0,
       };
 
       createAccount(params);
     }
   };
 
-  const clearForm = () => {
-    return (
-      (userDetails.name = ""),
-      (userDetails.email = ""),
-      (userDetails.password = ""),
-      (userDetails.picture = ""),
-      (userDetails.confirmPassword = "")
-    );
-  };
+     
+   
 
   const createAccount = async (params) => {
-    const apiNewItem = await api.post("/Account", params);
-    dispatch(getMenuChange(apiNewItem));
-    clearForm();
-    userList();
+    const apiNewItem = await api.post("/users", params);
+    console.log("new user",apiNewItem)
+    if(apiNewItem.status===201){
+      setModalAlert(true);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setCPassword("");
+      setPicture("");
+      userList();
+    }
     
-      store.addNotification({
-        title: "New Account created!",
-        message: "You can now log into another account.",
-        type: "success",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true,
-        },
-      });
+    // userList();
+    
+    //   store.addNotification({
+    //     title: "New Account created!",
+    //     message: "You can now log into another account.",
+    //     type: "success",
+    //     insert: "top",
+    //     container: "top-right",
+    //     animationIn: ["animate__animated", "animate__fadeIn"],
+    //     animationOut: ["animate__animated", "animate__fadeOut"],
+    //     dismiss: {
+    //       duration: 3000,
+    //       onScreen: true,
+    //     },
+    //   });
  
     // return setAccoountDetails("");
   };
 
+ const ShowConfirm = () => {
+
+ }
 
 
-  const RedditTextField = styled((props) => (
-    <TextField InputProps={{ disableUnderline: false }} {...props} />
-  ))(({ theme }) => ({
-    "& .MuiFilledInput-root": {
-      border: "2px solid #e2e2e1",
-      overflow: "hidden",
-      borderRadius: 4,
-      backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-      transition: theme.transitions.create([
-        "border-color",
-        "background-color",
-        "box-shadow",
-      ]),
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-      "&.Mui-focused": {
-        backgroundColor: "transparent",
-
-        // boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-        borderColor:
-          theme.palette.primary.main === "light" ? "#ffc107" : "#ffc107",
-      },
-    },
-  }));
-
-  var settings = {
-    dots: true,
-    infinite: true,
-
-    speed: 1000,
-    autoplay: true,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-  };
-
-  const btnLogin = (e) => {
-    e.preventDefault();
-    const checkAccount = user.find((user) => user.email === userDetails.email);
+  const btnLogin = () => {
+   
+    const checkAccount = user.find((user) => user.email === email);
 
     if (checkAccount) {
       return store.addNotification({
@@ -212,7 +159,7 @@ function CreateAccount() {
         },
       });
     }
-    if (userDetails.password !== userDetails.confirmPassword) {
+    if (password !== confirmPassword) {
       return store.addNotification({
         title: "Password did not match!",
         message: "Check your password",
@@ -235,24 +182,25 @@ function CreateAccount() {
       <MobileNav />
       <ReactNotification />
       <center>
-        <img src={logo} style={{ height: "200px" }} />
-        <Grid
+       <Grid
           container
           spacing={2}
           direction="column"
-          style={{ textAlign: "center", padding: "10px", marginTop: "10px" }}
+          style={{ textAlign: "center", padding: "20px"}}
         >
           <Grid item xs={12}>
             <Card style={{ padding: "40px", borderRadius: "20px" }}>
-              <Grid xs={12}>
-                <label
+            <img src="https://st2.depositphotos.com/1323913/11824/v/600/depositphotos_118248912-stock-illustration-vector-realistic-retro-pizza-delivery.jpg" style={{ height: "300px" }} />
+            <Grid xs={12}>
+                <h4
                   style={{
-                    fontFamily: "Apple Chancery, cursive",
                     fontSize: "30px",
+                    color: "#323435"
                   }}
                 >
-                  <b>Tara Eat</b>
-                </label>
+                  <b>Create Account</b>
+                </h4>
+                <p style={{color: "#767779"}}>Please fill up all fields to create account.</p>
               </Grid>
 
               <Grid container>
@@ -261,36 +209,48 @@ function CreateAccount() {
                   <Grid xs={12}>
                     <Grid xs={12}>
                       <TextField
-                        color="warning"
+                        color={
+                          name!=="" ? (
+                            "success"
+                          ):(
+                            "error"
+                          )
+                        }
                         label="Name"
                         id="reddit-input"
-                        variant="filled"
+                        variant="outlined"
                         style={{
                           marginTop: 11,
-                          border: "2px solid #e2e2e1",
-                          borderRadius: "5px",
+                         
                         }}
                         name="name"
-                        value={userDetails.name}
-                        onChange={checkCredentials}
+                        value={name}
+                        onChange={(e) => {setName(e.target.value)}}
                         fullWidth
+                        required
                       />
                     </Grid>
                     <Grid xs={12}>
                       <TextField
-                        color="warning"
+                        color={
+                          email!=="" ? (
+                            "success"
+                          ):(
+                            "error"
+                          )
+                        }
                         label="Email"
                         id="reddit-input"
-                        variant="filled"
+                        variant="outlined"
                         style={{
                           marginTop: 11,
-                          border: "2px solid #e2e2e1",
-                          borderRadius: "5px",
+                         
                         }}
                         name="email"
-                        value={userDetails.email}
-                        onChange={checkCredentials}
+                        value={email}
+                        onChange={(e) => {setEmail(e.target.value)}}
                         fullWidth
+                        required
                       />
                     </Grid>
                     <Grid container>
@@ -298,148 +258,149 @@ function CreateAccount() {
                         <TextField
                           type="password"
                           color={
-                            userDetails.password === ""
-                              ? "warning"
-                              : userDetails.password.length <= 5
-                              ? "warning"
-                              : userDetails.password.length >= 6
+                           password === ""
+                              ? "error"
+                              : password.length <= 5
+                              ? "error"
+                              : password.length >= 6
                               ? "success"
                               : null
                           }
                           label={
-                            userDetails.password === ""
+                            password === ""
                               ? "Password"
-                              : userDetails.password.length <= 5
+                              : password.length <= 5
                               ? "Weak Password"
-                              : userDetails.password.length >= 6
+                              : password.length >= 6
                               ? "Strong Password"
                               : null
                           }
                           id="reddit-input"
-                          variant="filled"
+                          variant="outlined"
                           style={{
                             marginTop: 11,
-                            border: "2px solid #e2e2e1",
-                            borderRadius: "5px",
+                           
                           }}
                           name="password"
-                          value={userDetails.password}
-                          onChange={checkCredentials}
+                          value={password}
+                          onChange={(e) => {setPassword(e.target.value)}}
+                          required
                         />
                       </Grid>
                       <Grid xs={6}>
                         <TextField
                           type="password"
                           color={
-                            userDetails.confirmPassword === ""
-                              ? "warning"
-                              : userDetails.confirmPassword !==
-                                userDetails.password
-                              ? "warning"
-                              : userDetails.confirmPassword ===
-                                userDetails.password
+                            confirmPassword === ""
+                              ? "error"
+                              : confirmPassword !==
+                                password
+                              ? "error"
+                              : confirmPassword ===
+                                password
                               ? "success"
                               : null
                           }
                           label={
-                            userDetails.confirmPassword === ""
+                            confirmPassword === ""
                               ? "Confirm Password"
-                              : userDetails.confirmPassword !==
-                                userDetails.password
+                              : confirmPassword !==
+                                password
                               ? "Confirm Password"
-                              : userDetails.confirmPassword ===
-                                userDetails.password
+                              : confirmPassword ===
+                                password
                               ? "Password Match"
                               : null
                           }
                           id="reddit-input"
-                          variant="filled"
+                          variant="outlined"
                           style={{
                             marginTop: 11,
-                            border: "2px solid #e2e2e1",
-                            borderRadius: "5px",
+                          
                           }}
                           name="confirmPassword"
-                          value={userDetails.confirmPassword}
-                          onChange={checkCredentials}
+                          value={confirmPassword}
+                          onChange={(e) => {setCPassword(e.target.value)}}
+                          required
                         />
                       </Grid>
                     </Grid>
                     <Grid xs={12}>
                       <TextField
-                        color="warning"
+                        color={
+                        picture!=="" ? (
+                            "success"
+                          ):(
+                            "error"
+                          )
+                        }
                         label="Picture Link"
                         id="reddit-input"
-                        variant="filled"
+                        variant="outlined"
                         style={{
-                          marginTop: 11,
-                          border: "2px solid #e2e2e1",
-                          borderRadius: "5px",
+                          marginTop: 11
                         }}
-                        value={userDetails.picture}
-                        onChange={checkCredentials}
+                        value={picture}
+                        onChange={(e) => {setPicture(e.target.value)}}
                         name="picture"
                         fullWidth
+                        required
                       />
                     </Grid>
                   </Grid>
-                  <Grid xs={12} style={{ textAlign: "right" }}>
-                    <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                  <Grid xs={12} style={{ marginTop: "25px" }}>
+                    <Box>
                       <Fab
-                        size="medium"
+                        size="large"
                         variant="extended"
-                        style={{ color: "#F9D342", backgroundColor: "#323435" }}
+                        style={{ color: "#F9D342", backgroundColor: "#323435", width: "100%" }}
                         aria-label="add"
                         onClick={btnLogin}
                       >
-                        <label style={{ marginRight: "5px" }}>
-                          {" "}
                           Create account
-                        </label>
-                        <CheckCircleOutlineOutlinedIcon />
                       </Fab>
                     </Box>
                   </Grid>
                 </form>
               </Grid>
-              <br />
-              <Link to="/login" style={{ color: "#323435" }}>
-                Already have account. Click here
-              </Link>
-
-              <Grid container style={{ marginTop: "30px" }}>
-                <Grid xs={12}>
-                  <span>&#169;</span>{" "}
-                  <label>Tara Eat App by Nazer Somera</label>
-                </Grid>
-                <Grid xs={12} style={{ marginTop: "10px" }}>
-                  <h6>Follow us</h6>
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={2}>
-                  <img
-                    src="https://i.pinimg.com/564x/5b/8b/9c/5b8b9c0d8b8dbc20c53eed722860f42e.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={2} style={{ textAlign: "center" }}>
-                  <img
-                    src="https://i.pinimg.com/564x/17/cd/d1/17cdd19cfbb3545713b5dfe930dd580b.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={2} style={{ textAlign: "center" }}>
-                  <img
-                    src="https://i.pinimg.com/564x/b4/1d/09/b41d094c54d3949b32a8592924933ff3.jpg"
-                    style={{ height: "30px" }}
-                  />
-                </Grid>
-                <Grid xs={3}></Grid>
+              <Grid xs={12} style={{ marginTop: "35px" }}>
+                <Link to="/login" style={{ color: "#323435", textDecoration: "none"}}>
+                  Already have an account? <span style={{color: "#767779"}}>Login</span>
+                </Link>
               </Grid>
+             
+
             </Card>
           </Grid>
         </Grid>
       </center>
+
+      <Modal
+        open={modalAlert}
+        onClose={!modalAlert}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+          
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           <CreateLottie/>
+           <div style={{textAlign: "center"}}>
+           <h4>Account Created!</h4>
+           <p>You may login your account.</p>
+           </div>
+          </Typography>
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+             setModalAlert(false);
+           
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
     </div>
   );
 }
