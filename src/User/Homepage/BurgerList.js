@@ -152,19 +152,15 @@ const BurgerList = () => {
     const response = await api.get("/users");
     const result = response.data;
     setUsername(result);
+    console.log(result)
 
     const filterIsUser = await result.filter(function (users) {
       return users.isUserLog === true;
     });
     console.log("status",filterIsUser);
-    if(filterIsUser===false){
-      history.push("/login");
-    }
-    else{
-      const findresponse = await api.get("/users/" + filterIsUser[0]._id);
-      console.log(findresponse.data[0].name);
-      setnameOfUser(findresponse.data[0].name);
-    }
+  
+      setnameOfUser(filterIsUser[0].name);
+
     
     // if(findresponse){
     //   setnameOfUser(findresponse[0].name);
@@ -172,7 +168,7 @@ const BurgerList = () => {
   };
 
   useEffect(() => {
-    const filterFood = menu.filter(function (food) {
+    const filterFood = table.filter(function (food) {
       return food.foodName.toLowerCase().includes(search.toLowerCase());
 
       // food.foodType.toLowerCase().includes(search.toLowerCase())
@@ -187,7 +183,7 @@ const BurgerList = () => {
     if (search !== "") {
       return filterFood;
     }
-    return menu;
+    return table;
   };
 
   let total = 0;
@@ -261,7 +257,7 @@ const BurgerList = () => {
         </Grid>
         <Grid xs={2} style={{ padding: "10px 10px 10px 10px" }}>
           <Link
-            to="/mycart"
+            to="/cart"
             style={{ color: "#323435", textDecoration: "none" }}
           >
             <Fab style={{ backgroundColor: "#F9D342" }}>
@@ -328,7 +324,7 @@ const BurgerList = () => {
                   <CloseRoundedIcon
                     onClick={() => {
                       setSearch("");
-                      return menu;
+                      return table;
                     }}
                   />
                 )}
@@ -465,7 +461,7 @@ const BurgerList = () => {
       </Grid>
 
       <Slider {...settings}>
-        {menu.length > 0 ? (
+        {table.length > 0 ? (
           searchField().map((food) => (
             <div key={food._id}>
               <Card
@@ -706,11 +702,10 @@ const BurgerList = () => {
            </div>
           </Typography>
           
-          <Box style={{textAlign: "right"}}>
-           <Fab variant="extended" size="medium" style={{backgroundColor: "#e57373", color: "white"}} onClick={() => {
-             setModalAlert(false);
-           
-           }}>Close</Fab>
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+              setModalAlert(false);
+           }}>OK</Fab>
           </Box>
           
         </Box>

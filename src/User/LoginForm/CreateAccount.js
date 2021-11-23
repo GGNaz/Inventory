@@ -78,7 +78,7 @@ function CreateAccount() {
     const response = await api.get("/users");
     const result = response.data;
     dispatch(getUserChange(result));
-    console.log("User", result);
+  
   };
 
   const NewAccount = () => {
@@ -122,7 +122,7 @@ function CreateAccount() {
 
   const createAccount = async (params) => {
     const apiNewItem = await api.post("/users", params);
-    console.log("new user",apiNewItem)
+   
     if(apiNewItem.status===201){
       setModalAlert(true);
       setName("");

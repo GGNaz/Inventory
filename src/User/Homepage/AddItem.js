@@ -11,6 +11,11 @@ import {
   TextField,
   Box,
   Fab,
+  Modal,
+  Typography,
+  IconButton,
+  OutlinedInput,
+  InputAdornment
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import React, { useState, useEffect } from "react";
@@ -28,40 +33,43 @@ import addicon from "./addicon.png";
 import { alpha, styled } from "@mui/material/styles";
 import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import ImageRoundedIcon from '@mui/icons-material/ImageRounded';
+import ErrorLottie from "../../Components/ErrorLottie";
+import SuccessLottie from "../../Components/SuccessLottie";
+
 function AddItem() {
+  const dispatch = useDispatch();
+  const successStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    borderRadius: "20px",
+    
+    p: 4,
+  };
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [picture, setPicture] = useState("");
   const [pcs, setPcs] = useState("");
   const [desc, setDesc] = useState("");
   const [ftype, setType] = useState("");
-  const dispatch = useDispatch();
+  const [viewImage, setViewImage] = useState(false);
+  const [modalAlert, setModalAlert] = useState(false);
+  const [successAdd, setSuccessAdd] = useState(false);
 
-  const RedditTextField = styled((props) => (
-    <TextField InputProps={{ disableUnderline: false }} {...props} />
-  ))(({ theme }) => ({
-    "& .MuiFilledInput-root": {
-      border: "2px solid #e2e2e1",
-      overflow: "hidden",
-      borderRadius: 4,
-      backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-      transition: theme.transitions.create([
-        "border-color",
-        "background-color",
-        "box-shadow",
-      ]),
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
-      "&.Mui-focused": {
-        backgroundColor: "transparent",
+  useEffect(() => {
+    getAllProducts();
+  }, [])
 
-        // boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-        borderColor:
-          theme.palette.primary.main === "light" ? "#ffc107" : "#ffc107",
-      },
-    },
-  }));
+  const getAllProducts = async () => {
+    const response = await api.get("/products");
+    const result = response.data;
+    console.log("products",result)
+  }
 
   const clearForm = () => {
     return (
@@ -75,70 +83,39 @@ function AddItem() {
      
   };
 
-  const NewItem = (e) => {
-    console.log("addbtn");
-    e.preventDefault();
-    if (!name || !price || !picture || !pcs || !desc) {
-      store.addNotification({
-        title: "Fill all fields!",
-        message: "Other fields are empty.",
-        type: "danger",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true,
-        },
-      });
-    } else {
-      const params = {
-        id: uuidv4(),
-        foodName: name,
-        foodPrice: price+".00",
-        foodImage: picture,
-        foodPcs: pcs,
-        foodDesc: desc,
-        foodType: ftype,
-      };
-      NewMenu(params);
+
+
+  const addItem = async () => {
+
+    if(!name || 
+      !price || 
+      !picture ||
+      !pcs ||
+      !desc ||
+      !ftype 
+      ){
+       setModalAlert(true);
+      }
+
+    const params = {
+      foodName: name,
+      foodPrice: price,
+      foodImage: picture,
+      foodPcs: pcs,
+      foodDesc: desc,
+      foodType: ftype
     }
 
-    // const apiNewItem = await api.post("/menu", params);
-    // console.log("api",apiNewItem.data);
-  };
-  const NewMenu = async (params) => {
-   
-    const apiNewItem = await api.post("/menu", params);
-    dispatch(getMenuChange(apiNewItem));
-    clearForm();
-    menuList();
-    store.addNotification({
-      title: "Adding Success!",
-      message: "You may check now on the menu",
-      type: "success",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animate__animated", "animate__fadeIn"],
-      animationOut: ["animate__animated", "animate__fadeOut"],
-      dismiss: {
-        duration: 3000,
-        onScreen: true,
-      },
-    });
-  };
-
-  const menuList = async () => {
-    const response = await api.get("/menu");
+    const response = await api.post("/products", params);
     const result = response.data;
+    console.log("new menu",result );
     dispatch(getMenuChange(result));
-    console.log("result", result);
+  
+    getAllProducts();
+    clearForm();
+    setSuccessAdd(true);
     
-  };
-  useEffect(() => {
-    menuList();
-  }, []);
+  }
 
   return (
     <div>
@@ -149,74 +126,107 @@ function AddItem() {
         container
         spacing={2}
         direction="column"
-        style={{ textAlign: "center", padding: "10px", marginTop: "10px" }}
+        style={{ textAlign: "center", padding: "20px"}}
       >
         <Grid item xs={12}>
           <Card style={{ padding: "40px", borderRadius: "20px" }}>
-            {picture.length !== 0 ? (
-              <CardMedia
-              sx={{boxShadow: 10}}
-                component="img"
-                height="250"
-                image={picture}
-                alt="Image shows here!"
-                style={{borderRadius: "10px"}}
-                // border="2px solid white"
-              />
-            ) : (
-              <CardMedia
-                component="img"
-                height="250"
-                image={addicon}
-                alt="Image shows here!"
-                // border="2px solid white"
-              />
-            )}
+
+           <img src="https://st.depositphotos.com/1787196/1330/i/600/depositphotos_13303160-stock-photo-funny-chef-and-empty-board.jpg" style={{ height: "300px" }} />
             <Grid xs={12}>
-              <label
+              <h4
                 style={{
-                  fontFamily: "Apple Chancery, cursive",
                   fontSize: "30px",
                   color: "#323435",
                 }}
               >
-                <b>Tara Eat</b>
-              </label>
+               Add Menu Items
+              </h4>
+              <p style={{color: "#767779"}}>Please fill up all fields to add new menu.</p>
             </Grid>
 
-            <form style={{ marginTop: "30px" }} onSubmit={NewItem}>
+            <form style={{ marginTop: "10px" }}>
               <Grid xs={12}>
                 <Grid xs={12}>
-                  <TextField
-                    type="text"
-                    color="warning"
+
+
+                <FormControl variant="outlined" sx={{ mt:2}} fullWidth>
+          <InputLabel htmlFor="outlined-adornment-password"
+           color={
+            picture!=="" ? (
+                "success"
+              ):(
+                "error"
+              )
+            }
+          >Picture Link</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            color={
+              picture!=="" ? (
+                  "success"
+                ):(
+                  "error"
+                )
+              }
+              value={picture}
+              onChange={(e) => {setPicture(e.target.value)}}
+            style={{backgroundColor: "#F5FAFE"}}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                
+                  edge="end"
+                >
+                <ImageRoundedIcon onClick={() => {setViewImage(true)}} />
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Picture link"
+          />
+        </FormControl>
+
+                  {/* <TextField
+                    color={
+                      picture!=="" ? (
+                          "success"
+                        ):(
+                          "error"
+                        )
+                      }
                     label="Image Link"
-                    id="reddit-input"
-                    variant="filled"
+                    variant="outlined"
                     style={{
                       marginTop: 11,
-                      border: "2px solid #e2e2e1",
-                      borderRadius: "5px",
+                      
                     }}
                     name="image"
                     onChange={(e) => {
                       setPicture(e.target.value);
                     }}
                     fullWidth
-                  />
+                  /> */}
                 </Grid>
 
                 <Grid container>
-                  <Grid xs={6} style={{ paddingRight: "5px" }}>
+                  <Grid xs={6} >
                     <TextField
-                      color="warning"
+                 
+                    sx={{ mt: 1.5, minWidth: 200 }}
+                     color={
+                      name!=="" ? (
+                          "success"
+                        ):(
+                          "error"
+                        )
+                      }
                       label="Name"
-                      id="reddit-input"
-                      variant="filled"
+                      value={name}
+                      variant="outlined"
                       style={{
                         marginTop: 11,
-                        border: "2px solid #e2e2e1",
-                        borderRadius: "5px",
+                        paddingRight: "15px",
+                        backgroundColor: "#F5FAFE"
                       }}
                       name="name"
                       onChange={(e) => {
@@ -227,42 +237,52 @@ function AddItem() {
                   </Grid>
 
                   <Grid xs={6}>
-                    <FormControl
-                      variant="filled"
-                      sx={{ mt: 1.5, minWidth: 200 }}
-                    >
-                      <InputLabel
-                        id="demo-simple-select-filled-label"
-                        color="warning"
-                      >
-                        Type
-                      </InputLabel>
-                      <Select
-                        color="warning"
-                        labelId="demo-simple-select-filled-label"
-                        id="demo-simple-select-filled"
-                        onChange={(e) => {
-                          setType(e.target.value);
-                        }}
-                      >
-                        <MenuItem value="Burger">Burger</MenuItem>
-                        <MenuItem value="Pizza">Pizza</MenuItem>
-                        <MenuItem value="Drinks">Drinks</MenuItem>
-                        <MenuItem value="Dessert">Dessert</MenuItem>
-                      </Select>
-                    </FormControl>
+
+                  <TextField
+          id="outlined-select-currency"
+          style={{
+            marginTop: 11,
+            backgroundColor: "#F5FAFE"
+          }}
+          color={
+            ftype!=="" ? (
+            "success"
+          ):(
+            "error"
+          )}
+          select
+          label="Type"
+          value={ftype}
+          onChange={(e) => {
+            setType(e.target.value);
+          }}
+          fullWidth
+          
+        >
+          
+          <MenuItem value="Burger">Burger</MenuItem>
+          <MenuItem value="Pizza">Pizza</MenuItem>
+          <MenuItem value="Drinks">Drinks</MenuItem>
+          <MenuItem value="Dessert">Dessert</MenuItem>
+        
+        </TextField>
+                    
                   </Grid>
                   <Grid xs={6} style={{ paddingRight: "5px" }}>
                     <TextField
                       type="number"
-                      color="warning"
+                      color={
+                        price!=="" ? (
+                        "success"
+                      ):(
+                        "error"
+                      )}
                       label="Price"
-                      id="reddit-input"
-                      variant="filled"
+                     
+                      variant="outlined"
                       style={{
                         marginTop: 11,
-                        border: "2px solid #e2e2e1",
-                        borderRadius: "5px",
+                        backgroundColor: "#F5FAFE"
                       }}
                       min="1"
                       name="price"
@@ -275,14 +295,18 @@ function AddItem() {
                   <Grid xs={6}>
                     <TextField
                       type="number"
-                      color="warning"
+                      color={
+                        pcs!=="" ? (
+                        "success"
+                      ):(
+                        "error"
+                      )}
                       label="Stocks"
-                      id="reddit-input"
-                      variant="filled"
+                     
+                      variant="outlined"
                       style={{
                         marginTop: 11,
-                        border: "2px solid #e2e2e1",
-                        borderRadius: "5px",
+                        backgroundColor: "#F5FAFE"
                       }}
                       min="1"
                       name="stocks"
@@ -294,16 +318,22 @@ function AddItem() {
                   </Grid>
                 </Grid>
                 <Grid xs={12}>
+
+
                   <TextField
                     type="text"
-                    color="warning"
+                    color={
+                      desc!=="" ? (
+                      "success"
+                    ):(
+                      "error"
+                    )}
                     label="Ingredients"
-                    id="reddit-input"
-                    variant="filled"
+                    
+                    variant="outlined"
                     style={{
                       marginTop: 11,
-                      border: "2px solid #e2e2e1",
-                      borderRadius: "5px",
+                      backgroundColor: "#F5FAFE"
                     }}
                     name="Ingredients"
                     onChange={(e) => {
@@ -313,16 +343,16 @@ function AddItem() {
                   />
                 </Grid>
               </Grid>
-              <Grid xs={12} style={{ textAlign: "right" }}>
-                <Box sx={{ "& > :not(style)": { m: 1 } }}>
+              <Grid xs={12} style={{ textAlign: "center", marginTop: "20px" }}>
+                <Box >
                   <Fab
-                    size="medium"
+                    size="large"
                     variant="extended"
-                    style={{ color: "#F9D342", backgroundColor: "#323435" }}
+                    style={{ color: "#F9D342", backgroundColor: "#323435", width: "100%" }}
                     aria-label="add"
-                    type="submit"
+                   onClick={() => {addItem()}}
                   >
-                   Add to Menu <CheckCircleOutlineOutlinedIcon/>
+                   Add to Menu 
                   </Fab>
                 </Box>
               </Grid>
@@ -331,6 +361,95 @@ function AddItem() {
         </Grid>
       </Grid>
       <BottomNav_AddItem />
+
+      <Modal
+        open={modalAlert}
+        onClose={!modalAlert}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+          
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           <ErrorLottie/>
+           <div style={{textAlign: "center"}}>
+           <h4>Warning!</h4>
+           <p>Please fill up all fields.</p>
+           </div>
+          </Typography>
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+             setModalAlert(false);   
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
+
+
+      <Modal
+        open={viewImage}
+        onClose={!viewImage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+        {!picture ? (
+          <center>
+             <h4>No image found</h4>
+          </center>
+           
+          ):(
+            <div style={{textAlign: "center"}}>
+            <img src={picture} style={{height: "300px"}} />
+            <Typography id="modal-modal-description" sx={{ mt: 2 }} >
+            <center>
+             <h4>Image Preview</h4>
+            </center>
+          </Typography>
+            </div>
+          )}
+          
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+             setViewImage(false);   
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
+
+      <Modal
+        open={successAdd}
+        onClose={!successAdd}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+          
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           <SuccessLottie/>
+           <div style={{textAlign: "center"}}>
+           <h4>Success!</h4>
+           <p>New item added.</p>
+           </div>
+          </Typography>
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+             setSuccessAdd(false);
+           
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
+
     </div>
   );
 }

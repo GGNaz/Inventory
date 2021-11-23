@@ -101,6 +101,7 @@ function LoginForm() {
 
    
     if(result==="OK"){
+      console.log("User check", result);
       UpdateUserIsTrue(userDetails.email);
       history.push("/home");
     }

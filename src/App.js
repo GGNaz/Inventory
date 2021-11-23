@@ -36,21 +36,21 @@ function App() {
     const response = await api.get("/products");
     const result = response.data;
     dispatch(getMenuChange(result));
-    console.log("result", result);
+    
   };
 
   const userList = async () => {
     const response = await api.get("/users");
     const result = response.data;
     dispatch(getUserChange(result));
-    console.log("User", result);
+    
   };
 
   const cartList = async () => {
     const response = await api.get("/cart");
     const result = response.data;
     dispatch(getCartChange(result));
-    console.log("Cart", result);
+   
   };
 
   // const logsList = async () => {
@@ -82,7 +82,7 @@ function App() {
           <AddItem />
         </Route>
         <Route exact path="/cart">
-          <Home />
+        
           <Cart />
         </Route>
         <Route exact path="/accounts">

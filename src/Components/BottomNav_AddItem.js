@@ -7,6 +7,8 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import BottomNavigation from "reactjs-bottom-navigation";
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import "reactjs-bottom-navigation/dist/index.css";
+import PersonIcon from '@mui/icons-material/Person';
+import ChatIcon from '@mui/icons-material/Chat';
 function BottomNav_AddItem() {
   const history = useHistory();
   const bottomNavItems = [
@@ -20,9 +22,8 @@ function BottomNav_AddItem() {
       ),
       onClick: () => history.push("/home"),
     },
-
     {
-      // title: "New Menu",
+      // title: "Home",
 
       icon: <AddBusinessIcon style={{ fontSize: "35px" }} />,
 
@@ -33,26 +34,37 @@ function BottomNav_AddItem() {
     },
 
     {
-      // title: "My Order",
+      // title: "New Menu",
 
       icon: <LocalShippingIcon style={{ fontSize: "35px" }} />,
 
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
-      onClick: () => history.push("/delivery"),
+      onClick: () => history.push("/logs"),
+    },
+
+    {
+      // title: "My Order",
+
+      icon: <ChatIcon style={{ fontSize: "35px" }} />,
+
+      activeIcon: (
+        <ChatIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+      ),
+      onClick: () => history.push("/chat"),
     },
 
     {
       // title: "Account",
 
-      icon: <ManageAccountsIcon style={{ fontSize: "35px" }} />,
+      icon: <PersonIcon style={{ fontSize: "35px" }} />,
 
       activeIcon: (
-        <ManageAccountsIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <PersonIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
 
-      onClick: () => history.push("/accounts"),
+      onClick: () => history.push("/profile"),
     },
   ];
   return (

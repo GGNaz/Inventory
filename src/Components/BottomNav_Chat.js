@@ -22,6 +22,16 @@ function BottomNav_Chat() {
       ),
       onClick: () => history.push("/home"),
     },
+    {
+      // title: "Home",
+
+      icon: <AddBusinessIcon style={{ fontSize: "35px" }} />,
+
+      activeIcon: (
+        <AddBusinessIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+      ),
+      onClick: () => history.push("/addItem"),
+    },
 
     {
       // title: "New Menu",
@@ -61,7 +71,7 @@ function BottomNav_Chat() {
     <div>
       <BottomNavigation
         items={bottomNavItems}
-        defaultSelected={2}
+        defaultSelected={3}
         onItemClick={(item) => console.log(item)}
       />
     </div>

@@ -14,6 +14,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { useHistory } from "react-router";
 import LogoutLottie from '../../Components/LogoutLottie';
+import { Link } from 'react-router-dom';
 function Profile() {
     const history = useHistory();
     const [accountDetails,setAccoutnDetails] = useState([]);
@@ -94,11 +95,13 @@ function Profile() {
                     </Grid>
                     
                     <Grid xs={12}>
-                    <Paper style={{padding: "10px"}} sx={{boxShadow: 2}}>
-                        <AccountBalanceWalletOutlinedIcon fontSize="large" style={{color: "#323435",marginRight: "10px"}} /> 
-                        <label>To Pay</label>
-                        <KeyboardArrowRightOutlinedIcon fontSize="large" style={{float: "right",color: "#323435"}}/>
+                    <Link to="/cart">
+                        <Paper style={{padding: "10px"}} sx={{boxShadow: 2}}>
+                            <AccountBalanceWalletOutlinedIcon fontSize="large" style={{color: "#323435",marginRight: "10px"}} /> 
+                                <label>To Pay</label>
+                            <KeyboardArrowRightOutlinedIcon fontSize="large" style={{float: "right",color: "#323435"}}/>
                         </Paper>
+                    </Link>
                     </Grid>
                     <Grid xs={12} style={{marginTop: "5px"}}>
                     <Paper style={{padding: "10px"}}  sx={{boxShadow: 2}}>

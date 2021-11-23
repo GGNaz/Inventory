@@ -6,19 +6,45 @@ import { Card,
        InputBase,
        IconButton
      } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import MobileNav from "../../Components/MobileNav";
 import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import BottomNav_Chat from "../../Components/BottomNav_Chat";
+import api from "../../api/menu";
 function Chat() {
+  const [chat, setChatRoom] = useState([]);
+  const [rider, setRider] = useState("");
+  useEffect(() => {
+    ChatRoom();
+    filterUsers();
+  }, [])
+
+  const ChatRoom = async () => {
+    const response = await api.get("/chat");
+    const result = response.data;
+    setChatRoom(result);
+    console.log("ChatRoom", result);
+
+    const filterRider = await result.filter(function (users) {
+      return users.uType.includes("Rider");
+    });
+  
+    setRider(filterRider[0]);
+    console.log("rider",filterRider[0].uName);
+  }
+
+  const filterUsers = async () => {
+    
+  }
+
   return (
     <div>
       <MobileNav />
       <Grid container style={{ padding: "10px" }}>
         <Grid xs={9}>
-          <h5>Hi, Im Nazer</h5>
+          <h5>Hi, Im </h5>
           <p>Delivery Rider</p>
         </Grid>
 
