@@ -14,6 +14,7 @@ import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import BottomNav_Chat from "../../Components/BottomNav_Chat";
 import api from "../../api/menu";
 function Chat() {
+  
   const [chat, setChatRoom] = useState([]);
   const [rider, setRider] = useState("");
   useEffect(() => {
@@ -31,7 +32,7 @@ function Chat() {
       return users.uType.includes("Rider");
     });
   
-    setRider(filterRider[0]);
+    setRider(filterRider[0].uName);
     console.log("rider",filterRider[0].uName);
   }
 

@@ -42,7 +42,7 @@ function BottomNav() {
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
-      onClick: () => history.push("/delivery"),
+      onClick: () => history.push("/shipment"),
     },
     {
       // title: "My Order",

@@ -12,6 +12,7 @@ import {
     Backdrop,
     Fade,
     Typography,
+    TextField
   } from "@mui/material";
   import React , {useState,useEffect} from "react";
   import MobileNav from "../../Components/MobileNav";
@@ -40,6 +41,9 @@ import {
     console.log("asa cart", cartNum)
     const [orderDate, setOrderDate] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+    const [mobileNum, setMobileNum] = useState("");
     const [open, setOpen] = useState(false);
     const timestamp = Date.now();
     let timeOrdered = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(timestamp);
@@ -90,17 +94,34 @@ import {
       
     }
   
-    const addToApiLogs = async () => {
-     
-      const params ={
-        adress: timeOrdered,
-        typeOfDelivery: "COD",
-        toPay: grandTotal + fee
+    const getUsers = async () => {
+      const response = await api.get("/users");
+      const result = response.data;
+      setName(result);
+    }
+
+    const addToShipment = async () => {
+
+    const filterIsUser = await name.filter(function (users) {
+      return users.isUserLog === true;
+    });
+
+      const params = {
+        address: address,
+        name: filterIsUser[0].name,
+        mobileNum: mobileNum,
+        typeOfDelivery: "Cash On Delivery",
+        amount: grandTotal + fee
       }
-      const result = await api.post("/logs",params);
-        dispatch(getLogsChange(result));
-        logsList();
-       
+     
+      const response = await api.post("/logs", params);
+      if(response===201){
+        setAddress("");
+        setMobileNum("");
+        setOpen(false);
+        await api.delete("/cart");
+      }
+
     }
   
     const removeAction = (params) => {
@@ -129,6 +150,7 @@ import {
    useEffect(() => {
     cartList();
     logsList();
+    getUsers();
     }, []);
   
     const style = {
@@ -138,7 +160,6 @@ import {
       transform: "translate(-50%, -50%)",
       width: 400,
       bgcolor: "background.paper",
-      border: "2px solid #000",
       borderRadius: "20px",
       boxShadow: 24,
       p: 4,
@@ -171,7 +192,8 @@ import {
             <Grid container style={cartNum.length>=4 ? (
               {  
                maxHeight:520,
-               overflowY:'scroll'
+               overflowY:'scroll',
+           
               }
             ):null}>
             {cartNum.length > 0 ? (
@@ -287,7 +309,14 @@ import {
                   size="medium"
                   variant="extended"
                   style={{ color: "#F9D342", backgroundColor: "#323435" }}
-                  onClick={() => {setOpen(true)}}
+                  onClick={() =>
+                   { 
+                    if(grandTotal!==0)
+                    {
+                      setOpen(true)
+                    }
+                  }
+                }
                 >
                   Place Order <FmdGoodOutlinedIcon />
                 </Fab>
@@ -311,7 +340,7 @@ import {
           <Fade in={open}>
             <Box sx={style}>
             <Box style={{marginBottom: "10px", textAlign: "right"}}>
-            <Fab size="small" onClick={() => setOpen(false)} >
+            <Fab size="small" onClick={() => setOpen(false)} style={{backgroundColor: "#e57373", color: "white"}}>
               
                 <CloseOutlinedIcon />
            
@@ -319,55 +348,75 @@ import {
           </Box>
          
           <form>
-             
               <Typography id="transition-modal-description" sx={{ mt: 2 }}>
                 <Grid container>
-                 
-                    <Grid xs={12}>
-                      <h4>asdasd</h4>
+                    <Grid xs={12} style={{textAlign: "center"}}>
+                      <h3>Checkout Form</h3>
+                     
                     </Grid>
-                   
-                    <Grid xs={6}>
-                    <Box>
+                    <Grid xs={12} style={{marginTop: "20px"}}>
+                    <label style={{fontSize: "15px"}}>Lot No. / Street / Brgy / City</label>
+                    <TextField
+                        color={
+                          address!=="" ? (
+                            "success"
+                          ):(
+                            "error"
+                          )
+                        }
+                        label="Complete Address"
+                        
+                        variant="outlined"
+                        style={{
+                          marginTop: 11,
+                          backgroundColor: "#F5FAFE"
+                        }}
+                        name="address"
+                        value={address}
+                        onChange={(e) => {setAddress(e.target.value)}}
+                        fullWidth
+                        
+                      />
+                    </Grid>
+                    <Grid xs={12} style={{marginTop: "5px"}}>
+                    <TextField
+                        type="number"
+                        color={
+                          mobileNum!=="" ? (
+                            "success"
+                          ):(
+                            "error"
+                          )
+                        }
+                        label="Mobile Number"
+                        
+                        variant="outlined"
+                        style={{
+                          marginTop: 11,
+                          backgroundColor: "#F5FAFE"
+                        }}
+                        name="mobilenumber"
+                        value={mobileNum}
+                        onChange={(e) => {setMobileNum(e.target.value)}}
+                        fullWidth
+                        
+                      />
+                    </Grid>
+              <Grid xs={12} style={{marginTop: "30px"}}>
+              <Box>
                 <Fab
-                  size="medium"
+                  size="large"
                   variant="extended"
-                  style={{ color: "#F9D342", backgroundColor: "#323435" }}
-                 
+                  style={{ color: "#F9D342", backgroundColor: "#323435", width: "100%" }}
                   onClick={() => {
-                   
-                    setOpen(false);
+                    // setOpen(false);
+                    addToShipment();
                   }}
                 >
-                  Checkout 
+                  Checkout ( ₱{grandTotal + fee}.00 )
                 </Fab>
               </Box>
-           
-                    </Grid>
-                    {/* <Grid xs={6} style={{textAlign: "right"}}>
-                      <Card style={{padding: "7px", borderRadius: "20px", width: "70%"}} >
-                      <center >
-                        <AddBoxIcon/>
-                        
-                        <input
-                          type="number"
-                          value={counter}
-                          defaultValue="1"
-                          min="1"
-                          variant="outlined"
-                          style={{ width: "50px", border: "none" }}
-                          onChange={(e) => {
-                            setCounter(e.target.value);
-                          }}
-                          required
-                        />
-                        <IndeterminateCheckBoxIcon
-                          
-                        />
-                      </center>
-                      </Card>
-                    </Grid> */}
-                    
+              </Grid>
                 </Grid>
               </Typography>
               </form>
@@ -382,5 +431,27 @@ import {
     );
   }
   
+  const scrollStyle = {
+    list: {
+      overflowY: "auto",
+      margin: 0,
+      padding: 0,
+      listStyle: "none",
+      height: "100%",
+      '&::-webkit-scrollbar': {
+        width: '0.4em'
+      },
+      '&::-webkit-scrollbar-track': {
+        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+        webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,.1)',
+        outline: '1px solid slategrey'
+      }
+    }
+  }
+
+
   export default Cart;
   

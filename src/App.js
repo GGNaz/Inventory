@@ -23,9 +23,11 @@ import Orders from "./User/Homepage/Orders";
 import DefaultPage from "./User/LoginForm/DefaultPage";
 import Chat from "./User/Chat/Chat";
 import Profile from "./User/Homepage/Profile";
+import Shipment from "./User/Homepage/Shipment";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
+
   useEffect(() => {
     menuList();
     userList();
@@ -99,6 +101,9 @@ function App() {
         </Route>
         <Route exact path="/chat">
           <Chat/>
+        </Route>
+        <Route exact path="/shipment">
+          <Shipment/>
         </Route>
       </Switch>
       {/* <UserRestriction path="/home" component={Home} component={BurgerList} isLogin={isLogin} />

@@ -41,7 +41,7 @@ function BottomNav_Chat() {
       activeIcon: (
         <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
       ),
-      onClick: () => history.push("/logs"),
+      onClick: () => history.push("/shipment"),
     },
 
     {
