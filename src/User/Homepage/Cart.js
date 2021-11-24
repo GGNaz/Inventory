@@ -35,6 +35,8 @@ import {
   import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
   import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
   import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+
+import SuccessLottie from "../../Components/SuccessLottie";
   function Cart() {
       const dispatch = useDispatch();
     const cartNum = useSelector((state) => state.getCart.getCart);
@@ -45,19 +47,32 @@ import {
     const [address, setAddress] = useState("");
     const [mobileNum, setMobileNum] = useState("");
     const [open, setOpen] = useState(false);
+    const [modalAlert, setModalAlert] = useState(false);
     const timestamp = Date.now();
     let timeOrdered = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(timestamp);
     const [counter, setCounter] = useState(1);
     let fee = 20;
     let grandTotal = 0;
   
+    const successStyle = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      borderRadius: "20px",
+      
+      p: 4,
+    };
+
+
     const addCartValue = async (cart) => {
       const cartId = cart._id;
       const filtercartId = cartNum.filter(function(carts) {
      
         return carts._id.toLowerCase().includes(cartId.toLowerCase())
       });
-  
   
      const params = {
        cartName: cart.CartName,
@@ -115,11 +130,14 @@ import {
       }
      
       const response = await api.post("/logs", params);
-      if(response===201){
+     
+      if(response.status===201){
+        await api.delete("/cart");
         setAddress("");
         setMobileNum("");
         setOpen(false);
-        await api.delete("/cart");
+        cartList();
+        setModalAlert(true);
       }
 
     }
@@ -424,33 +442,37 @@ import {
           </Fade>
         </Modal>
   
-  
+        <Modal
+        open={modalAlert}
+        onClose={!modalAlert}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+       
+      >
+        <Box sx={successStyle}>
+          
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           <SuccessLottie/>
+           <div style={{textAlign: "center"}}>
+           <h4>Success!</h4>
+           <p>Thank you for ordering.</p>
+           </div>
+          </Typography>
+          
+          <Box style={{textAlign: "center", marginTop: "50px"}}>
+           <Fab variant="extended" size="medium" style={{width: "200px",backgroundColor: "#23C833", color: "white"}} onClick={() => {
+              setModalAlert(false);
+           }}>OK</Fab>
+          </Box>
+          
+        </Box>
+      </Modal>
   
   
       </div>
     );
   }
   
-  const scrollStyle = {
-    list: {
-      overflowY: "auto",
-      margin: 0,
-      padding: 0,
-      listStyle: "none",
-      height: "100%",
-      '&::-webkit-scrollbar': {
-        width: '0.4em'
-      },
-      '&::-webkit-scrollbar-track': {
-        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-        webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
-      },
-      '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'rgba(0,0,0,.1)',
-        outline: '1px solid slategrey'
-      }
-    }
-  }
 
 
   export default Cart;

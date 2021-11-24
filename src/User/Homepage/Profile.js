@@ -104,11 +104,13 @@ function Profile() {
                     </Link>
                     </Grid>
                     <Grid xs={12} style={{marginTop: "5px"}}>
+                    <Link to="/shipment">
                     <Paper style={{padding: "10px"}}  sx={{boxShadow: 2}}>
                         <LocalShippingOutlinedIcon fontSize="large" style={{color: "#323435",marginRight: "10px"}} /> 
                         <label>To Ship</label>
                         <KeyboardArrowRightOutlinedIcon fontSize="large" style={{float: "right",color: "#323435"}}/>
-                        </Paper>
+                    </Paper>
+                    </Link>
                     </Grid>
                     <Grid xs={12} style={{marginTop: "5px"}} >
                     <Paper style={{padding: "10px"}}  sx={{boxShadow: 2}}>
@@ -152,7 +154,7 @@ function Profile() {
             </Card>
             <BottomNav_Accounts/>
 
-            <Modal
+        <Modal
         open={modalAlert}
         onClose={!modalAlert}
         aria-labelledby="modal-modal-title"
@@ -185,11 +187,11 @@ function Profile() {
           </Box>
               </Grid>
           </Grid>
-         
-         
           
         </Box>
       </Modal>
+
+      
 
         </div>
     )
