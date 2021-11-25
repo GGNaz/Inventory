@@ -45,7 +45,7 @@ function Chat() {
       <MobileNav />
       <Grid container style={{ padding: "10px" }}>
         <Grid xs={9}>
-          <h5>Hi, Im </h5>
+          <h5>Hi, Im {rider} </h5>
           <p>Delivery Rider</p>
         </Grid>
 
@@ -83,6 +83,11 @@ function Chat() {
             <hr />
           </Grid>
           <Grid xs={12} container>
+            {/* {
+              chat.length > 0 ? (
+                chat.fil
+              )
+            } */}
             <Grid xs={2}>
               <center>
                 <Avatar

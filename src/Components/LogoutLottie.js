@@ -4,7 +4,7 @@ import animationData from './warning.json';
 
 function LogoutLottie() {
     const defaultOptions = {
-        loop: true,
+        loop: false,
         autoplay: true,
         animationData: animationData,
         rendererSettings: {
@@ -15,8 +15,8 @@ function LogoutLottie() {
         <div>
             <Lottie 
 	    options={defaultOptions}
-        height={200}
-       
+        height={250}
+       style={{width: "250px"}}
       />
         </div>
     )

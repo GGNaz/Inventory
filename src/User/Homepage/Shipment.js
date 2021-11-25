@@ -100,7 +100,12 @@ console.log(orders);
                             </Paper>
                        ))
                        ):(
-                           <label>no data</label>
+                        <Grid container>
+                        <Grid xs={12} style={{marginTop: "50px"}}>
+                        <img src="https://cdn.dribbble.com/users/357929/screenshots/2276751/media/678caef6068a976e4a0d94bbdba6b660.png?compress=1&resize=400x300" />
+                        </Grid>
+                        
+                    </Grid>
                        )
                    }
                     
