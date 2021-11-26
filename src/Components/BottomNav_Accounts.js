@@ -15,10 +15,10 @@ function BottomNav_Accounts() {
     {
       // title: "Home",
 
-      icon: <FastfoodIcon style={{ fontSize: "35px" }} />,
+      icon: <FastfoodIcon style={{ fontSize: "35px",cursor: "pointer" }} />,
 
       activeIcon: (
-        <FastfoodIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <FastfoodIcon style={{ fontSize: "35px", color: "#F9D342",cursor: "pointer" }} />
       ),
       onClick: () => history.push("/home"),
     },
@@ -26,10 +26,10 @@ function BottomNav_Accounts() {
     {
       // title: "New Menu",
 
-      icon: <AddBusinessIcon style={{ fontSize: "35px" }} />,
+      icon: <AddBusinessIcon style={{ fontSize: "35px",cursor: "pointer" }} />,
 
       activeIcon: (
-        <AddBusinessIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <AddBusinessIcon style={{ fontSize: "35px", color: "#F9D342",cursor: "pointer" }} />
       ),
       onClick: () => history.push("/addItem"),
     },
@@ -37,20 +37,20 @@ function BottomNav_Accounts() {
     {
       // title: "My Order",
 
-      icon: <LocalShippingIcon style={{ fontSize: "35px" }} />,
+      icon: <LocalShippingIcon style={{ fontSize: "35px",cursor: "pointer" }} />,
 
       activeIcon: (
-        <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <LocalShippingIcon style={{ fontSize: "35px", color: "#F9D342",cursor: "pointer" }} />
       ),
       onClick: () => history.push("/shipment"),
     },
     {
       // title: "My Order",
 
-      icon: <ChatIcon style={{ fontSize: "35px" }} />,
+      icon: <ChatIcon style={{ fontSize: "35px",cursor: "pointer" }} />,
 
       activeIcon: (
-        <ChatIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <ChatIcon style={{ fontSize: "35px", color: "#F9D342",cursor: "pointer" }} />
       ),
       onClick: () => history.push("/chat"),
     },
@@ -58,10 +58,10 @@ function BottomNav_Accounts() {
     {
       // title: "Account",
 
-      icon: <PersonIcon style={{ fontSize: "35px" }} />,
+      icon: <PersonIcon style={{ fontSize: "35px",cursor: "pointer" }} />,
 
       activeIcon: (
-        <PersonIcon style={{ fontSize: "35px", color: "#F9D342" }} />
+        <PersonIcon style={{ fontSize: "35px", color: "#F9D342",cursor: "pointer" }} />
       ),
 
       onClick: () => history.push("/profile"),

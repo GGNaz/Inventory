@@ -245,7 +245,7 @@ function CreateAccount() {
                         value={name}
                         onChange={(e) => {setName(e.target.value)}}
                         fullWidth
-                        required
+                        
                       />
                     </Grid>
                     <Grid xs={12}>
@@ -268,7 +268,7 @@ function CreateAccount() {
                         value={email}
                         onChange={(e) => {setEmail(e.target.value)}}
                         fullWidth
-                        required
+                       
                       />
                     </Grid>
                     <Grid container>
@@ -302,7 +302,7 @@ function CreateAccount() {
                           name="password"
                           value={password}
                           onChange={(e) => {setPassword(e.target.value)}}
-                          required
+                         
                         />
                       </Grid>
                       <Grid xs={6}>
@@ -339,7 +339,7 @@ function CreateAccount() {
                           name="confirmPassword"
                           value={confirmPassword}
                           onChange={(e) => {setCPassword(e.target.value)}}
-                          required
+                         
                         />
                       </Grid>
                     </Grid>
@@ -353,7 +353,7 @@ function CreateAccount() {
                 "error"
               )
             }
-          >Picture Link *</InputLabel>
+          >Picture</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             color={

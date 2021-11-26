@@ -112,7 +112,12 @@ function AddItem() {
     dispatch(getMenuChange(result));
   
     getAllProducts();
-    clearForm();
+    setName("")
+      setPrice("")
+      setPicture("")
+      setPcs("")
+      setDesc("")
+      setType("")
     setSuccessAdd(true);
     
   }

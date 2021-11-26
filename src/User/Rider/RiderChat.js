@@ -28,9 +28,9 @@ function RiderChat() {
  const userList = async () => {
    const response = await api.get("/users");
    const result = response.data;
-
+  console.log("jjjjjjjjsdf",result)
    const filterIsUser = await result.filter(function (users) {
-     return users.uType === "Rider";
+     return users.userType.includes("Rider");
    });
 
    setCurrentUser(filterIsUser[0]);
@@ -41,7 +41,7 @@ function RiderChat() {
    const response = await api.get("/chat/sort");
    const result = response.data;
    setChatRoom(result);
-   console.log("ChatRoom", result);
+   console.log("ChatRoomasdasd", result);
 
    const filterBuyer = await result.filter(function (users) {
      return users.uType.includes("Buyer");
@@ -62,9 +62,13 @@ function RiderChat() {
    }
 
    const response = await api.post("/chat",params);
-   const result = response.data;
-   console.log("MESSAGE: ", result);
-   ChatRoom();
+   
+   if(response.status===201){
+    console.log("MESSAGE: ", response);
+    setMyMessage("");
+    ChatRoom();
+   }
+   
  }
 
 
@@ -116,7 +120,7 @@ function RiderChat() {
              chat.map((chats) => (
                <>
               { chats.uType === "Buyer" ? (
-               <Grid xs={12} container>
+               <Grid xs={12} container style={{marginTop: "20px"}}>
           <Grid xs={2}>
              <center>
                <Avatar
@@ -141,8 +145,7 @@ function RiderChat() {
            </Grid>
            <Grid xs={4}></Grid>
            </Grid>
-                 ):(
-                  
+                 ):(  
         <Grid xs={12} container style={{ marginTop: "10px"}}>
            <Grid xs={4}></Grid>
            <Grid xs={6} style={{ marginTop: "10px" }}>
@@ -181,7 +184,7 @@ function RiderChat() {
            </Grid>
      
         
-        <Grid xs={12} style={{padding: "10px", marginTop: "200px", position: "fixed"}}>     
+        <Grid xs={12} style={{padding: "10px", marginTop: "220px"}}>     
        <Paper
          component="form"
          sx={{

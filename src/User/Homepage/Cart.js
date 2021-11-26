@@ -235,7 +235,7 @@ import SuccessLottie from "../../Components/SuccessLottie";
                       />
                       <Fab variant="extended" onClick={() => removeAction(cart._id)} size="small" style={{height: "20px", fontSize: "10px", backgroundColor: "#323435", color: "white"}}>
                          <DeleteOutlineRoundedIcon  style={{fontSize: "15px"}} />
-                         <label>Remove</label>
+                         <label style={{cursor: "pointer"}}>Remove</label>
                       </Fab>
                        </Grid>
                     <Grid xs={4} style={{marginLeft: "20px", marginTop: "30px"}}>

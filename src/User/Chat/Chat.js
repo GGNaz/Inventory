@@ -1,20 +1,20 @@
-import { Card,
-     Fab,
-      Grid,
-       Avatar, 
-       Paper,
-       InputBase,
-       IconButton
-     } from "@mui/material";
+import {
+  Card,
+  Fab,
+  Grid,
+  Avatar,
+  Paper,
+  InputBase,
+  IconButton,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import MobileNav from "../../Components/MobileNav";
 import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import BottomNav_Chat from "../../Components/BottomNav_Chat";
 import api from "../../api/menu";
 function Chat() {
-  
   const [chat, setChatRoom] = useState([]);
   const [rider, setRider] = useState("");
   const [currentUser, setCurrentUser] = useState([]);
@@ -22,8 +22,8 @@ function Chat() {
   const [myMessage, setMyMessage] = useState("");
   useEffect(() => {
     ChatRoom();
-    userList()
-  }, [])
+    userList();
+  }, []);
 
   const userList = async () => {
     const response = await api.get("/users");
@@ -34,9 +34,7 @@ function Chat() {
     });
 
     setCurrentUser(filterIsUser[0]);
-    console.log("users",filterIsUser[0])
-
-
+    console.log("users", filterIsUser[0]);
   };
 
   const ChatRoom = async () => {
@@ -50,25 +48,24 @@ function Chat() {
     });
 
     setRider(filterRider[0].uName);
-    console.log("rider",filterRider[0].uName);
-  }
+    console.log("rider", filterRider[0].uName);
+  };
 
   const postNewMessage = async () => {
-
     const params = {
       message: myMessage,
       uID: currentUser._id,
       uImage: currentUser.picture,
       uName: currentUser.name,
-      uType: "Buyer"
-    }
+      uType: "Buyer",
+    };
 
-    const response = await api.post("/chat",params);
+    const response = await api.post("/chat", params);
     const result = response.data;
     console.log("MESSAGE: ", result);
+    setMyMessage("");
     ChatRoom();
-  }
- 
+  };
 
   return (
     <div>
@@ -112,108 +109,103 @@ function Chat() {
             <h4>Chat with your Rider</h4>
             <hr />
           </Grid>
-         
-           {
-             chat.length > 0 ? (
-              chat.map((chats) => (
+
+          {chat.length > 0
+            ? chat.map((chats) => (
                 <>
-               { chats.uType === "Rider" ? (
-                <Grid xs={12} container>
-           <Grid xs={2}>
-              <center>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={chats.uImage}
-                />
-                <label>Rider</label>
-              </center>
-            </Grid>
-            <Grid xs={6}>
-              <Paper
-                style={{
-                  padding: "10px",
-                  borderRadius: "0px 20px 20px 20px",
-                  color: "#323435",
-                  backgroundColor: "#F0F8FF",
-                  fontFamily: "Arial",
-                }}
-              >
-                {chats.message}
-              </Paper>
-            </Grid>
-            <Grid xs={4}></Grid>
-            </Grid>
-                  ):(
-                   
-                  <Grid xs={12} container>
-            <Grid xs={4}></Grid>
-            <Grid xs={6} style={{ marginTop: "10px" }}>
-              <Paper
-                style={{
-                  padding: "10px",
-                  borderRadius: "20px 0px 20px 20px",
-                  color: "#323435",
-                  backgroundColor: "#ECD14C",
-                }}
-              >
-                {chats.message}
-              </Paper>
-            </Grid>
-            <Grid xs={2} style={{ marginTop: "10px", textAlign: "center" }}>
-              <center>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={chats.uImage}
-                />
-                <label>You</label>
-              </center>
-            </Grid>
-          </Grid>
-     
-                  
-                  )} 
-                  </>
-              )
-               
-                
-              
-              )
-             ):null
-           }
-            </Grid>
-      
-         
-         <Grid xs={12} style={{padding: "10px", marginTop: "200px", position: "fixed"}}>     
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#F0F8FF",
-            mb: 1,
-            borderRadius: "20px",
-            padding: "10px"
-          }}
+                  {chats.uType === "Rider" ? (
+                    <Grid xs={12} container>
+                      <Grid xs={2}>
+                        <center>
+                          <Avatar alt="Remy Sharp" src={chats.uImage} />
+                          <label>Rider</label>
+                        </center>
+                      </Grid>
+                      <Grid xs={6}>
+                        <Paper
+                          style={{
+                            padding: "10px",
+                            borderRadius: "0px 20px 20px 20px",
+                            color: "#323435",
+                            backgroundColor: "#F0F8FF",
+                            fontFamily: "Arial",
+                          }}
+                        >
+                          {chats.message}
+                        </Paper>
+                      </Grid>
+                      <Grid xs={4}></Grid>
+                    </Grid>
+                  ) : (
+                    <Grid xs={12} container>
+                      <Grid xs={4}></Grid>
+                      <Grid xs={6} style={{ marginTop: "10px" }}>
+                        <Paper
+                          style={{
+                            padding: "10px",
+                            borderRadius: "20px 0px 20px 20px",
+                            color: "#323435",
+                            backgroundColor: "#ECD14C",
+                          }}
+                        >
+                          {chats.message}
+                        </Paper>
+                      </Grid>
+                      <Grid
+                        xs={2}
+                        style={{ marginTop: "10px", textAlign: "center" }}
+                      >
+                        <center>
+                          <Avatar alt="Remy Sharp" src={chats.uImage} />
+                          <label>You</label>
+                        </center>
+                      </Grid>
+                    </Grid>
+                  )}
+                </>
+              ))
+            : null}
+        </Grid>
+
+        <Grid
+          xs={12}
+          style={{ padding: "10px", marginTop: "220px"}}
         >
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Type a message"
-            inputProps={{ "aria-label": "search google maps" }}
-            fullWidth
-            value={myMessage}
-            onChange={(e) => {
-              setMyMessage(e.target.value)
+          <Paper
+            component="form"
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              backgroundColor: "#F0F8FF",
+              mb: 1,
+              borderRadius: "20px",
+              padding: "10px",
             }}
-          />
-          
-           <Fab size="small" style={{backgroundColor: "#323435", color: "#ECD14C"}}
-           onClick={() => {postNewMessage()}}
-           ><SendRoundedIcon/></Fab>
-          
-          
-        </Paper>
-        </Grid>  
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Type a message"
+              inputProps={{ "aria-label": "search google maps" }}
+              fullWidth
+              value={myMessage}
+              onChange={(e) => {
+                setMyMessage(e.target.value);
+              }}
+              
+            />
+
+            <Fab
+              size="small"
+              style={{ backgroundColor: "#323435", color: "#ECD14C" }}
+              onClick={() => {
+                postNewMessage();
+              }}
+            >
+              <SendRoundedIcon />
+            </Fab>
+          </Paper>
+        </Grid>
       </Card>
       <BottomNav_Chat />
     </div>
