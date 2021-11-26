@@ -17,13 +17,30 @@ function Chat() {
   
   const [chat, setChatRoom] = useState([]);
   const [rider, setRider] = useState("");
+  const [currentUser, setCurrentUser] = useState([]);
+
+  const [myMessage, setMyMessage] = useState("");
   useEffect(() => {
     ChatRoom();
-    filterUsers();
+    userList()
   }, [])
 
+  const userList = async () => {
+    const response = await api.get("/users");
+    const result = response.data;
+
+    const filterIsUser = await result.filter(function (users) {
+      return users.isUserLog === true;
+    });
+
+    setCurrentUser(filterIsUser[0]);
+    console.log("users",filterIsUser[0])
+
+
+  };
+
   const ChatRoom = async () => {
-    const response = await api.get("/chat");
+    const response = await api.get("/chat/sort");
     const result = response.data;
     setChatRoom(result);
     console.log("ChatRoom", result);
@@ -31,14 +48,27 @@ function Chat() {
     const filterRider = await result.filter(function (users) {
       return users.uType.includes("Rider");
     });
-  
+
     setRider(filterRider[0].uName);
     console.log("rider",filterRider[0].uName);
   }
 
-  const filterUsers = async () => {
-    
+  const postNewMessage = async () => {
+
+    const params = {
+      message: myMessage,
+      uID: currentUser._id,
+      uImage: currentUser.picture,
+      uName: currentUser.name,
+      uType: "Buyer"
+    }
+
+    const response = await api.post("/chat",params);
+    const result = response.data;
+    console.log("MESSAGE: ", result);
+    ChatRoom();
   }
+ 
 
   return (
     <div>
@@ -77,22 +107,23 @@ function Chat() {
           marginRight: "20px",
         }}
       >
-        <Grid container style={{ padding: "20px" }}>
+        <Grid container style={{ padding: "20px", height: "400px" }}>
           <Grid xs={12} style={{ textAlign: "center" }}>
             <h4>Chat with your Rider</h4>
             <hr />
           </Grid>
-          <Grid xs={12} container>
-            {/* {
-              chat.length > 0 ? (
-                chat.fil
-              )
-            } */}
-            <Grid xs={2}>
+         
+           {
+             chat.length > 0 ? (
+              chat.map((chats) => (
+                <>
+               { chats.uType === "Rider" ? (
+                <Grid xs={12} container>
+           <Grid xs={2}>
               <center>
                 <Avatar
                   alt="Remy Sharp"
-                  src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                  src={chats.uImage}
                 />
                 <label>Rider</label>
               </center>
@@ -107,12 +138,14 @@ function Chat() {
                   fontFamily: "Arial",
                 }}
               >
-                Hi! Im your delivery rider for today.
+                {chats.message}
               </Paper>
             </Grid>
             <Grid xs={4}></Grid>
-          </Grid>
-          <Grid xs={12} container>
+            </Grid>
+                  ):(
+                   
+                  <Grid xs={12} container>
             <Grid xs={4}></Grid>
             <Grid xs={6} style={{ marginTop: "10px" }}>
               <Paper
@@ -123,21 +156,34 @@ function Chat() {
                   backgroundColor: "#ECD14C",
                 }}
               >
-                Ok. thanks! Im hungry....
+                {chats.message}
               </Paper>
             </Grid>
             <Grid xs={2} style={{ marginTop: "10px", textAlign: "center" }}>
               <center>
                 <Avatar
                   alt="Remy Sharp"
-                  src="https://cdn-icons-png.flaticon.com/512/219/219976.png"
+                  src={chats.uImage}
                 />
                 <label>You</label>
               </center>
             </Grid>
           </Grid>
-        </Grid>
-         <Grid xs={12} style={{padding: "10px", marginTop: "380px"}}>     
+     
+                  
+                  )} 
+                  </>
+              )
+               
+                
+              
+              )
+             ):null
+           }
+            </Grid>
+      
+         
+         <Grid xs={12} style={{padding: "10px", marginTop: "200px", position: "fixed"}}>     
         <Paper
           component="form"
           sx={{
@@ -155,10 +201,15 @@ function Chat() {
             placeholder="Type a message"
             inputProps={{ "aria-label": "search google maps" }}
             fullWidth
-            
+            value={myMessage}
+            onChange={(e) => {
+              setMyMessage(e.target.value)
+            }}
           />
           
-           <Fab size="small" style={{backgroundColor: "#323435", color: "#ECD14C"}}><SendRoundedIcon/></Fab>
+           <Fab size="small" style={{backgroundColor: "#323435", color: "#ECD14C"}}
+           onClick={() => {postNewMessage()}}
+           ><SendRoundedIcon/></Fab>
           
           
         </Paper>
