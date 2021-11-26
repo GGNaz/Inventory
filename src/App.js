@@ -24,6 +24,7 @@ import DefaultPage from "./User/LoginForm/DefaultPage";
 import Chat from "./User/Chat/Chat";
 import Profile from "./User/Homepage/Profile";
 import Shipment from "./User/Homepage/Shipment";
+import RiderChat from "./User/Rider/RiderChat";
 function App() {
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
@@ -104,6 +105,9 @@ function App() {
         </Route>
         <Route exact path="/shipment">
           <Shipment/>
+        </Route>
+        <Route exact path="/rider">
+          <RiderChat/>
         </Route>
       </Switch>
       {/* <UserRestriction path="/home" component={Home} component={BurgerList} isLogin={isLogin} />
